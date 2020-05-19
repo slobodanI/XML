@@ -22,8 +22,8 @@ public class Slika {
     @Column(name = "slika", columnDefinition="BLOB")
 	private byte[] slika;
 	
-	@ManyToOne
-    private Oglas oglas;
+//	@ManyToOne
+//    private Oglas oglas;
 	
 	public Slika() {
 		// TODO Auto-generated constructor stub
@@ -45,13 +45,13 @@ public class Slika {
 		this.slika = slika;
 	}
 
-	public Oglas getOglas() {
-		return oglas;
-	}
-
-	public void setOglas(Oglas oglas) {
-		this.oglas = oglas;
-	}
+//	public Oglas getOglas() {
+//		return oglas;
+//	}
+//
+//	public void setOglas(Oglas oglas) {
+//		this.oglas = oglas;
+//	}
 	
 	
 	

@@ -56,8 +56,8 @@ public class Oglas {
 	@Column(name="sedistaZaDecu")
 	private int sedistaZaDecu;
 	
-	@OneToMany(mappedBy = "oglas")
-    private List<Slika> slike;
+	@OneToOne//(mappedBy = "oglas")
+    private Slika slike;//List<Slika> slike;
 	
 	@Column(name="osiguranje")
 	private boolean osiguranje;
@@ -82,7 +82,7 @@ public class Oglas {
 	}
 
 	public Oglas(String marka, String model, String gorivo, String menjac, String klasa, int cena, Cenovnik cenovnik,
-			int kilometraza, int planiranaKilometraza, int sedistaZaDecu, List<Slika> slike, boolean osiguranje,
+			int kilometraza, int planiranaKilometraza, int sedistaZaDecu, /*List<Slika>*/Slika slike, boolean osiguranje,
 			Long agentID, Date od, Date do1, List<Zahtev> zahtevi) {
 		super();
 		this.marka = marka;
@@ -191,14 +191,22 @@ public class Oglas {
 		this.sedistaZaDecu = sedistaZaDecu;
 	}
 
-	public List<Slika> getSlike() {
+//	public List<Slika> getSlike() {
+//		return slike;
+//	}
+//
+//	public void setSlike(List<Slika> slike) {
+//		this.slike = slike;
+//	}
+	
+	public Slika getSlike() {
 		return slike;
 	}
 
-	public void setSlike(List<Slika> slike) {
+	public void setSlike(Slika slike) {
 		this.slike = slike;
 	}
-
+	
 	public boolean isOsiguranje() {
 		return osiguranje;
 	}
