@@ -8,7 +8,7 @@
         <version>2.2.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>rs.xml</groupId>
+    <groupId>rs.ac.rs</groupId>
     <artifactId>zuul</artifactId>
     <version>1.0.0</version>
     <name>zuul</name>
