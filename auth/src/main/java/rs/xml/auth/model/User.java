@@ -1,9 +1,15 @@
 package rs.xml.auth.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.joda.time.DateTime;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,11 +24,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name="USERS")
-public class User /*implements userdetails*/{
+public class User implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +41,13 @@ public class User /*implements userdetails*/{
     @JsonIgnore
     @Column(name = "password")
     private String password;
+    
+    @Column(name = "first_name")
+    private String firstName;
 
+    @Column(name = "last_name")
+    private String lastName;
+    
     @Column(name = "email")
     private String email;
 
@@ -89,6 +99,22 @@ public class User /*implements userdetails*/{
 		Timestamp now = new Timestamp(DateTime.now().getMillis());
         this.setLastPasswordResetDate( now );
         this.password = password;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -155,31 +181,48 @@ public class User /*implements userdetails*/{
 		this.roles = roles;
 	}
 	
-//	@JsonIgnore
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @JsonIgnore
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @JsonIgnore
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
+	@JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
     
-//	@Override
-//    public boolean isEnabled() {
-//        return accepted && !blocked;
-//    }
+	@Override
+    public boolean isEnabled() {
+        return accepted && !blocked;
+    }
     
-//	@Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return this.roles;
-//    }
+	/**
+	 * Vraca listu 'GrantedAuthority'.
+	 * U listi se nalaze role koje korisnik ima, i sve
+	 * prermisije koje su dodeljene tim rolama;
+	 */
+	@Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //return this.roles;
+        
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+        getRoles().forEach(role -> {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+            role.getPermissions().forEach(permission -> {
+                grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName()));
+            });
+
+        });
+        return grantedAuthorities;
+        
+    }
 }

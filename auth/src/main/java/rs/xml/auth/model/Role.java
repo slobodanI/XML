@@ -14,9 +14,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
 @Table(name = "ROLE")
-public class Role /*implements GrantedAuthority*/{
+public class Role implements GrantedAuthority {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -34,10 +36,10 @@ public class Role /*implements GrantedAuthority*/{
             inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
     private List<Permission> permissions;
     
-//    @Override
-//    public String getAuthority() {
-//        return name;
-//    }
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 
 	public Role() {
 		// TODO Auto-generated constructor stub
@@ -58,6 +60,15 @@ public class Role /*implements GrantedAuthority*/{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public List<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<Permission> permissions) {
+		this.permissions = permissions;
+	}
+	
 	
 	
 }
