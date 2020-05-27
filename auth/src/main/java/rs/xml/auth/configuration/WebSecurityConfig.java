@@ -70,13 +70,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// svim korisnicima dopusti da pristupe putanjama
 				.authorizeRequests()
 				.antMatchers("/authentification/login").permitAll()
+				.antMatchers("/authentification/signup").permitAll()
 				.antMatchers("/authentification/h2-console/**").permitAll()
 				.antMatchers("/h2-console/**").permitAll()
 				.antMatchers("/api/foo").permitAll()
 //				.antMatchers("/api/certificates/**").permitAll()
 //				.antMatchers("/favicon.ico").permitAll()
 				.antMatchers("/images/**").permitAll()
-				
+//				.antMatchers("/**").permitAll()
 				// svaki zahtev mora biti autorizovan
 				.anyRequest().authenticated().and()
 				
@@ -86,8 +87,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
 						BasicAuthenticationFilter.class);
 
-		http.csrf().disable(); // da li ovo treba da bude enabled??? // treba zbog /h2-console
+		http.csrf().disable(); // da li ovo treba da bude enabled??? // zbog /h2-console je disabled
 		http.headers().frameOptions().disable(); // da se vidi /h2-console
+		
+		
 	}
 
 	// Generalna bezbednost aplikacije

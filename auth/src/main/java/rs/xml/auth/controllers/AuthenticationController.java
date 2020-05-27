@@ -133,8 +133,12 @@ public class AuthenticationController {
 	// Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
 	@RequestMapping(method = GET, value = "/user/{userId}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public User loadById(@PathVariable Long userId) {
-		return this.userService.findById(userId);
+	public ResponseEntity<User> loadById(@PathVariable Long userId) {
+		User user = this.userService.findById(userId);
+		if(user == null) {
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<User>(user,HttpStatus.OK);
 	}
 
 	@RequestMapping(method = GET, value = "/user/all")
@@ -144,7 +148,7 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping("/whoami")
-	@PreAuthorize("hasAuthority('PERMISSION_TEST')")
+	//@PreAuthorize("hasAuthority('PERMISSION_TEST')")
 	public User user(Principal user) {
 		return this.userService.findByUsername(user.getName());
 	}

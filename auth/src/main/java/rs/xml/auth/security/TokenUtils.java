@@ -24,7 +24,7 @@ public class TokenUtils {
 	@Value("secret") // encodovano base64 "c2VjcmV0"
 	public String SECRET;
 
-	@Value("3600000") // 1000 * 60 * 60 * 10: 10h
+	@Value("36000000") // 1000 * 60 * 60 * 10: 10h
 	private int EXPIRES_IN;
 
 	@Value("Auth")

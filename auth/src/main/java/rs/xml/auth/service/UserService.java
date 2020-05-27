@@ -2,6 +2,7 @@ package rs.xml.auth.service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class UserService {
 	}
 
 	public User findById(Long id) throws AccessDeniedException {
-		User u = userRepository.findById(id).orElseGet(null);
-		return u;
+		Optional<User> u = userRepository.findById(id);
+		return u.orElse(null);
 	}
 
 	public List<User> findAll() throws AccessDeniedException {
@@ -63,7 +64,7 @@ public class UserService {
 		List<Role> roles = roleService.findByname("ROLE_USER");
 		u.setRoles(roles);
 		
-		u.setLastPasswordResetDate(Timestamp.valueOf(new LocalDateTime().toString()));
+		u.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		
 		u = this.userRepository.save(u);
 		return u;
