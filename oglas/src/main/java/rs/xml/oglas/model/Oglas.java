@@ -1,6 +1,9 @@
 package rs.xml.oglas.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Base64.Decoder;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +19,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import rs.xml.oglas.dto.NewOglasDTO;
+import rs.xml.oglas.dto.SlikaDTO;
 
 @Entity
 @Table(name = "OGLAS")
@@ -56,8 +62,8 @@ public class Oglas {
 	@Column(name="sedistaZaDecu")
 	private int sedistaZaDecu;
 	
-	@OneToMany(mappedBy = "oglas")
-    private List<Slika> slike;
+	@OneToMany(mappedBy = "oglas", cascade = CascadeType.ALL)
+    private List<Slika> slike = new ArrayList<Slika>();
 	
 	@Column(name="osiguranje")
 	private boolean osiguranje;
@@ -75,7 +81,7 @@ public class Oglas {
     @JoinTable(name = "OGLAS_ZAHTEV",
             joinColumns = @JoinColumn(name = "oglas_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "zahtev_id", referencedColumnName = "id"))
-	private List<Zahtev> zahtevi;
+	private List<Zahtev> zahtevi = new ArrayList<Zahtev>();
 	
 	public Oglas() {
 		// TODO Auto-generated constructor stub
@@ -98,11 +104,49 @@ public class Oglas {
 		this.slike = slike;
 		this.osiguranje = osiguranje;
 		this.agentID = agentID;
-		Od = od;
-		Do = do1;
+		this.Od = od;
+		this.Do = do1;
 		this.zahtevi = zahtevi;
 	}
-
+	
+	public Oglas(NewOglasDTO oglasDTO) {
+		super();
+		this.marka = oglasDTO.getMarka();
+		this.model = oglasDTO.getModel();
+		this.gorivo = oglasDTO.getGorivo();
+		this.menjac = oglasDTO.getMenjac();
+		this.klasa = oglasDTO.getKlasa();
+		this.cena = oglasDTO.getCena();
+		this.cenovnik = null;//oglasDTO.getCenovnik();
+		this.kilometraza = oglasDTO.getKilometraza();
+		this.planiranaKilometraza = oglasDTO.getPlaniranaKilometraza();
+		this.sedistaZaDecu = oglasDTO.getBrSedistaZaDecu();
+		
+		for(SlikaDTO slikaDTO: oglasDTO.getSlike()) {
+			//KADA UPISUJES U BAZU SKLONI 'data:image/jpeg;base64,' a kad vracas sliku dodaj 'data:image/jpeg;base64,'			
+			//System.out.println("SRC SLIKE :"+slikaDTO.slika()); // data:image/jpeg;base64,/9j/..... split na ,
+			String split[] = slikaDTO.getSlika().split(",");
+			//slikaDTO.setSlika(split[1]);
+			
+			byte[] imageByte;
+			Decoder decoder = Base64.getDecoder();
+	        imageByte = decoder.decode(split[1]);
+			
+			Slika slika = new Slika();
+			slika.setOglas(this);
+			slika.setSlika(imageByte);
+			this.slike.add(slika);
+		}
+		
+		
+		
+		this.osiguranje = oglasDTO.isOsiguranje();
+		this.agentID = null;
+		this.Od = oglasDTO.getOD();
+		this.Do = oglasDTO.getDO();
+		
+	}
+	
 	public Long getId() {
 		return id;
 	}
