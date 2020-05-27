@@ -1,0 +1,48 @@
+spring:
+  application:
+    # sets the name in Eureka
+    name: ${springboot.app.name:eureka-serviceregistry}
+
+server:
+  port: 8761
+  #ssl:
+  #  enabled: true
+   # client-auth: need
+   # key-store: classpath:eureka.jks
+   # key-store-password: password
+   # key-alias: 9
+   # key-password: password
+    #trust-store: classpath:eureka.jks
+    #trust-store-password: password
+eureka:
+  instance:
+    hostname: ${springboot.app.name:eureka-serviceregistry}
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${registry.host:localhost}:${server.port}/eureka/
+  
+  #eureka:
+  #instance:
+   # securePort: ${server.port}
+   # securePortEnabled: true
+  #  prefer-ip-address: true
+  #  nonSecurePortEnabled: false 
+ # client:
+   # registerWithEureka: false
+  #  fetchRegistry: false
+
+#eureka.instance.secure-port-enabled=true
+#eureka.instance.secure-port=${server.port}
+#eureka.instance.status-page-url=https://${eureka.hostname}:${server.port}/actuator/info
+#eureka.instance.health-check-url=https://${eureka.hostname}:${server.port}/actuator/health
+#eureka.instance.home-page-url=https://${eureka.hostname}${server.port}/
+
+logging:
+  level:
+    com:
+      netflix:
+        eureka: OFF
+        discovery: OFF
