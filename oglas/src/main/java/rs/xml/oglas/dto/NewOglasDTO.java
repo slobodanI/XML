@@ -12,6 +12,8 @@ import javax.validation.constraints.NotNull;
 public class NewOglasDTO {
 	
 	@NotNull
+	private String mesto;
+	@NotNull
 	private String marka;
 	@NotNull
 	private String model;
@@ -46,6 +48,15 @@ public class NewOglasDTO {
 	
 	public NewOglasDTO() {
 		// TODO Auto-generated constructor stub
+	}
+	
+		
+	public String getMesto() {
+		return mesto;
+	}
+
+	public void setMesto(String mesto) {
+		this.mesto = mesto;
 	}
 
 	public String getMarka() {

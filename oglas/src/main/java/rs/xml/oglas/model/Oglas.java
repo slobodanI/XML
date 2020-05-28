@@ -22,6 +22,7 @@ import javax.persistence.Table;
 
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.SlikaDTO;
+import rs.xml.oglas.model.Slika;
 
 @Entity
 @Table(name = "OGLAS")
@@ -31,6 +32,9 @@ public class Oglas {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
+	@Column(name="mesto")
+	private String mesto;
 	
 	@Column(name="marka")
 	private String marka;
@@ -87,10 +91,11 @@ public class Oglas {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Oglas(String marka, String model, String gorivo, String menjac, String klasa, int cena, Cenovnik cenovnik,
+	public Oglas(String mesto, String marka, String model, String gorivo, String menjac, String klasa, int cena, Cenovnik cenovnik,
 			int kilometraza, int planiranaKilometraza, int sedistaZaDecu, List<Slika> slike, boolean osiguranje,
 			Long agentID, Date od, Date do1, List<Zahtev> zahtevi) {
 		super();
+		this.mesto = mesto; 
 		this.marka = marka;
 		this.model = model;
 		this.gorivo = gorivo;
@@ -111,6 +116,7 @@ public class Oglas {
 	
 	public Oglas(NewOglasDTO oglasDTO) {
 		super();
+		this.mesto = oglasDTO.getMesto();
 		this.marka = oglasDTO.getMarka();
 		this.model = oglasDTO.getModel();
 		this.gorivo = oglasDTO.getGorivo();
@@ -149,6 +155,14 @@ public class Oglas {
 	
 	public Long getId() {
 		return id;
+	}
+
+	public String getMesto() {
+		return mesto;
+	}
+
+	public void setMesto(String mesto) {
+		this.mesto = mesto;
 	}
 
 	public void setId(Long id) {
