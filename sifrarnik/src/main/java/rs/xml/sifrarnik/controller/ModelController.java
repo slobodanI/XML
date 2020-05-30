@@ -18,7 +18,7 @@ import rs.xml.sifrarnik.model.Model;
 import rs.xml.sifrarnik.services.ModelService;
 
 @RestController
-@RequestMapping(value = "api/model")
+@RequestMapping(value = "")
 public class ModelController 
 {
 
@@ -30,21 +30,21 @@ public class ModelController
 //MODEL
 //------------------------------------------------------------------------------------------------------------------------	
 	
-	@GetMapping(value = "/returnAllModel")
+	@GetMapping(value = "/model")
 	public ResponseEntity<List<Model>> getAllModel() 
 	{	
 		List<Model> m = modelService.getAllModel();
 		return new ResponseEntity<>(m, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/returnModelById/{Id}")
+	@GetMapping(value = "/model/{Id}")
 	public ResponseEntity<Model> getModelById(@PathVariable Long Id) 
 	{	
 		Model m = modelService.getModelById(Id);
 		return new ResponseEntity<>(m, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/updateModel/{Id}")
+	@PutMapping(value = "/model/{Id}")
 	public ResponseEntity<Model> updateModel(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Model m = modelService.updateModel(Id, info);
@@ -59,15 +59,22 @@ public class ModelController
 		}
 	}
 	
-	@PostMapping(value = "/newModel", produces = "application/json")
-	public ResponseEntity<Void> newModel(@RequestBody String info) 
+	@PostMapping(value = "/model", produces = "application/json")
+	public ResponseEntity<Model> newModel(@RequestBody String info) 
 	{	
-		modelService.createModel(info);
+		Model mod = modelService.createModel(info);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(mod==null)
+		{
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		else
+		{
+			return new ResponseEntity<>(mod, HttpStatus.OK);
+		}
 	}
 	
-	@DeleteMapping(value = "/deleteModel/{Id}")
+	@DeleteMapping(value = "/model/{Id}")
 	public ResponseEntity<List<Void>>deleteModel(@PathVariable Long Id) 
 	{	
 		modelService.deleteModel(Id);

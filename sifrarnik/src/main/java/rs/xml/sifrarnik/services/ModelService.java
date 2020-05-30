@@ -17,7 +17,7 @@ public class ModelService
 	modelRepository modelRepo;
 		
 	
-//MENJAC	
+//MODEL	
 //----------------------------------------------------------------------------------------------------------
 		
 	
@@ -53,17 +53,38 @@ public class ModelService
 
 	public Model updateModel(Long id, String info) 
 	{
+		List<Model> lista = findAll();
+		
+		for (Model model : lista) 
+		{
+			if(model.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Model m = findOne(id);
 		m.setName(info); 
 		save(m);
 		return m;
 	}
 
-	public void createModel(String info) 
+	public Model createModel(String info) 
 	{
+		List<Model> lista = findAll();
+		
+		for (Model model : lista) 
+		{
+			if(model.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Model m = new Model();
 		m.setName(info);
 		save(m);
+		return m;
 	}
 
 	public void deleteModel(Long id) 

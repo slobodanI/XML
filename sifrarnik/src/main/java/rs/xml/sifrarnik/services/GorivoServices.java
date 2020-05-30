@@ -52,17 +52,38 @@ public class GorivoServices
 
 	public Gorivo updateGorivo(Long id, String info) 
 	{
+		List<Gorivo> lista = findAll();
+		
+		for (Gorivo gorivo : lista) 
+		{
+			if(gorivo.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Gorivo gor = findOne(id);
 		gor.setName(info); 
 		save(gor);
 		return gor;
 	}
 
-	public void createGorivo(String info) 
+	public Gorivo createGorivo(String info) 
 	{
+		List<Gorivo> lista = findAll();
+		
+		for (Gorivo gorivo : lista) 
+		{
+			if(gorivo.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Gorivo g = new Gorivo();
 		g.setName(info);
 		save(g);
+		return g;
 	}
 
 	public void deleteGorivo(Long id) 

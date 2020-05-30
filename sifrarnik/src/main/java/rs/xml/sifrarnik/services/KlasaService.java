@@ -16,7 +16,7 @@ public class KlasaService
 	klasaRepository klasaRepo;
 		
 	
-//GORIVO	
+//KLASA	
 //----------------------------------------------------------------------------------------------------------
 		
 	
@@ -52,17 +52,38 @@ public class KlasaService
 
 	public Klasa updateKlasa(Long id, String info) 
 	{
+		List<Klasa> lista = findAll();
+		
+		for (Klasa klasa : lista) 
+		{
+			if(klasa.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Klasa k = findOne(id);
 		k.setName(info); 
 		save(k);
 		return k;
 	}
 
-	public void createKlasa(String info) 
+	public Klasa createKlasa(String info) 
 	{
+		List<Klasa> lista = findAll();
+		
+		for (Klasa klasa : lista) 
+		{
+			if(klasa.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Klasa k = new Klasa();
 		k.setName(info);
 		save(k);
+		return k;
 	}
 
 	public void deleteKlasa(Long id) 

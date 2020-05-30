@@ -14,39 +14,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.xml.sifrarnik.model.Menjac;
-import rs.xml.sifrarnik.services.MenjacService;
+import rs.xml.sifrarnik.model.Mesto;
+import rs.xml.sifrarnik.services.MestoService;
 
 @RestController
 @RequestMapping(value = "")
-public class MenjacController 
+public class MestoController 
 {
 
 	
+	
 	@Autowired
-	MenjacService menjacService;
+	MestoService mestoService;
 
-//MENJAC
+//MESTO
 //------------------------------------------------------------------------------------------------------------------------	
 	
-	@GetMapping(value = "/menjac")
-	public ResponseEntity<List<Menjac>> getAllMenjac() 
+	@GetMapping(value = "/mesto")
+	public ResponseEntity<List<Mesto>> getAllMesto() 
 	{	
-		List<Menjac> m = menjacService.getAllMenjac();
+		List<Mesto> m = mestoService.getAllMesto();
 		return new ResponseEntity<>(m, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/menjac/{Id}")
-	public ResponseEntity<Menjac> getMenjacById(@PathVariable Long Id) 
+	@GetMapping(value = "/mesto/{Id}")
+	public ResponseEntity<Mesto> getMestoById(@PathVariable Long Id) 
 	{	
-		Menjac m = menjacService.getMenjacById(Id);
+		Mesto m = mestoService.getMestoById(Id);
 		return new ResponseEntity<>(m, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/menjac/{Id}")
-	public ResponseEntity<Menjac> updateMenjac(@PathVariable Long Id , @RequestBody String info) 
+	@PutMapping(value = "/mesto/{Id}")
+	public ResponseEntity<Mesto> updateMesto(@PathVariable Long Id , @RequestBody String info) 
 	{	
-		Menjac m = menjacService.updateMenjac(Id, info);
+		Mesto m = mestoService.updateMesto(Id, info);
 		
 		if(m==null)
 		{
@@ -58,25 +59,25 @@ public class MenjacController
 		}
 	}
 	
-	@PostMapping(value = "/menjac", produces = "application/json")
-	public ResponseEntity<Menjac> newMenjac(@RequestBody String info) 
+	@PostMapping(value = "/mesto", produces = "application/json")
+	public ResponseEntity<Mesto> newMesto(@RequestBody String info) 
 	{	
-		Menjac menj = menjacService.createMenjac(info);
+		Mesto m = mestoService.createMesto(info);
 		
-		if(menj==null)
+		if(m==null)
 		{
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
-			return new ResponseEntity<>(menj, HttpStatus.OK);
+			return new ResponseEntity<>(m, HttpStatus.OK);
 		}
 	}
 	
-	@DeleteMapping(value = "/menjac/{Id}")
-	public ResponseEntity<List<Void>>deleteMenjac(@PathVariable Long Id) 
+	@DeleteMapping(value = "/mesto/{Id}")
+	public ResponseEntity<List<Void>>deleteMesto(@PathVariable Long Id) 
 	{	
-		menjacService.deleteMenjac(Id);
+		mestoService.deleteMesto(Id);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
