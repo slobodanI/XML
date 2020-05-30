@@ -35,12 +35,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @JsonIgnore
     @Column(name = "password")
     private String password;
+    
+    @JsonIgnore
+    @Column(name = "salt")
+    private String salt;
     
     @Column(name = "first_name")
     private String firstName;
@@ -60,8 +64,8 @@ public class User implements UserDetails {
     @Column(name = "canceled")
     private int canceled; // koliko puta je otkazao zahtev
     
-    @Column(name = "ads")
-    private int ads; // broj postavljenih oglasa
+//    @Column(name = "ads")
+//    private int ads; // broj postavljenih oglasa
     
     @Column(name = "owes")
     private int owes; // treba da plati dodatne kilometre
@@ -101,6 +105,14 @@ public class User implements UserDetails {
         this.password = password;
 	}
 	
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -149,13 +161,13 @@ public class User implements UserDetails {
 		this.canceled = canceled;
 	}
 
-	public int getAds() {
-		return ads;
-	}
-
-	public void setAds(int ads) {
-		this.ads = ads;
-	}
+//	public int getAds() {
+//		return ads;
+//	}
+//
+//	public void setAds(int ads) {
+//		this.ads = ads;
+//	}
 
 	public int getOwes() {
 		return owes;

@@ -9,12 +9,14 @@ import java.util.Base64.Encoder;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,9 +38,9 @@ import rs.xml.oglas.service.SlikaService;
 public class OglasController {
 
 	/*
-	 * TODO: -dodaj id korisnika u oglas -proveri da li obican korisnik ima 3
-	 * -aktivna oglasa, ako ima ne moze jos oglasa dodavati -dodaj cenovnik -dodaj
-	 * -feign client za sifrarnik
+	 * TODO: 
+	 * -dodaj cenovnik 
+	 * -dodajfeign client za sifrarnik
 	 * -dodaj mesto u sifrarnik
 	 */
 
@@ -84,12 +86,30 @@ public class OglasController {
 	}
 
 	@PostMapping("/oglas")
-    public ResponseEntity<?> postOglas(@RequestBody @Valid NewOglasDTO oglasDTO) {
+	@PreAuthorize("hasAuthority('CREATE_OGLAS')")
+    public ResponseEntity<?> postOglas(@RequestBody @Valid NewOglasDTO oglasDTO, HttpServletRequest request) {
         
+		String username = request.getHeader("username");
+		String permisije = request.getHeader("permissions");
+		
 		Oglas oglas = new Oglas(oglasDTO);
-		oglas = oglasService.save(oglas);
+		oglas.setUsername(username);
+		//ako je obican user poslao zahtev
+		if(permisije.contains("ROLE_USER") && !permisije.contains("ROLE_AGENT") && !permisije.contains("ROLE_ADMIN")) {			
+			// da li ima 3 aktivna oglasa?
+			oglas = oglasService.saveAsBasicUser(oglas, username);
+			if(oglas == null) {
+				return new ResponseEntity<String>("Korisnik_ima_3_aktivna_oglasa", HttpStatus.FORBIDDEN);
+			}
+		} 
+		//ako je agent ili admin
+		else {
+			oglas = oglasService.save(oglas);	        
+		}
+		
+		oglas.setUsername(username);
 		oglas.setSlike(null);
-        return new ResponseEntity<>(oglas, HttpStatus.OK);
+		return new ResponseEntity<>(oglas, HttpStatus.OK);
     }
 
 	@GetMapping("/search")

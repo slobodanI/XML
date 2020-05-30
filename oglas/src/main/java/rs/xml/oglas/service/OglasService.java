@@ -171,4 +171,16 @@ public class OglasService {
 		
 		return ret;
 	}
+	
+	public Oglas saveAsBasicUser(Oglas oglas, String username) {
+		
+		Collection<Oglas> oglasi = oglasRepository.findActiveOglaseFromUser(username);
+		
+		if(oglasi.size() < 3) {
+			return oglasRepository.save(oglas);
+		}
+		else {
+			return null;
+		}
+	}
 }

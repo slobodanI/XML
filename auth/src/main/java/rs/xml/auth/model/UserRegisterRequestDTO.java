@@ -1,17 +1,26 @@
 package rs.xml.auth.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserRegisterRequestDTO {
-
+		
 	private Long id;
-
+	
+	@NotNull
 	private String username;
 
+	@NotNull
+	@Size(min = 10, message = "Password must contain atleast 10 characters")
 	private String password;
 
+	@NotNull
 	private String firstname;
 
+	@NotNull
 	private String lastname;
 	
+	@NotNull
 	private String email;
 	
 	public String getUsername() {

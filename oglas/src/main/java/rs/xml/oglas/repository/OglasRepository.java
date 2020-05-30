@@ -24,4 +24,6 @@ public interface OglasRepository extends JpaRepository<Oglas, Long> {
 	@Query("SELECT o FROM Oglas o WHERE (o.Od BETWEEN :od AND :do) AND (o.Do BETWEEN :od AND :do)") // dodaj mesto preuzimanja
 	Collection<Oglas> searchOdDo(@Param("od") Date od, @Param("do") Date dod);
 	
+	@Query("SELECT o FROM Oglas o WHERE o.username = :username and o.deleted = false") // COUNT(o)
+	Collection<Oglas> findActiveOglaseFromUser(@Param("username") String username);
 }

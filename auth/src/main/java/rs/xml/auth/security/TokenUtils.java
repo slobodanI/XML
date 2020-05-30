@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,13 +13,19 @@ import org.springframework.stereotype.Component;
 
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import rs.xml.auth.model.User;
 
 @Component
 public class TokenUtils {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(TokenUtils.class.getName());
+	
 	@Value("auth")
 	private String APP_NAME;
 
@@ -41,14 +49,14 @@ public class TokenUtils {
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
 	// Funkcija za generisanje JWT token
-	public String generateToken(String username) {
+	public String generateToken(String username, String perimisije) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
 				.setSubject(username)
 				.setAudience(generateAudience())
 				.setIssuedAt(timeProvider.now())
 				.setExpiration(generateExpirationDate())
-				.claim("role", "ovo je rola") //postavljanje proizvoljnih podataka u telo JWT tokena
+				.claim("permisije", perimisije) //postavljanje proizvoljnih podataka u telo JWT tokena
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 	}
 
@@ -97,7 +105,6 @@ public class TokenUtils {
 		User user = (User) userDetails;
 		final String username = getUsernameFromToken(token);
 		final Date created = getIssuedAtDateFromToken(token);
-		
 //		if(username != null && username.equals(userDetails.getUsername())
 //				&& !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())) {
 //			System.out.println("***TOKEN JE VALIDAN");
@@ -114,10 +121,22 @@ public class TokenUtils {
 		try {
 			final Claims claims = this.getAllClaimsFromToken(token);
 			username = claims.getSubject();
+			
 		} catch (Exception e) {
 			username = null;
 		}
 		return username;
+	}
+	
+	public String getPermissionFromToken(String token) {
+		String per;
+		try {
+			final Claims claims = this.getAllClaimsFromToken(token);
+			per = claims.get("permisije", String.class);			
+		} catch (Exception e) {
+			per = null;
+		}
+		return per;
 	}
 
 	public Date getIssuedAtDateFromToken(String token) {
@@ -201,5 +220,23 @@ public class TokenUtils {
 		}
 		return claims;
 	}
-
+	
+	public boolean validateTokenForGateway(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException e) {
+            logger.error("Invalid JWT signature -> Message: {} ", e);
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token -> Message: {}", e);
+        } catch (ExpiredJwtException e) {
+            logger.error("Expired JWT token -> Message: {}", e);
+        } catch (UnsupportedJwtException e) {
+            logger.error("Unsupported JWT token -> Message: {}", e);
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT claims string is empty -> Message: {}", e);
+        }
+        
+        return false;
+    }
 }

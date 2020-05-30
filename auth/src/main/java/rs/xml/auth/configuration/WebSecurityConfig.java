@@ -69,11 +69,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// svim korisnicima dopusti da pristupe putanjama
 				.authorizeRequests()
-				.antMatchers("/authentification/login").permitAll()
-				.antMatchers("/authentification/signup").permitAll()
-				.antMatchers("/authentification/h2-console/**").permitAll()
+				.antMatchers("/login").permitAll()
+				.antMatchers("/signup").permitAll()
 				.antMatchers("/h2-console/**").permitAll()
 				.antMatchers("/api/foo").permitAll()
+				.antMatchers("/check/**").permitAll()
 //				.antMatchers("/api/certificates/**").permitAll()
 //				.antMatchers("/favicon.ico").permitAll()
 				.antMatchers("/images/**").permitAll()
