@@ -1,8 +1,10 @@
 package rs.xml.auth.service;
 
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,6 @@ public class UserService {
 
 	@Autowired
 	private RoleService roleService;
-
-	private String salt = "salt";
 	
 	public User findByUsername(String username) throws UsernameNotFoundException {
 		User u = userRepository.findByUsername(username);
@@ -51,14 +51,15 @@ public class UserService {
 	public User save(UserRegisterRequestDTO userRequest) {
 		User u = new User();
 		u.setUsername(userRequest.getUsername());
-		u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+		u.setSalt(getNextSalt());
+		u.setPassword(passwordEncoder.encode(userRequest.getPassword() + u.getSalt()));
 		u.setFirstName(userRequest.getFirstname());
 		u.setLastName(userRequest.getLastname());
 		u.setEmail(userRequest.getEmail());
 		u.setAccepted(false);
 		u.setBlocked(false);
 		u.setCanceled(0);
-		u.setAds(0);
+//		u.setAds(0);
 		u.setOwes(0);
 		
 		List<Role> roles = roleService.findByname("ROLE_USER");
@@ -69,5 +70,12 @@ public class UserService {
 		u = this.userRepository.save(u);
 		return u;
 	}
-
+	
+	public String getNextSalt() {
+		Random RANDOM = new SecureRandom();
+	    byte[] salt = new byte[16];
+	    RANDOM.nextBytes(salt);
+	    return salt.toString();
+	  }
+	
 }

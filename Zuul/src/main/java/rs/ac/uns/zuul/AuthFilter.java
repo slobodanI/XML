@@ -3,6 +3,8 @@ package rs.ac.uns.zuul;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import feign.FeignException;
+import rs.ac.uns.zuul.client.AuthClient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class AuthFilter extends ZuulFilter {
 
+	@Autowired
+	AuthClient authClient;
+	
     @Override
     public String filterType() {
         return "pre";
@@ -23,7 +28,7 @@ public class AuthFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        return false; // stavi na true kad budes radio kasnije
+        return true; // stavi na true kad budes radio kasnije
     }
 
     private void setFailedRequest(String body, int code) {
@@ -41,15 +46,21 @@ public class AuthFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
 
-        if (request.getHeader("email") == null) {
+        if (request.getHeader("Auth") == null) {
             return null;
         };
 
-        String email = request.getHeader("email");
+        String token = request.getHeader("Auth").substring(7);
         try {
-            ctx.addZuulRequestHeader("username", email);
-            ctx.addZuulRequestHeader("role", "SIMPLE_USER");
-
+        	
+        	String username = authClient.getUsername(token);
+        	String permissions = authClient.getPermissions(token);
+        	
+            ctx.addZuulRequestHeader("username", username);
+            ctx.addZuulRequestHeader("permissions", permissions);
+            
+            System.out.println("GATEWAY->PERMISIJE: " + permissions);
+            System.out.println("GATEWAY->USERNAME: " + username);
         } catch (FeignException.NotFound e) {
             setFailedRequest("Consumer does not exist!", 403);
         }

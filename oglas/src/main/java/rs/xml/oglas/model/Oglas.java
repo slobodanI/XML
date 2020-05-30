@@ -72,14 +72,17 @@ public class Oglas {
 	@Column(name="osiguranje")
 	private boolean osiguranje;
 	
-	@Column(name="agentID")
-	private Long agentID;
+	@Column(name="username")
+	private String username;
 	
 	@Column(name="Od")
 	private Date Od;
 	
 	@Column(name="Do")
 	private Date Do;
+	
+	@Column(name="deleted")
+	private boolean deleted;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "OGLAS_ZAHTEV",
@@ -93,7 +96,7 @@ public class Oglas {
 
 	public Oglas(String mesto, String marka, String model, String gorivo, String menjac, String klasa, int cena, Cenovnik cenovnik,
 			int kilometraza, int planiranaKilometraza, int sedistaZaDecu, List<Slika> slike, boolean osiguranje,
-			Long agentID, Date od, Date do1, List<Zahtev> zahtevi) {
+			String username, Date od, Date do1, List<Zahtev> zahtevi) {
 		super();
 		this.mesto = mesto; 
 		this.marka = marka;
@@ -108,9 +111,10 @@ public class Oglas {
 		this.sedistaZaDecu = sedistaZaDecu;
 		this.slike = slike;
 		this.osiguranje = osiguranje;
-		this.agentID = agentID;
+		this.username = username;
 		this.Od = od;
 		this.Do = do1;
+		this.deleted = false; // novi oglas nije obrisan
 		this.zahtevi = zahtevi;
 	}
 	
@@ -147,9 +151,10 @@ public class Oglas {
 		
 		
 		this.osiguranje = oglasDTO.isOsiguranje();
-		this.agentID = null;
+		this.username = null;
 		this.Od = oglasDTO.getOD();
 		this.Do = oglasDTO.getDO();
+		this.deleted = false; // novi oglas nije obrisan
 		
 	}
 	
@@ -265,12 +270,12 @@ public class Oglas {
 		this.osiguranje = osiguranje;
 	}
 
-	public Long getAgentID() {
-		return agentID;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setAgentID(Long agentID) {
-		this.agentID = agentID;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public Date getOd() {
@@ -287,6 +292,14 @@ public class Oglas {
 
 	public void setDo(Date do1) {
 		Do = do1;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public List<Zahtev> getZahtevi() {

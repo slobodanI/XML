@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +45,7 @@ import rs.xml.auth.service.UserService;
 
 //Kontroler zaduzen za autentifikaciju korisnika
 @RestController
-@RequestMapping(value = "/authentification", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
 
 	@Autowired
@@ -58,12 +61,14 @@ public class AuthenticationController {
 	private UserService userService;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtAuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws AuthenticationException, IOException {
-
+		
+		User u = (User) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		
 		final Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-						authenticationRequest.getPassword()));
+						authenticationRequest.getPassword() + u.getSalt()));
 
 		// Ubaci username + password u kontext
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -71,10 +76,21 @@ public class AuthenticationController {
 		// Kreiraj token
 		User user = (User) authentication.getPrincipal();
 //		System.out.println("*********USER: ");
-//		for(GrantedAuthority grantAuth:  user.getAuthorities()) {
+		String permisije = "";
+		int duzina = user.getAuthorities().size();
+		int counter = 0;
+		for(GrantedAuthority grantAuth:  user.getAuthorities()) {
 //			System.out.println("AUTH: " + grantAuth.getAuthority() );
-//		}
-		String jwt = tokenUtils.generateToken(user.getUsername());
+			counter++;
+			if(duzina == counter) {
+				permisije += grantAuth.getAuthority();
+			} else {
+				permisije += grantAuth.getAuthority() + "|";
+			}
+			
+		}
+//		System.out.println(">>>Permisije:" + permisije);
+		String jwt = tokenUtils.generateToken(user.getUsername(), permisije);
 		int expiresIn = tokenUtils.getExpiredIn();
 
 		// Vrati token kao odgovor na uspesno autentifikaciju
@@ -83,7 +99,7 @@ public class AuthenticationController {
 
 	//obo treba jos doraditi
 	@RequestMapping(method = POST, value = "/signup")
-	public ResponseEntity<?> addUser(@RequestBody UserRegisterRequestDTO userRequest, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<?> addUser(@RequestBody @Valid UserRegisterRequestDTO userRequest, UriComponentsBuilder ucBuilder) {
 
 		User existUser = this.userService.findByUsername(userRequest.getUsername());
 		if (existUser != null) {
@@ -158,6 +174,40 @@ public class AuthenticationController {
         Map<String, String> fooObj = new HashMap<>();
         fooObj.put("foo", "bar");
         return fooObj;
+    }
+	/**
+	 * Pozvano iz gateway-a
+	 * @param token
+	 * @return permisije
+	 */
+	@GetMapping("/check/{token}") 
+    public ResponseEntity<?> getPermissions(@PathVariable String token){ 	/*dodaj exception*/
+		String permissije = "";
+		if(tokenUtils.validateTokenForGateway(token)) {			
+			permissije = this.tokenUtils.getPermissionFromToken(token);
+			if(permissije == null) {
+				return new ResponseEntity<String>("NE POSTOJE PERMISIJE U TOKENU", HttpStatus.NOT_FOUND);
+			}
+    	}
+		else {
+			return new ResponseEntity<String>("TOKEN NIJE VALIDAN", HttpStatus.BAD_REQUEST);
+		}
+		
+    	return new ResponseEntity<String>(permissije, HttpStatus.OK);
+    }
+    
+    @GetMapping("/check/{token}/username")
+    public ResponseEntity<?> getUsername(@PathVariable String token) {   	/*dodaj exception*/
+    	if(tokenUtils.validateTokenForGateway(token)) {
+    		String username = this.tokenUtils.getUsernameFromToken(token);
+    		if(username == null) {
+    			return new ResponseEntity<String>("NE POSTOJI USERNAME U TOKENU", HttpStatus.NOT_FOUND);
+    		} else {
+    			return new ResponseEntity<String>(username, HttpStatus.OK);
+    		}    		
+    	} else {
+    		return new ResponseEntity<String>("TOKEN NIJE VALIDAN", HttpStatus.BAD_REQUEST);
+    	}
     }
 	
 	static class PasswordChanger {

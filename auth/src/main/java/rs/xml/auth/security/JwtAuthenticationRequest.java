@@ -1,8 +1,12 @@
 package rs.xml.auth.security;
 
+import javax.validation.constraints.NotNull;
+
 public class JwtAuthenticationRequest {
 	
+	@NotNull
     private String username;
+	@NotNull
     private String password;
 
     public JwtAuthenticationRequest() {
