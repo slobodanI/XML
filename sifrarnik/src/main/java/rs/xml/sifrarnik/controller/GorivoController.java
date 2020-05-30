@@ -18,7 +18,7 @@ import rs.xml.sifrarnik.model.Gorivo;
 import rs.xml.sifrarnik.services.GorivoServices;
 
 @RestController
-@RequestMapping(value = "api/gorivo")
+@RequestMapping(value = "")
 public class GorivoController 
 {
 
@@ -28,21 +28,21 @@ public class GorivoController
 //GORIVO
 //------------------------------------------------------------------------------------------------------------------------	
 	
-	@GetMapping(value = "/returnAllGorivo")
+	@GetMapping(value = "/gorivo")
 	public ResponseEntity<List<Gorivo>> getAllGorivo() 
 	{	
 		List<Gorivo> gor = sifrarnikService.getAllGorivo();
 		return new ResponseEntity<>(gor, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/returnGorivoById/{Id}")
+	@GetMapping(value = "/gorivo/{Id}")
 	public ResponseEntity<Gorivo> getGorivoById(@PathVariable Long Id) 
 	{	
 		Gorivo gor = sifrarnikService.getGorivoById(Id);
 		return new ResponseEntity<>(gor, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/updateGorivo/{Id}")
+	@PutMapping(value = "/gorivo/{Id}")
 	public ResponseEntity<Gorivo> updateGorivo(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Gorivo gor = sifrarnikService.updateGorivo(Id, info);
@@ -57,15 +57,23 @@ public class GorivoController
 		}
 	}
 	
-	@PostMapping(value = "/newGorivo", produces = "application/json")
-	public ResponseEntity<Void> newGorivo(@RequestBody String info) 
+	@PostMapping(value = "/gorivo", produces = "application/json")
+	public ResponseEntity<Gorivo> newGorivo(@RequestBody String info) 
 	{	
-		sifrarnikService.createGorivo(info);
+		Gorivo gor = sifrarnikService.createGorivo(info);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(gor==null)
+		{
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		else
+		{
+			return new ResponseEntity<>(gor, HttpStatus.OK);
+		}
+		
 	}
 	
-	@DeleteMapping(value = "/deleteGorivo/{Id}")
+	@DeleteMapping(value = "/gorivo/{Id}")
 	public ResponseEntity<List<Void>>deleteGorivo(@PathVariable Long Id) 
 	{	
 		sifrarnikService.deleteGorivo(Id);

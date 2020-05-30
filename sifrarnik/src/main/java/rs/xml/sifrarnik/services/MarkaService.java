@@ -53,17 +53,38 @@ public class MarkaService
 
 	public Marka updateMarka(Long id, String info) 
 	{
+		List<Marka> lista = findAll();
+		
+		for (Marka marka : lista) 
+		{
+			if(marka.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Marka m = findOne(id);
 		m.setName(info); 
 		save(m);
 		return m;
 	}
 
-	public void createMarka(String info) 
+	public Marka createMarka(String info) 
 	{
+		List<Marka> lista = findAll();
+		
+		for (Marka marka : lista) 
+		{
+			if(marka.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Marka m = new Marka();
 		m.setName(info);
 		save(m);
+		return m;
 	}
 
 	public void deleteMarka(Long id) 

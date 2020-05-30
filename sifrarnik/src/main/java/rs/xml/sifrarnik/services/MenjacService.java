@@ -53,17 +53,38 @@ public class MenjacService
 
 	public Menjac updateMenjac(Long id, String info) 
 	{
+		List<Menjac> lista = findAll();
+		
+		for (Menjac menjac : lista) 
+		{
+			if(menjac.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Menjac m = findOne(id);
 		m.setName(info); 
 		save(m);
 		return m;
 	}
 
-	public void createMenjac(String info) 
+	public Menjac createMenjac(String info) 
 	{
+		List<Menjac> lista = findAll();
+		
+		for (Menjac menjac : lista) 
+		{
+			if(menjac.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			{
+				return null;
+			}
+		}
+		
 		Menjac m = new Menjac();
 		m.setName(info);
 		save(m);
+		return m;
 	}
 
 	public void deleteMenjac(Long id) 

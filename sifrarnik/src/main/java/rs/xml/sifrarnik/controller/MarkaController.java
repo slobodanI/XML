@@ -18,7 +18,7 @@ import rs.xml.sifrarnik.model.Marka;
 import rs.xml.sifrarnik.services.MarkaService;
 
 @RestController
-@RequestMapping(value = "api/marka")
+@RequestMapping(value = "")
 public class MarkaController 
 {
 
@@ -26,24 +26,24 @@ public class MarkaController
 	@Autowired
 	MarkaService markaService;
 
-//KLASA
+//MARKA
 //------------------------------------------------------------------------------------------------------------------------	
 	
-	@GetMapping(value = "/returnAllMarke")
+	@GetMapping(value = "/marka")
 	public ResponseEntity<List<Marka>> getAllMarke() 
 	{	
 		List<Marka> m = markaService.getAllMarke();
 		return new ResponseEntity<>(m, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/returnMarkaById/{Id}")
+	@GetMapping(value = "/marka/{Id}")
 	public ResponseEntity<Marka> getMarkaById(@PathVariable Long Id) 
 	{	
 		Marka m = markaService.getMarkaById(Id);
 		return new ResponseEntity<>(m, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/updateMarka/{Id}")
+	@PutMapping(value = "/marka/{Id}")
 	public ResponseEntity<Marka> updateMarka(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Marka m = markaService.updateMarka(Id, info);
@@ -58,15 +58,22 @@ public class MarkaController
 		}
 	}
 	
-	@PostMapping(value = "/newMarka", produces = "application/json")
-	public ResponseEntity<Void> newMarka(@RequestBody String info) 
+	@PostMapping(value = "/marka", produces = "application/json")
+	public ResponseEntity<Marka> newMarka(@RequestBody String info) 
 	{	
-		markaService.createMarka(info);
+		Marka mar = markaService.createMarka(info);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(mar==null)
+		{
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		else
+		{
+			return new ResponseEntity<>(mar, HttpStatus.OK);
+		}
 	}
 	
-	@DeleteMapping(value = "/deleteMarka/{Id}")
+	@DeleteMapping(value = "/marka/{Id}")
 	public ResponseEntity<List<Void>>deleteMarka(@PathVariable Long Id) 
 	{	
 		markaService.deleteMarka(Id);
