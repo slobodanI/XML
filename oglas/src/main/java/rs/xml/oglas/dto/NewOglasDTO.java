@@ -12,17 +12,17 @@ import javax.validation.constraints.NotNull;
 public class NewOglasDTO {
 	
 	@NotNull
-	private String mesto;
+	private Long mesto;
 	@NotNull
-	private String marka;
+	private Long marka;
 	@NotNull
-	private String model;
+	private Long model;
 	@NotNull
-	private String gorivo;
+	private Long gorivo;
 	@NotNull
-	private String menjac;
+	private Long menjac;
 	@NotNull
-	private String klasa;
+	private Long klasa;
 	//@NotNull // cena ce se kasnije izracunavati
 	private int cena; // cena za dan + cena za osiguranje ako postoji
 	@NotNull
@@ -51,51 +51,51 @@ public class NewOglasDTO {
 	}
 	
 		
-	public String getMesto() {
+	public Long getMesto() {
 		return mesto;
 	}
 
-	public void setMesto(String mesto) {
+	public void setMesto(Long mesto) {
 		this.mesto = mesto;
 	}
 
-	public String getMarka() {
+	public Long getMarka() {
 		return marka;
 	}
 
-	public void setMarka(String marka) {
+	public void setMarka(Long marka) {
 		this.marka = marka;
 	}
 
-	public String getModel() {
+	public Long getModel() {
 		return model;
 	}
 
-	public void setModel(String model) {
+	public void setModel(Long model) {
 		this.model = model;
 	}
 
-	public String getGorivo() {
+	public Long getGorivo() {
 		return gorivo;
 	}
 
-	public void setGorivo(String gorivo) {
+	public void setGorivo(Long gorivo) {
 		this.gorivo = gorivo;
 	}
 
-	public String getMenjac() {
+	public Long getMenjac() {
 		return menjac;
 	}
 
-	public void setMenjac(String menjac) {
+	public void setMenjac(Long menjac) {
 		this.menjac = menjac;
 	}
 
-	public String getKlasa() {
+	public Long getKlasa() {
 		return klasa;
 	}
 
-	public void setKlasa(String klasa) {
+	public void setKlasa(Long klasa) {
 		this.klasa = klasa;
 	}
 

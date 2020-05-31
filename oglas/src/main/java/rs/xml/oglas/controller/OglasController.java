@@ -40,8 +40,6 @@ public class OglasController {
 	/*
 	 * TODO: 
 	 * -dodaj cenovnik 
-	 * -dodajfeign client za sifrarnik
-	 * -dodaj mesto u sifrarnik
 	 */
 
 	@Autowired
@@ -93,6 +91,9 @@ public class OglasController {
 		String permisije = request.getHeader("permissions");
 		
 		Oglas oglas = new Oglas(oglasDTO);
+		if(!oglasService.createOglasWithFeignClient(oglas, oglasDTO)) {
+			return new ResponseEntity<String>("Ne_postoje_proslenjeni_model/marka/klasa/mesto/gorivo/menjac", HttpStatus.BAD_REQUEST);
+		}
 		oglas.setUsername(username);
 		//ako je obican user poslao zahtev
 		if(permisije.contains("ROLE_USER") && !permisije.contains("ROLE_AGENT") && !permisije.contains("ROLE_ADMIN")) {			

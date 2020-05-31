@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.xml.sifrarnik.dto.MenjacNewDTO;
 import rs.xml.sifrarnik.model.Menjac;
 import rs.xml.sifrarnik.repository.menjacRepository;
 
@@ -51,38 +52,38 @@ public class MenjacService
 		return findOne(Id);
 	}
 
-	public Menjac updateMenjac(Long id, String info) 
+	public Menjac updateMenjac(Long id, MenjacNewDTO info) 
 	{
 		List<Menjac> lista = findAll();
 		
 		for (Menjac menjac : lista) 
 		{
-			if(menjac.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(menjac.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Menjac m = findOne(id);
-		m.setName(info); 
+		m.setName(info.getName()); 
 		save(m);
 		return m;
 	}
 
-	public Menjac createMenjac(String info) 
+	public Menjac createMenjac(MenjacNewDTO info) 
 	{
 		List<Menjac> lista = findAll();
 		
 		for (Menjac menjac : lista) 
 		{
-			if(menjac.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(menjac.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Menjac m = new Menjac();
-		m.setName(info);
+		m.setName(info.getName());
 		save(m);
 		return m;
 	}

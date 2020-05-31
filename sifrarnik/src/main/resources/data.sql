@@ -1,0 +1,37 @@
+INSERT INTO GORIVO (name) VALUES ('other');
+INSERT INTO GORIVO (name) VALUES ('benzin');
+INSERT INTO GORIVO (name) VALUES ('dizel');
+INSERT INTO GORIVO (name) VALUES ('hibrid');
+
+INSERT INTO MARKA (name) VALUES ('other');
+INSERT INTO MARKA (name) VALUES ('audi');
+INSERT INTO MARKA (name) VALUES ('bmw');
+INSERT INTO MARKA (name) VALUES ('renault');
+
+INSERT INTO MODEL (name) VALUES ('other');
+INSERT INTO MODEL (name) VALUES ('A3');
+INSERT INTO MODEL (name) VALUES ('A4');
+INSERT INTO MODEL (name) VALUES ('A5');
+INSERT INTO MODEL (name) VALUES ('A6');
+INSERT INTO MODEL (name) VALUES ('320');
+INSERT INTO MODEL (name) VALUES ('520');
+INSERT INTO MODEL (name) VALUES ('scenic');
+INSERT INTO MODEL (name) VALUES ('twingo');
+INSERT INTO MODEL (name) VALUES ('espace');
+
+INSERT INTO MENJAC (name) VALUES ('other');
+INSERT INTO MENJAC (name) VALUES ('manuelni');
+INSERT INTO MENJAC (name) VALUES ('automatik');
+
+INSERT INTO MESTO (name) VALUES ('other');
+INSERT INTO MESTO (name) VALUES ('NS');
+INSERT INTO MESTO (name) VALUES ('BG');
+INSERT INTO MESTO (name) VALUES ('SU');
+
+INSERT INTO KLASA (name) VALUES ('other');
+INSERT INTO KLASA (name) VALUES ('sedan');
+INSERT INTO KLASA (name) VALUES ('hatchback');
+INSERT INTO KLASA (name) VALUES ('minivan');
+
+
+

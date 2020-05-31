@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.xml.sifrarnik.dto.MestoNewDTO;
 import rs.xml.sifrarnik.model.Mesto;
 import rs.xml.sifrarnik.repository.mestoRepository;
 
@@ -51,38 +52,38 @@ public class MestoService
 		return findOne(Id);
 	}
 
-	public Mesto updateMesto(Long id, String info) 
+	public Mesto updateMesto(Long id, MestoNewDTO info) 
 	{
 		List<Mesto> lista = findAll();
 		
 		for (Mesto mesto : lista) 
 		{
-			if(mesto.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(mesto.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Mesto m = findOne(id);
-		m.setName(info); 
+		m.setName(info.getName()); 
 		save(m);
 		return m;
 	}
 
-	public Mesto createMesto(String info) 
+	public Mesto createMesto(MestoNewDTO info) 
 	{
 		List<Mesto> lista = findAll();
 		
 		for (Mesto mesto : lista) 
 		{
-			if(mesto.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(mesto.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Mesto m = new Mesto();
-		m.setName(info);
+		m.setName(info.getName());
 		save(m);
 		return m;
 	}

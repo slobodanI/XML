@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.sifrarnik.dto.KlasaNewDTO;
 import rs.xml.sifrarnik.model.Klasa;
 import rs.xml.sifrarnik.services.KlasaService;
 
@@ -43,13 +44,13 @@ public class KlasaController
 	}
 	
 	@PutMapping(value = "/klasa/{Id}")
-	public ResponseEntity<Klasa> updateKlasa(@PathVariable Long Id , @RequestBody String info) 
+	public ResponseEntity<?> updateKlasa(@PathVariable Long Id , @RequestBody KlasaNewDTO info) 
 	{	
 		Klasa kls = klasaService.updateKlasa(Id, info);
 		
 		if(kls==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji klasa sa tim imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -58,13 +59,13 @@ public class KlasaController
 	}
 	
 	@PostMapping(value = "/klasa", produces = "application/json")
-	public ResponseEntity<Klasa> newKlasa(@RequestBody String info) 
+	public ResponseEntity<?> newKlasa(@RequestBody KlasaNewDTO info) 
 	{	
 		Klasa kls = klasaService.createKlasa(info);
 		
 		if(kls==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji klasa sa tim imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

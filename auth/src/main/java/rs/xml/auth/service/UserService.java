@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 
+import rs.xml.auth.exceptions.NotFoundException;
 import rs.xml.auth.model.Role;
 import rs.xml.auth.model.User;
 import rs.xml.auth.model.UserRegisterRequestDTO;
@@ -76,6 +77,36 @@ public class UserService {
 	    byte[] salt = new byte[16];
 	    RANDOM.nextBytes(salt);
 	    return salt.toString();
-	  }
+	}
+	
+	public User activateUser(Long uid) {
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		u.setAccepted(true);		
+		userRepository.save(u);
+		
+		return u;
+	}
+	
+	public User blockUser(Long uid) {		
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		u.setBlocked(true);	
+		userRepository.save(u);
+		
+		return u;
+	}
+	
+	public User unblockUser(Long uid) {
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		u.setBlocked(false);	
+		userRepository.save(u);
+		
+		return u;
+	}
 	
 }

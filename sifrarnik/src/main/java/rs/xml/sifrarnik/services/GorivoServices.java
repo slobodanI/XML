@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.xml.sifrarnik.dto.GorivoNewDTO;
 import rs.xml.sifrarnik.model.Gorivo;
 import rs.xml.sifrarnik.repository.gorivoRepository;
 
@@ -50,38 +51,38 @@ public class GorivoServices
 		return findOne(Id);
 	}
 
-	public Gorivo updateGorivo(Long id, String info) 
+	public Gorivo updateGorivo(Long id, GorivoNewDTO info) 
 	{
 		List<Gorivo> lista = findAll();
 		
 		for (Gorivo gorivo : lista) 
 		{
-			if(gorivo.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(gorivo.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Gorivo gor = findOne(id);
-		gor.setName(info); 
+		gor.setName(info.getName()); 
 		save(gor);
 		return gor;
 	}
 
-	public Gorivo createGorivo(String info) 
+	public Gorivo createGorivo(GorivoNewDTO info) 
 	{
 		List<Gorivo> lista = findAll();
 		
 		for (Gorivo gorivo : lista) 
 		{
-			if(gorivo.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(gorivo.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Gorivo g = new Gorivo();
-		g.setName(info);
+		g.setName(info.getName());
 		save(g);
 		return g;
 	}

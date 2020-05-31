@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.sifrarnik.dto.GorivoNewDTO;
 import rs.xml.sifrarnik.model.Gorivo;
 import rs.xml.sifrarnik.services.GorivoServices;
 
@@ -36,20 +37,23 @@ public class GorivoController
 	}
 	
 	@GetMapping(value = "/gorivo/{Id}")
-	public ResponseEntity<Gorivo> getGorivoById(@PathVariable Long Id) 
+	public ResponseEntity<?> getGorivoById(@PathVariable Long Id) 
 	{	
 		Gorivo gor = sifrarnikService.getGorivoById(Id);
+		if(gor == null) {
+			return new ResponseEntity<String>("Ne_postoji_gorivo_sa_tim_imenom",HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(gor, HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/gorivo/{Id}")
-	public ResponseEntity<Gorivo> updateGorivo(@PathVariable Long Id , @RequestBody String info) 
+	public ResponseEntity<?> updateGorivo(@PathVariable Long Id , @RequestBody GorivoNewDTO info) 
 	{	
 		Gorivo gor = sifrarnikService.updateGorivo(Id, info);
 		
 		if(gor==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_gorivo_sa_tim_imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -58,13 +62,13 @@ public class GorivoController
 	}
 	
 	@PostMapping(value = "/gorivo", produces = "application/json")
-	public ResponseEntity<Gorivo> newGorivo(@RequestBody String info) 
+	public ResponseEntity<?> newGorivo(@RequestBody GorivoNewDTO info) 
 	{	
 		Gorivo gor = sifrarnikService.createGorivo(info);
 		
 		if(gor==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji gorivo sa tim imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

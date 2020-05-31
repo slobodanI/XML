@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.sifrarnik.dto.MarkaNewDTO;
 import rs.xml.sifrarnik.model.Marka;
 import rs.xml.sifrarnik.services.MarkaService;
 
@@ -44,13 +45,13 @@ public class MarkaController
 	}
 	
 	@PutMapping(value = "/marka/{Id}")
-	public ResponseEntity<Marka> updateMarka(@PathVariable Long Id , @RequestBody String info) 
+	public ResponseEntity<?> updateMarka(@PathVariable Long Id , @RequestBody MarkaNewDTO info) 
 	{	
 		Marka m = markaService.updateMarka(Id, info);
 		
 		if(m==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji marka sa tim imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -59,13 +60,13 @@ public class MarkaController
 	}
 	
 	@PostMapping(value = "/marka", produces = "application/json")
-	public ResponseEntity<Marka> newMarka(@RequestBody String info) 
+	public ResponseEntity<?> newMarka(@RequestBody MarkaNewDTO info) 
 	{	
 		Marka mar = markaService.createMarka(info);
 		
 		if(mar==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji marka sa tim imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.xml.sifrarnik.dto.ModelNewDTO;
 import rs.xml.sifrarnik.model.Model;
 import rs.xml.sifrarnik.repository.modelRepository;
 
@@ -51,38 +52,38 @@ public class ModelService
 		return findOne(Id);
 	}
 
-	public Model updateModel(Long id, String info) 
+	public Model updateModel(Long id, ModelNewDTO info) 
 	{
 		List<Model> lista = findAll();
 		
 		for (Model model : lista) 
 		{
-			if(model.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(model.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Model m = findOne(id);
-		m.setName(info); 
+		m.setName(info.getName()); 
 		save(m);
 		return m;
 	}
 
-	public Model createModel(String info) 
+	public Model createModel(ModelNewDTO info) 
 	{
 		List<Model> lista = findAll();
 		
 		for (Model model : lista) 
 		{
-			if(model.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(model.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Model m = new Model();
-		m.setName(info);
+		m.setName(info.getName());
 		save(m);
 		return m;
 	}
