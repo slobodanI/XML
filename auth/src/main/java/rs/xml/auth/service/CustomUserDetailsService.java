@@ -64,7 +64,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		// pre nego sto u bazu upisemo novu lozinku, potrebno ju je hesirati
 		// ne zelimo da u bazi cuvamo lozinke u plain text formatu
-		user.setPassword(passwordEncoder.encode(newPassword));
+		user.setPassword(passwordEncoder.encode(newPassword + user.getSalt()));
 		userRepository.save(user);
 
 	}

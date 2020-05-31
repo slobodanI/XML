@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
+
 import java.util.Base64.Encoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import rs.xml.oglas.client.GorivoDTO;
+import rs.xml.oglas.client.KlasaDTO;
+import rs.xml.oglas.client.MarkaDTO;
+import rs.xml.oglas.client.MenjacDTO;
+import rs.xml.oglas.client.MestoDTO;
+import rs.xml.oglas.client.ModelDTO;
+import rs.xml.oglas.client.SifrarnikClient;
+import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.repository.OglasRepository;
@@ -22,7 +33,10 @@ public class OglasService {
 
 	@Autowired
 	OglasRepository oglasRepository;
-
+	
+	@Autowired
+	SifrarnikClient sifrarnikClient;
+	
 	public Oglas findOne(Long id) {
 		Optional<Oglas> oglas = oglasRepository.findById(id);
 		return oglas.orElseGet(null);
@@ -182,5 +196,34 @@ public class OglasService {
 		else {
 			return null;
 		}
+	}
+
+	public boolean createOglasWithFeignClient(Oglas oglas, NewOglasDTO oglasDTO) {		
+		try {
+			MestoDTO mestoDto = sifrarnikClient.getMesto(oglasDTO.getMesto());
+//			System.out.println(">>>OglasService > createOglasWithFeignClient MESTO: " + mestoDto.getName());
+			ModelDTO modelDto = sifrarnikClient.getModel(oglasDTO.getModel());
+//			System.out.println(">>>OglasService > createOglasWithFeignClient MODEL: " + modelDto.getName());
+			MarkaDTO markaDto = sifrarnikClient.getMarka(oglasDTO.getMarka());
+//			System.out.println(">>>OglasService > createOglasWithFeignClient MARKA: " + markaDto.getName());
+			KlasaDTO klasaDto = sifrarnikClient.getKlasa(oglasDTO.getKlasa());
+//			System.out.println(">>>OglasService > createOglasWithFeignClient KLASA: " + klasaDto.getName());
+			GorivoDTO gorivoDto = sifrarnikClient.getGorivo(oglasDTO.getGorivo());
+//			System.out.println(">>>OglasService > createOglasWithFeignClient GORIVO: " + gorivoDto.getName());
+			MenjacDTO menjacDto = sifrarnikClient.getMenjac(oglasDTO.getMenjac());
+//			System.out.println(">>>OglasService > createOglasWithFeignClient MENJAC: " + menjacDto.getName());
+			
+			oglas.setMesto(mestoDto.getName());
+			oglas.setMarka(modelDto.getName());
+			oglas.setModel(markaDto.getName());
+			oglas.setKlasa(klasaDto.getName());
+			oglas.setGorivo(gorivoDto.getName()); 
+			oglas.setMenjac(menjacDto.getName());
+			
+			return true;
+		} catch (Exception e) {
+			System.out.println(">>>OglasService > createOglasWithFeignClient: ERROR!");
+			return false;
+		}		
 	}
 }

@@ -213,7 +213,7 @@ public class User implements UserDetails {
     
 	@Override
     public boolean isEnabled() {
-        return accepted && !blocked;
+        return accepted; // && !blocked ;
     }
     
 	/**

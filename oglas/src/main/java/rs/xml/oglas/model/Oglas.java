@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.SlikaDTO;
 import rs.xml.oglas.model.Slika;
@@ -84,6 +86,7 @@ public class Oglas {
 	@Column(name="deleted")
 	private boolean deleted;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "OGLAS_ZAHTEV",
             joinColumns = @JoinColumn(name = "oglas_id", referencedColumnName = "id"),
@@ -120,12 +123,12 @@ public class Oglas {
 	
 	public Oglas(NewOglasDTO oglasDTO) {
 		super();
-		this.mesto = oglasDTO.getMesto();
-		this.marka = oglasDTO.getMarka();
-		this.model = oglasDTO.getModel();
-		this.gorivo = oglasDTO.getGorivo();
-		this.menjac = oglasDTO.getMenjac();
-		this.klasa = oglasDTO.getKlasa();
+//		this.mesto = oglasDTO.getMesto();
+//		this.marka = oglasDTO.getMarka();
+//		this.model = oglasDTO.getModel();
+//		this.gorivo = oglasDTO.getGorivo();
+//		this.menjac = oglasDTO.getMenjac();
+//		this.klasa = oglasDTO.getKlasa();
 		this.cena = oglasDTO.getCena();
 		this.cenovnik = null;//oglasDTO.getCenovnik();
 		this.kilometraza = oglasDTO.getKilometraza();

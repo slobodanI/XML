@@ -28,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -97,7 +98,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
 	}
 
-	//obo treba jos doraditi
+	//obo treba jos doraditi - dodao sam salt, dal sam na to mislio...
 	@RequestMapping(method = POST, value = "/signup")
 	public ResponseEntity<?> addUser(@RequestBody @Valid UserRegisterRequestDTO userRequest, UriComponentsBuilder ucBuilder) {
 
@@ -157,14 +158,13 @@ public class AuthenticationController {
 		return new ResponseEntity<User>(user,HttpStatus.OK);
 	}
 
-	@RequestMapping(method = GET, value = "/user/all")
-	@PreAuthorize("hasAuthority('PERMISSION_TEST')")
+	@RequestMapping(method = GET, value = "/user")
+	@PreAuthorize("hasAuthority('MANAGE_USERS')")
 	public List<User> loadAll() {
 		return this.userService.findAll();
 	}
 
 	@RequestMapping("/whoami")
-	//@PreAuthorize("hasAuthority('PERMISSION_TEST')")
 	public User user(Principal user) {
 		return this.userService.findByUsername(user.getName());
 	}
@@ -196,6 +196,11 @@ public class AuthenticationController {
     	return new ResponseEntity<String>(permissije, HttpStatus.OK);
     }
     
+	/**
+	 * Pozvano iz gateway-a
+	 * @param token
+	 * @return username
+	 */
     @GetMapping("/check/{token}/username")
     public ResponseEntity<?> getUsername(@PathVariable String token) {   	/*dodaj exception*/
     	if(tokenUtils.validateTokenForGateway(token)) {
@@ -210,6 +215,33 @@ public class AuthenticationController {
     	}
     }
 	
+    @PutMapping("/user/{uid}/activate")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public ResponseEntity<?> activateUser(@PathVariable(name = "uid") Long uid) {
+    	
+    	User user = userService.activateUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
+    @PutMapping("/user/{uid}/block")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public ResponseEntity<?> blockUser(@PathVariable(name = "uid") Long uid) {
+    	
+    	User user = userService.blockUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
+    @PutMapping("/user/{uid}/unblock")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public ResponseEntity<?> unblockUser(@PathVariable(name = "uid") Long uid) {
+    	
+    	User user = userService.unblockUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
 	static class PasswordChanger {
 		public String oldPassword;
 		public String newPassword;
