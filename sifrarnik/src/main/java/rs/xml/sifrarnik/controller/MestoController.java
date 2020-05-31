@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.sifrarnik.dto.MestoNewDTO;
 import rs.xml.sifrarnik.model.Mesto;
 import rs.xml.sifrarnik.services.MestoService;
 
@@ -45,13 +46,13 @@ public class MestoController
 	}
 	
 	@PutMapping(value = "/mesto/{Id}")
-	public ResponseEntity<Mesto> updateMesto(@PathVariable Long Id , @RequestBody String info) 
+	public ResponseEntity<?> updateMesto(@PathVariable Long Id , @RequestBody MestoNewDTO info) 
 	{	
 		Mesto m = mestoService.updateMesto(Id, info);
 		
 		if(m==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji mesto sa tim imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -60,13 +61,13 @@ public class MestoController
 	}
 	
 	@PostMapping(value = "/mesto", produces = "application/json")
-	public ResponseEntity<Mesto> newMesto(@RequestBody String info) 
+	public ResponseEntity<?> newMesto(@RequestBody MestoNewDTO info) 
 	{	
 		Mesto m = mestoService.createMesto(info);
 		
 		if(m==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji mesto sa tim imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

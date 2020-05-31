@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.sifrarnik.dto.ModelNewDTO;
 import rs.xml.sifrarnik.model.Model;
 import rs.xml.sifrarnik.services.ModelService;
 
@@ -45,13 +46,13 @@ public class ModelController
 	}
 	
 	@PutMapping(value = "/model/{Id}")
-	public ResponseEntity<Model> updateModel(@PathVariable Long Id , @RequestBody String info) 
+	public ResponseEntity<?> updateModel(@PathVariable Long Id , @RequestBody ModelNewDTO info) 
 	{	
 		Model m = modelService.updateModel(Id, info);
 		
 		if(m==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji model sa tim imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -60,13 +61,13 @@ public class ModelController
 	}
 	
 	@PostMapping(value = "/model", produces = "application/json")
-	public ResponseEntity<Model> newModel(@RequestBody String info) 
+	public ResponseEntity<?> newModel(@RequestBody ModelNewDTO info) 
 	{	
 		Model mod = modelService.createModel(info);
 		
 		if(mod==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji model sa tim imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

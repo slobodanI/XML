@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.sifrarnik.dto.MenjacNewDTO;
 import rs.xml.sifrarnik.model.Menjac;
 import rs.xml.sifrarnik.services.MenjacService;
 
@@ -44,13 +45,13 @@ public class MenjacController
 	}
 	
 	@PutMapping(value = "/menjac/{Id}")
-	public ResponseEntity<Menjac> updateMenjac(@PathVariable Long Id , @RequestBody String info) 
+	public ResponseEntity<?> updateMenjac(@PathVariable Long Id , @RequestBody MenjacNewDTO info) 
 	{	
 		Menjac m = menjacService.updateMenjac(Id, info);
 		
 		if(m==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji menjac sa tim imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -59,13 +60,13 @@ public class MenjacController
 	}
 	
 	@PostMapping(value = "/menjac", produces = "application/json")
-	public ResponseEntity<Menjac> newMenjac(@RequestBody String info) 
+	public ResponseEntity<?> newMenjac(@RequestBody MenjacNewDTO info) 
 	{	
 		Menjac menj = menjacService.createMenjac(info);
 		
 		if(menj==null)
 		{
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji menjac sa tim imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

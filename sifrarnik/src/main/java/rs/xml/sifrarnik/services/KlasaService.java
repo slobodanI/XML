@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.xml.sifrarnik.dto.KlasaNewDTO;
 import rs.xml.sifrarnik.model.Klasa;
 import rs.xml.sifrarnik.repository.klasaRepository;
 
@@ -50,38 +51,38 @@ public class KlasaService
 		return findOne(Id);
 	}
 
-	public Klasa updateKlasa(Long id, String info) 
+	public Klasa updateKlasa(Long id, KlasaNewDTO info) 
 	{
 		List<Klasa> lista = findAll();
 		
 		for (Klasa klasa : lista) 
 		{
-			if(klasa.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(klasa.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Klasa k = findOne(id);
-		k.setName(info); 
+		k.setName(info.getName()); 
 		save(k);
 		return k;
 	}
 
-	public Klasa createKlasa(String info) 
+	public Klasa createKlasa(KlasaNewDTO info) 
 	{
 		List<Klasa> lista = findAll();
 		
 		for (Klasa klasa : lista) 
 		{
-			if(klasa.getName().toLowerCase().contentEquals(info.toLowerCase()))
+			if(klasa.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Klasa k = new Klasa();
-		k.setName(info);
+		k.setName(info.getName());
 		save(k);
 		return k;
 	}
