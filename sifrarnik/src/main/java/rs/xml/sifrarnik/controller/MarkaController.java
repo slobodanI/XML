@@ -48,10 +48,10 @@ public class MarkaController
 	public ResponseEntity<?> updateMarka(@PathVariable Long Id , @RequestBody MarkaNewDTO info) 
 	{	
 		Marka m = markaService.updateMarka(Id, info);
-		
+
 		if(m==null)
 		{
-			return new ResponseEntity<String>("Postoji marka sa tim imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_marka_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -66,7 +66,7 @@ public class MarkaController
 		
 		if(mar==null)
 		{
-			return new ResponseEntity<String>("Postoji marka sa tim imenom",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_marka_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.xml.sifrarnik.dto.MenjacNewDTO;
+import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Menjac;
 import rs.xml.sifrarnik.repository.menjacRepository;
 
@@ -24,7 +25,7 @@ public class MenjacService
 	
 	public Menjac findOne(Long id) 
 	{
-		return menjacRepo.findById(id).orElseGet(null);
+		return menjacRepo.findById(id).orElseThrow(() -> new NotFoundException("Menjac with id:" +id+ " does not exist!"));
 	}
 
 	public List<Menjac> findAll() 
@@ -90,6 +91,7 @@ public class MenjacService
 
 	public void deleteMenjac(Long id) 
 	{
+		findOne(id);// okine error ako ne postoji
 		remove(id);
 	}
 	

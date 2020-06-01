@@ -51,7 +51,7 @@ public class MenjacController
 		
 		if(m==null)
 		{
-			return new ResponseEntity<String>("Postoji menjac sa tim imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_menjac_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -66,7 +66,7 @@ public class MenjacController
 		
 		if(menj==null)
 		{
-			return new ResponseEntity<String>("Postoji menjac sa tim imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_menjac_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

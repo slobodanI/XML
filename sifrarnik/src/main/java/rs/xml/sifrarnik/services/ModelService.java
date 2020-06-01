@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.xml.sifrarnik.dto.ModelNewDTO;
+import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Model;
 import rs.xml.sifrarnik.repository.modelRepository;
 
@@ -24,7 +25,7 @@ public class ModelService
 	
 	public Model findOne(Long id) 
 	{
-		return modelRepo.findById(id).orElseGet(null);
+		return modelRepo.findById(id).orElseThrow(() -> new NotFoundException("Model with id:" +id+ " does not exist!"));
 	}
 
 	public List<Model> findAll() 
@@ -90,6 +91,7 @@ public class ModelService
 
 	public void deleteModel(Long id) 
 	{
+		findOne(id);// okine error ako ne postoji
 		remove(id);
 	}
 	

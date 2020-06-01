@@ -242,6 +242,15 @@ public class AuthenticationController {
     	return new ResponseEntity<User>(user, HttpStatus.OK);
     }
     
+    @PutMapping("/user/{uid}/delete")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public ResponseEntity<?> deleteUser(@PathVariable(name = "uid") Long uid) {
+    	
+    	User user = userService.deleteUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
 	static class PasswordChanger {
 		public String oldPassword;
 		public String newPassword;

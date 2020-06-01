@@ -39,10 +39,8 @@ public class GorivoController
 	@GetMapping(value = "/gorivo/{Id}")
 	public ResponseEntity<?> getGorivoById(@PathVariable Long Id) 
 	{	
-		Gorivo gor = sifrarnikService.getGorivoById(Id);
-		if(gor == null) {
-			return new ResponseEntity<String>("Ne_postoji_gorivo_sa_tim_imenom",HttpStatus.BAD_REQUEST);
-		}
+		Gorivo gor = sifrarnikService.findOne(Id);
+
 		return new ResponseEntity<>(gor, HttpStatus.OK);
 	}
 	
@@ -68,7 +66,7 @@ public class GorivoController
 		
 		if(gor==null)
 		{
-			return new ResponseEntity<String>("Postoji gorivo sa tim imenom",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_gorivo_sa_tim_imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

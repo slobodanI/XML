@@ -59,6 +59,7 @@ public class UserService {
 		u.setEmail(userRequest.getEmail());
 		u.setAccepted(false);
 		u.setBlocked(false);
+		u.setDeleted(false);
 		u.setCanceled(0);
 //		u.setAds(0);
 		u.setOwes(0);
@@ -104,6 +105,16 @@ public class UserService {
 				() -> new NotFoundException("User with id " + uid + " does not exist"));
 		
 		u.setBlocked(false);	
+		userRepository.save(u);
+		
+		return u;
+	}
+	
+	public User deleteUser(Long uid) {
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		u.setDeleted(true);
 		userRepository.save(u);
 		
 		return u;
