@@ -25,6 +25,7 @@ import rs.xml.oglas.client.ModelDTO;
 import rs.xml.oglas.client.SifrarnikClient;
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
+import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.repository.OglasRepository;
 
@@ -38,8 +39,8 @@ public class OglasService {
 	SifrarnikClient sifrarnikClient;
 	
 	public Oglas findOne(Long id) {
-		Optional<Oglas> oglas = oglasRepository.findById(id);
-		return oglas.orElseGet(null);
+		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
+		return oglas;
 	}
 
 	public List<Oglas> findAll() {
@@ -214,8 +215,8 @@ public class OglasService {
 //			System.out.println(">>>OglasService > createOglasWithFeignClient MENJAC: " + menjacDto.getName());
 			
 			oglas.setMesto(mestoDto.getName());
-			oglas.setMarka(modelDto.getName());
-			oglas.setModel(markaDto.getName());
+			oglas.setMarka(markaDto.getName());
+			oglas.setModel(modelDto.getName());
 			oglas.setKlasa(klasaDto.getName());
 			oglas.setGorivo(gorivoDto.getName()); 
 			oglas.setMenjac(menjacDto.getName());
