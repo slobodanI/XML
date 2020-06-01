@@ -1,7 +1,8 @@
 package rs.xml.oglas.model;
 
 import java.sql.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +18,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import rs.xml.oglas.dto.NewZahtevDTO;
+
 @Entity
 @Table(name = "ZAHTEV")
 public class Zahtev {
@@ -26,11 +29,11 @@ public class Zahtev {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "OGLAS_ZAHTEV",
             joinColumns = @JoinColumn(name = "zahtev_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "oglas_id", referencedColumnName = "id"))
-	private List<Oglas> oglasi;
+	private Set<Oglas> oglasi = new HashSet<Oglas>();
 	
 	@Enumerated(EnumType.STRING)
 	private ZahtevStatus status;
@@ -60,7 +63,7 @@ public class Zahtev {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Zahtev(List<Oglas> oglasi, ZahtevStatus status, Long agentId, Date od, Date do1, boolean ocenjen,
+	public Zahtev(Set<Oglas> oglasi, ZahtevStatus status, Long agentId, Date od, Date do1, boolean ocenjen,
 			boolean izvestaj, Long podnosilacId, Long chatId) {
 		super();
 		this.oglasi = oglasi;
@@ -74,6 +77,20 @@ public class Zahtev {
 		this.chatId = chatId;
 	}
 
+	public Zahtev(NewZahtevDTO zahtevDTO) {
+		//super();
+		this.oglasi=zahtevDTO.getOglasi();
+		this.Od=zahtevDTO.getOd();
+		this.Do=zahtevDTO.getDo();
+		this.agentId=zahtevDTO.getAgentId();
+		this.status=ZahtevStatus.PENDING;
+		this.ocenjen=false;
+		this.izvestaj=false;
+		this.podnosilacId=null;
+		this.chatId=null;
+	}
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -82,11 +99,11 @@ public class Zahtev {
 		this.id = id;
 	}
 
-	public List<Oglas> getOglasi() {
+	public Set<Oglas> getOglasi() {
 		return oglasi;
 	}
 
-	public void setOglasi(List<Oglas> oglasi) {
+	public void setOglasi(Set<Oglas> oglasi) {
 		this.oglasi = oglasi;
 	}
 

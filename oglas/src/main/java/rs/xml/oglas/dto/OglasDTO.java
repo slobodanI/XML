@@ -2,14 +2,18 @@ package rs.xml.oglas.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Base64.Encoder;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import rs.xml.oglas.model.Oglas;
+import rs.xml.oglas.model.Slika;
 
 public class OglasDTO {
 	
+	private Long id;
+	
+	private Long agendId;
 	
 	private String marka;
 	
@@ -41,6 +45,35 @@ public class OglasDTO {
 	
 	public OglasDTO() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public OglasDTO(Oglas o) {
+		this.id=o.getId();
+		this.agendId=o.getAgentID();
+		this.marka=o.getMarka();
+		this.model=o.getModel();
+		this.gorivo=o.getGorivo();
+		this.menjac=o.getMenjac();
+		this.klasa=o.getKlasa();
+		this.cena=o.getCena();
+		this.cenovnik=null;
+		this.kilometraza=o.getKilometraza();
+		this.planiranaKilometraza=o.getPlaniranaKilometraza();
+		this.osiguranje=o.isOsiguranje();
+		this.brSedistaZaDecu=o.getSedistaZaDecu();
+		this.Od=o.getOd();
+		this.Do=o.getDo();
+		for (Slika slika : o.getSlike()) {
+			String imageString;
+
+			Encoder encoder = Base64.getEncoder();
+			// radi i ako se kaze data:image/png
+			imageString = encoder.encodeToString(slika.getSlika());
+			SlikaDTO slikaDTO = new SlikaDTO();
+			slikaDTO.setSlika("data:image/jpeg;base64," + imageString);
+			this.slike.add(slikaDTO);
+		}
+
 	}
 
 	public String getMarka() {
@@ -154,5 +187,22 @@ public class OglasDTO {
 	public void setSlike(List<SlikaDTO> slike) {
 		this.slike = slike;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getAgendId() {
+		return agendId;
+	}
+
+	public void setAgendId(Long agendId) {
+		this.agendId = agendId;
+	}
+	
 	
 }

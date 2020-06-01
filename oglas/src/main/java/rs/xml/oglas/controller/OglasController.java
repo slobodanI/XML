@@ -166,4 +166,5 @@ public class OglasController {
 //				"\npredjena:"+predjenaInt + "\nplanirana:"+planiranaInt + "\nosiguranje:"+osiguranje + "\nbrSedZaDecu:"+brSedZaDecuInt
 //				,HttpStatus.OK);
 	}
+	
 }

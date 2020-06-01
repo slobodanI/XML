@@ -10,7 +10,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class NewOglasDTO {
-	
+	@NotNull
+	private Long agentId;
 	@NotNull
 	private Long mesto;
 	@NotNull
@@ -169,6 +170,16 @@ public class NewOglasDTO {
 
 	public void setSlike(List<SlikaDTO> slike) {
 		this.slike = slike;
+	}
+
+
+	public Long getAgentId() {
+		return agentId;
+	}
+
+
+	public void setAgentId(Long agentId) {
+		this.agentId = agentId;
 	}
 	
 	

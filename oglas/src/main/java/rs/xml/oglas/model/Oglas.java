@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Decoder;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.SlikaDTO;
-import rs.xml.oglas.model.Slika;
 
 @Entity
 @Table(name = "OGLAS")
