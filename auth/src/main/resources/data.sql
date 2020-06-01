@@ -1,10 +1,10 @@
 -- Lozinke su hesovane pomocu BCrypt algoritma https://www.dailycred.com/article/bcrypt-calculator
 -- Lozinka za oba user-a je 1234567899
 
-INSERT INTO USERS (username, password, first_name, last_name, email, accepted, blocked, canceled, owes, last_password_reset_date, salt)
-	VALUES ('user', '$2a$10$Fbq6q3mR.j4bgoAIKTJbYOr6ccjsMNZdmlKwRikJP8gLkx60jaSmG', 'Marko', 'Markovic', 'user@example.com', true, false, 0, 0, '2017-10-01 21:58:58.508-07', 'a0s8hgy28h1');
-INSERT INTO USERS (username, password, first_name, last_name, email, accepted, blocked, canceled, owes, last_password_reset_date, salt)
-	VALUES ('admin', '$2a$10$eH8zX6i0FSIWRj4h9fSMdOJFCrMLuoI8aJIp/YnKap8IxWpV55xPC', 'Nikola', 'Nikolic', 'admin@example.com', true, false, 0, 0, '2017-10-01 18:57:58.508-07', 'blsk56oyh01');
+INSERT INTO USERS (username, password, first_name, last_name, email, accepted, blocked, canceled, owes, deleted, last_password_reset_date, salt)
+	VALUES ('user', '$2a$10$Fbq6q3mR.j4bgoAIKTJbYOr6ccjsMNZdmlKwRikJP8gLkx60jaSmG', 'Marko', 'Markovic', 'user@example.com', true, false, 0, 0, false, '2017-10-01 21:58:58.508-07', 'a0s8hgy28h1');
+INSERT INTO USERS (username, password, first_name, last_name, email, accepted, blocked, canceled, owes, deleted, last_password_reset_date, salt)
+	VALUES ('admin', '$2a$10$eH8zX6i0FSIWRj4h9fSMdOJFCrMLuoI8aJIp/YnKap8IxWpV55xPC', 'Nikola', 'Nikolic', 'admin@example.com', true, false, 0, 0, false, '2017-10-01 18:57:58.508-07', 'blsk56oyh01');
 
 INSERT INTO ROLE (name) VALUES ('ROLE_USER');
 INSERT INTO ROLE (name) VALUES ('ROLE_AGENT');
