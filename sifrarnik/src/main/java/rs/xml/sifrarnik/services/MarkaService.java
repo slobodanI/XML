@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.xml.sifrarnik.dto.MarkaNewDTO;
+import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Marka;
 import rs.xml.sifrarnik.repository.markaRepository;
 
@@ -24,7 +25,7 @@ public class MarkaService
 	
 	public Marka findOne(Long id) 
 	{
-		return markaRepo.findById(id).orElseGet(null);
+		return markaRepo.findById(id).orElseThrow(() -> new NotFoundException("Marka with id:" +id+ " does not exist!"));
 	}
 
 	public List<Marka> findAll() 
@@ -90,6 +91,7 @@ public class MarkaService
 
 	public void deleteMarka(Long id) 
 	{
+		findOne(id);// okine error ako ne postoji
 		remove(id);
 	}
 	

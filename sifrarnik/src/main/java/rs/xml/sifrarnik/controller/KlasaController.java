@@ -50,12 +50,13 @@ public class KlasaController
 		
 		if(kls==null)
 		{
-			return new ResponseEntity<String>("Postoji klasa sa tim imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_klasa_sa_tim_imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
 			return new ResponseEntity<>(kls, HttpStatus.OK);
 		}
+
 	}
 	
 	@PostMapping(value = "/klasa", produces = "application/json")
@@ -65,7 +66,7 @@ public class KlasaController
 		
 		if(kls==null)
 		{
-			return new ResponseEntity<String>("Postoji klasa sa tim imenom",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_klasa_sa_tim_imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
