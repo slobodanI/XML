@@ -75,11 +75,11 @@ public class MarkaController
 	}
 	
 	@DeleteMapping(value = "/marka/{Id}")
-	public ResponseEntity<List<Void>>deleteMarka(@PathVariable Long Id) 
+	public ResponseEntity<Marka>deleteMarka(@PathVariable Long Id) 
 	{	
-		markaService.deleteMarka(Id);
+		Marka m = markaService.deleteMarka(Id);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(m,HttpStatus.OK);
 	}
 	
 	

@@ -83,10 +83,11 @@ public class GorivoServices
 		return g;
 	}
 
-	public void deleteGorivo(Long id) 
+	public Gorivo deleteGorivo(Long id) 
 	{
-		findOne(id); // okine error ako ne postoji
+		Gorivo g = findOne(id); // okine error ako ne postoji
 		remove(id);
+		return g;
 	}
 
 

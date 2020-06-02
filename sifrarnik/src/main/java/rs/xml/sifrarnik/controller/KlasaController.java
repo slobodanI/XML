@@ -76,11 +76,11 @@ public class KlasaController
 	}
 	
 	@DeleteMapping(value = "/klasa/{Id}")
-	public ResponseEntity<List<Void>>deleteKlasa(@PathVariable Long Id) 
+	public ResponseEntity<Klasa>deleteKlasa(@PathVariable Long Id) 
 	{	
-		klasaService.deleteKlasa(Id);
+		Klasa k = klasaService.deleteKlasa(Id);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(k,HttpStatus.OK);
 	}
 	
 	

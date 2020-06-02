@@ -75,11 +75,11 @@ public class MenjacController
 	}
 	
 	@DeleteMapping(value = "/menjac/{Id}")
-	public ResponseEntity<List<Void>>deleteMenjac(@PathVariable Long Id) 
+	public ResponseEntity<Menjac>deleteMenjac(@PathVariable Long Id) 
 	{	
-		menjacService.deleteMenjac(Id);
+		Menjac m = menjacService.deleteMenjac(Id);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(m,HttpStatus.OK);
 	}
 	
 	

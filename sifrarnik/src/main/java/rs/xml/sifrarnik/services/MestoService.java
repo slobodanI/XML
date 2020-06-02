@@ -89,10 +89,11 @@ public class MestoService
 		return m;
 	}
 
-	public void deleteMesto(Long id) 
+	public Mesto deleteMesto(Long id) 
 	{
-		findOne(id);// okine error ako ne postoji
+		Mesto m = findOne(id);// okine error ako ne postoji
 		remove(id);
+		return m;
 	}
 	
 	

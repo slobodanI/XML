@@ -76,11 +76,11 @@ public class ModelController
 	}
 	
 	@DeleteMapping(value = "/model/{Id}")
-	public ResponseEntity<List<Void>>deleteModel(@PathVariable Long Id) 
+	public ResponseEntity<Model>deleteModel(@PathVariable Long Id) 
 	{	
-		modelService.deleteModel(Id);
+		Model m = modelService.deleteModel(Id);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(m,HttpStatus.OK);
 	}
 	
 	

@@ -89,10 +89,11 @@ public class MarkaService
 		return m;
 	}
 
-	public void deleteMarka(Long id) 
+	public Marka deleteMarka(Long id) 
 	{
-		findOne(id);// okine error ako ne postoji
+		Marka m = findOne(id);// okine error ako ne postoji
 		remove(id);
+		return m;
 	}
 	
 	

@@ -88,10 +88,11 @@ public class KlasaService
 		return k;
 	}
 
-	public void deleteKlasa(Long id) 
+	public Klasa deleteKlasa(Long id) 
 	{
-		findOne(id); // // okine error ako ne postoji
+		Klasa k = findOne(id); // // okine error ako ne postoji
 		remove(id);
+		return k;
 	}
 
 	

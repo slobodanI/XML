@@ -76,11 +76,11 @@ public class GorivoController
 	}
 	
 	@DeleteMapping(value = "/gorivo/{Id}")
-	public ResponseEntity<List<Void>>deleteGorivo(@PathVariable Long Id) 
+	public ResponseEntity<Gorivo>deleteGorivo(@PathVariable Long Id) 
 	{	
-		sifrarnikService.deleteGorivo(Id);
+		Gorivo g = sifrarnikService.deleteGorivo(Id);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(g,HttpStatus.OK);
 	}
 	
 	

@@ -89,10 +89,11 @@ public class MenjacService
 		return m;
 	}
 
-	public void deleteMenjac(Long id) 
+	public Menjac deleteMenjac(Long id) 
 	{
-		findOne(id);// okine error ako ne postoji
+		Menjac m = findOne(id);// okine error ako ne postoji
 		remove(id);
+		return m;
 	}
 	
 	

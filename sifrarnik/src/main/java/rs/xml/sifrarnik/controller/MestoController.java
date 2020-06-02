@@ -76,11 +76,11 @@ public class MestoController
 	}
 	
 	@DeleteMapping(value = "/mesto/{Id}")
-	public ResponseEntity<List<Void>>deleteMesto(@PathVariable Long Id) 
+	public ResponseEntity<Mesto>deleteMesto(@PathVariable Long Id) 
 	{	
-		mestoService.deleteMesto(Id);
+		Mesto m = mestoService.deleteMesto(Id);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(m,HttpStatus.OK);
 	}
 	
 	

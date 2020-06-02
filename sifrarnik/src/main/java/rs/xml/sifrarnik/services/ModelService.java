@@ -89,10 +89,11 @@ public class ModelService
 		return m;
 	}
 
-	public void deleteModel(Long id) 
+	public Model deleteModel(Long id) 
 	{
-		findOne(id);// okine error ako ne postoji
+		Model m = findOne(id);// okine error ako ne postoji
 		remove(id);
+		return m;
 	}
 	
 	
