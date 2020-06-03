@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rs.xml.sifrarnik.dto.KlasaNewDTO;
 import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Klasa;
 import rs.xml.sifrarnik.repository.klasaRepository;
@@ -52,45 +51,44 @@ public class KlasaService
 		return findOne(Id);
 	}
 
-	public Klasa updateKlasa(Long id, KlasaNewDTO info) 
+	public Klasa updateKlasa(Long id, String info) 
 	{
 		List<Klasa> lista = findAll();
 		
 		for (Klasa klasa : lista) 
 		{
-			if(klasa.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
+			if(klasa.getName().toLowerCase().equals(info.toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Klasa k = findOne(id);
-		k.setName(info.getName()); 
+		k.setName(info); 
 		save(k);
 		return k;
 	}
 
-	public Klasa createKlasa(KlasaNewDTO info) 
+	public Klasa createKlasa(String info) 
 	{
 		List<Klasa> lista = findAll();
 		
 		for (Klasa klasa : lista) 
 		{
-			if(klasa.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
+			if(klasa.getName().toLowerCase().equals(info.toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Klasa k = new Klasa();
-		k.setName(info.getName());
+		k.setName(info);
 		save(k);
 		return k;
 	}
 
 	public void deleteKlasa(Long id) 
 	{
-		findOne(id); // // okine error ako ne postoji
 		remove(id);
 	}
 

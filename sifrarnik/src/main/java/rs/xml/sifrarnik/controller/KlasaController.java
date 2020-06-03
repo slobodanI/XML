@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.xml.sifrarnik.dto.KlasaNewDTO;
 import rs.xml.sifrarnik.model.Klasa;
 import rs.xml.sifrarnik.services.KlasaService;
 
@@ -44,7 +43,7 @@ public class KlasaController
 	}
 	
 	@PutMapping(value = "/klasa/{Id}")
-	public ResponseEntity<?> updateKlasa(@PathVariable Long Id , @RequestBody KlasaNewDTO info) 
+	public ResponseEntity<?> updateKlasa(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Klasa kls = klasaService.updateKlasa(Id, info);
 		
@@ -60,23 +59,23 @@ public class KlasaController
 	}
 	
 	@PostMapping(value = "/klasa", produces = "application/json")
-	public ResponseEntity<?> newKlasa(@RequestBody KlasaNewDTO info) 
+	public ResponseEntity<Klasa> newKlasa(@RequestBody String info) 
 	{	
 		Klasa kls = klasaService.createKlasa(info);
 		
-		if(kls==null)
+		if(kls!=null)
 		{
-			return new ResponseEntity<String>("Postoji_klasa_sa_tim_imenom",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Klasa>(kls, HttpStatus.OK);
 		}
 		else
 		{
-			return new ResponseEntity<>(kls, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 
 	}
 	
 	@DeleteMapping(value = "/klasa/{Id}")
-	public ResponseEntity<List<Void>>deleteKlasa(@PathVariable Long Id) 
+	public ResponseEntity<?> deleteKlasa(@PathVariable Long Id) 
 	{	
 		klasaService.deleteKlasa(Id);
 		

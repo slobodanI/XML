@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rs.xml.sifrarnik.dto.GorivoNewDTO;
 import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Gorivo;
 import rs.xml.sifrarnik.repository.gorivoRepository;
@@ -47,46 +46,46 @@ public class GorivoServices
 		return findAll();
 	}
 
-	public Gorivo updateGorivo(Long id, GorivoNewDTO info) 
+	public Gorivo updateGorivo(Long id, String info) 
 	{
 		List<Gorivo> lista = findAll();
 		
 		for (Gorivo gorivo : lista) 
 		{
-			if(gorivo.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
+			if(gorivo.getName().toLowerCase().equals(info.toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Gorivo gor = findOne(id);
-		gor.setName(info.getName()); 
+		gor.setName(info); 
 		save(gor);
 		return gor;
 	}
 
-	public Gorivo createGorivo(GorivoNewDTO info) 
+	public Gorivo createGorivo(String info) 
 	{
+		
 		List<Gorivo> lista = findAll();
 		
 		for (Gorivo gorivo : lista) 
 		{
-			if(gorivo.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
+			if(gorivo.getName().toLowerCase().equals(info.toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Gorivo g = new Gorivo();
-		g.setName(info.getName());
+		g.setName(info);
 		save(g);
 		return g;
 	}
 
-	public void deleteGorivo(Long id) 
-	{
-		findOne(id); // okine error ako ne postoji
-		remove(id);
+	public void deleteGorivo(Long Id) 
+	{	
+		remove(Id);
 	}
 
 
