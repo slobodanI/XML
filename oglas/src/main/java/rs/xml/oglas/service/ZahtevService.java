@@ -43,23 +43,23 @@ public class ZahtevService {
 		}
 		
 		if (korpaDTO.isBundle()) {
-			List<Long> pomLista = new ArrayList<Long>();
+			List<String> pomLista = new ArrayList<String>();
 
 			for (OglasDTO og : korpaDTO.getOglasi()) {
-				if (!pomLista.contains(og.getAgendId())) {
-					pomLista.add(og.getAgendId());
+				if (!pomLista.contains(og.getUsername())) {
+					pomLista.add(og.getUsername());
 				}
 			}
 			System.out.println(pomLista);
-			for (Long id : pomLista) {
+			for (String id : pomLista) {
 
 				Zahtev zahtev = new Zahtev();
 				for (OglasDTO og : korpaDTO.getOglasi()) {
-					if (og.getAgendId().equals(id)) {
+					if (og.getUsername().equals(id)) {
 						zahtev.getOglasi().add(oglasRepository.getOne(og.getId()));
 						zahtev.setDo(og.getDO());
 						zahtev.setOd(og.getOD());
-						zahtev.setAgentId(og.getAgendId());
+						zahtev.setUsername(og.getUsername());
 						zahtev.setOcenjen(false);
 						zahtev.setIzvestaj(false);
 						zahtev.setChatId(null);
@@ -89,18 +89,18 @@ public class ZahtevService {
 
 		} else {
 			for (OglasDTO og1 : korpaDTO.getOglasi()) {
-				if (og1.getAgendId().toString().equals("1")) {
+				if (og1.getUsername().equals("1")) {
 					Zahtev zahtev = new Zahtev();
 					// jos dodati sta treba
 					zahtev.getOglasi().add(oglasRepository.getOne(og1.getId()));
 					zahtev.setDo(og1.getDO());
 					zahtev.setOd(og1.getOD());
-					zahtev.setAgentId(og1.getAgendId());
+					zahtev.setUsername(og1.getUsername());
 					zahtev.setOcenjen(false);
 					zahtev.setIzvestaj(false);
 					zahtev.setChatId(null);
 					zahtev.setStatus(ZahtevStatus.RESERVED);
-					zahtev.setPodnosilacId(og1.getAgendId());
+					//zahtev.setPodnosilacId(og1.getUsername());
 					
 
 					List<Zahtev> zahtevi = zahtevRepository.findAll();
@@ -133,7 +133,7 @@ public class ZahtevService {
 					zahtev.getOglasi().add(oglasRepository.getOne(og1.getId()));
 					zahtev.setDo(og1.getDO());
 					zahtev.setOd(og1.getOD());
-					zahtev.setAgentId(og1.getAgendId());
+					zahtev.setUsername(og1.getUsername());
 					zahtev.setOcenjen(false);
 					zahtev.setIzvestaj(false);
 					zahtev.setChatId(null);

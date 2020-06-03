@@ -10,7 +10,7 @@ import rs.xml.oglas.model.ZahtevStatus;
 
 public class ZahtevDTO {
 	
-	private Long agentId;
+	private String username;
 	private ZahtevStatus status;
 	private Date od;
 	private Date do1;
@@ -26,7 +26,7 @@ public class ZahtevDTO {
 	
 	public ZahtevDTO(Zahtev z) {
 		super();
-		this.agentId=z.getAgentId();
+		this.username=z.getUsername();
 		this.status=z.getStatus();
 		this.od=z.getOd();
 		this.do1=z.getDo();
@@ -43,12 +43,16 @@ public class ZahtevDTO {
 	
 	
 	
-	public Long getAgentId() {
-		return agentId;
+	
+	
+	public String getUsername() {
+		return username;
 	}
-	public void setAgentId(Long agentId) {
-		this.agentId = agentId;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
 	public ZahtevStatus getStatus() {
 		return status;
 	}

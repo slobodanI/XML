@@ -2,18 +2,15 @@ package rs.xml.oglas.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.Base64.Encoder;
 
 import rs.xml.oglas.model.Oglas;
-import rs.xml.oglas.model.Slika;
 
 public class OglasDTO {
 	
 	private Long id;
 	
-	private Long agendId;
+	private String username;
 	
 	private String marka;
 	
@@ -49,7 +46,7 @@ public class OglasDTO {
 	
 	public OglasDTO(Oglas o) {
 		this.id=o.getId();
-		this.agendId=o.getAgentID();
+		this.username=o.getUsername();
 		this.marka=o.getMarka();
 		this.model=o.getModel();
 		this.gorivo=o.getGorivo();
@@ -63,17 +60,8 @@ public class OglasDTO {
 		this.brSedistaZaDecu=o.getSedistaZaDecu();
 		this.Od=o.getOd();
 		this.Do=o.getDo();
-		for (Slika slika : o.getSlike()) {
-			String imageString;
-
-			Encoder encoder = Base64.getEncoder();
-			// radi i ako se kaze data:image/png
-			imageString = encoder.encodeToString(slika.getSlika());
-			SlikaDTO slikaDTO = new SlikaDTO();
-			slikaDTO.setSlika("data:image/jpeg;base64," + imageString);
-			this.slike.add(slikaDTO);
-		}
-
+		this.slike=null;
+		
 	}
 
 	public String getMarka() {
@@ -188,6 +176,14 @@ public class OglasDTO {
 		this.slike = slike;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -195,14 +191,7 @@ public class OglasDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Long getAgendId() {
-		return agendId;
-	}
-
-	public void setAgendId(Long agendId) {
-		this.agendId = agendId;
-	}
+	
 	
 	
 }

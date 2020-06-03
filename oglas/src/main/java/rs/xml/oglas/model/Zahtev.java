@@ -38,8 +38,8 @@ public class Zahtev {
 	@Enumerated(EnumType.STRING)
 	private ZahtevStatus status;
 	
-	@Column(name="agentId")
-	private Long agentId;
+	@Column(name="username")
+	private String username;
 	
 	@Column(name="Od")
 	private Date Od;
@@ -63,12 +63,12 @@ public class Zahtev {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Zahtev(Set<Oglas> oglasi, ZahtevStatus status, Long agentId, Date od, Date do1, boolean ocenjen,
+	public Zahtev(Set<Oglas> oglasi, ZahtevStatus status, String username, Date od, Date do1, boolean ocenjen,
 			boolean izvestaj, Long podnosilacId, Long chatId) {
 		super();
 		this.oglasi = oglasi;
 		this.status = status;
-		this.agentId = agentId;
+		this.username = username;
 		Od = od;
 		Do = do1;
 		this.ocenjen = ocenjen;
@@ -82,7 +82,7 @@ public class Zahtev {
 		this.oglasi=zahtevDTO.getOglasi();
 		this.Od=zahtevDTO.getOd();
 		this.Do=zahtevDTO.getDo();
-		this.agentId=zahtevDTO.getAgentId();
+		//this.username=zahtevDTO.;
 		this.status=ZahtevStatus.PENDING;
 		this.ocenjen=false;
 		this.izvestaj=false;
@@ -115,12 +115,14 @@ public class Zahtev {
 		this.status = status;
 	}
 
-	public Long getAgentId() {
-		return agentId;
+	
+
+	public String getUsername() {
+		return username;
 	}
 
-	public void setAgentId(Long agentId) {
-		this.agentId = agentId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public Date getOd() {
