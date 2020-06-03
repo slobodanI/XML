@@ -4,10 +4,12 @@ package rs.xml.oglas.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -54,7 +56,15 @@ public class OglasController {
 	@GetMapping("/oglas")
 	public ResponseEntity<?> getOglasi() {
 		// String ip = InetAddress.getLocalHost().getHostAddress();
-		return new ResponseEntity<>(oglasService.findAll(), HttpStatus.OK);
+		List<Oglas> oglasList = oglasService.findAll();
+		
+		List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
+		for(Oglas og: oglasList) {
+			OglasDTO oDTO = new OglasDTO(og);
+			oglasListDTO.add(oDTO);
+		}
+		
+		return new ResponseEntity<>(oglasListDTO, HttpStatus.OK);
 	}
 
 	@GetMapping("/oglas/{oid}")
@@ -63,22 +73,22 @@ public class OglasController {
 		Oglas oglas = oglasService.findOne(oid);
 
 		if (oglas == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Oglas with id:" +oid+" does not exist!", HttpStatus.NOT_FOUND);
 		}
-
-		OglasDTO oglasDTO = new OglasDTO();
-		oglasDTO.setBrSedistaZaDecu(oglas.getSedistaZaDecu());
-		oglasDTO.setCena(oglas.getCena());
-		for (Slika slika : oglas.getSlike()) {
-			String imageString;
-
-			Encoder encoder = Base64.getEncoder();
-			// radi i ako se kaze data:image/png
-			imageString = encoder.encodeToString(slika.getSlika());
-			SlikaDTO slikaDTO = new SlikaDTO();
-			slikaDTO.setSlika("data:image/jpeg;base64," + imageString);
-			oglasDTO.getSlike().add(slikaDTO);
-		}
+				
+		OglasDTO oglasDTO = new OglasDTO(oglas);
+//		oglasDTO.setBrSedistaZaDecu(oglas.getSedistaZaDecu());
+//		oglasDTO.setCena(oglas.getCena());
+//		for (Slika slika : oglas.getSlike()) {
+//			String imageString;
+//
+//			Encoder encoder = Base64.getEncoder();
+//			// radi i ako se kaze data:image/png
+//			imageString = encoder.encodeToString(slika.getSlika());
+//			SlikaDTO slikaDTO = new SlikaDTO();
+//			slikaDTO.setSlika("data:image/jpeg;base64," + imageString);
+//			oglasDTO.getSlike().add(slikaDTO);
+//		}
 
 		return new ResponseEntity<>(oglasDTO, HttpStatus.OK);
 	}
@@ -87,6 +97,10 @@ public class OglasController {
 	@PreAuthorize("hasAuthority('CREATE_OGLAS')")
     public ResponseEntity<?> postOglas(@RequestBody @Valid NewOglasDTO oglasDTO, HttpServletRequest request) {
         
+		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
+			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
+		}
+		
 		String username = request.getHeader("username");
 		String permisije = request.getHeader("permissions");
 		
@@ -113,6 +127,7 @@ public class OglasController {
 		return new ResponseEntity<>(oglas, HttpStatus.OK);
     }
 
+	// sto se tice datuma, vraticu oglas samo ako oglas OD-DO sadrzi trazeni OD-DO 
 	@GetMapping("/search")
 	public ResponseEntity<?> search(
 			@RequestParam(required = true) String mesto,
@@ -147,16 +162,16 @@ public class OglasController {
             brSedZaDecuInt = Integer.parseInt(brSedZaDecu);
         } catch (ParseException | NumberFormatException e) {
         	System.out.println("***Parametri za pretragu nisu dobro formirani!");
-            return new ResponseEntity<String>("Parametri za pretragu nisu dobro formirani!",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("Parametri_za_pretragu_nisu_dobro_formirani!",HttpStatus.BAD_REQUEST);
         }
                
         Collection<OglasDTOsearch> oglasi = oglasService.search(mesto, odDate, doDate, marka, model, menjac, gorivo, klasa,
         														predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt);
         return new ResponseEntity<Collection<OglasDTOsearch>>(oglasi, HttpStatus.OK);
 //        RAD SA VREMENOM
-//        java.sql.Date proba = new java.sql.Date(odDate.getTime());        
-//        LocalDateTime asd = new LocalDateTime(odDate.getTime());
-//        org.joda.time.LocalDate ld = new org.joda.time.LocalDate(odDate.getTime());
+//      java.sql.Date proba = new java.sql.Date(odDate.getTime());        
+//      LocalDateTime asd = new LocalDateTime(odDate.getTime());
+//      org.joda.time.LocalDate ld = new org.joda.time.LocalDate(odDate.getTime());
 //		System.out.println("***LocalDateTime:" + asd); // ***LocalDateTime:2020-06-01T00:00:00.000
 //		System.out.println("***sql Date:" + proba); // ***sql Date:2020-06-01
 //		System.out.println("***LocalDate joda:" + ld); // ***LocalDate joda:2020-06-01

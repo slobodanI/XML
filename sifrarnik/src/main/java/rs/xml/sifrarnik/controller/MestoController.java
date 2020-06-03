@@ -52,7 +52,7 @@ public class MestoController
 		
 		if(m==null)
 		{
-			return new ResponseEntity<String>("Postoji mesto sa tim imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_mesto_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -67,7 +67,7 @@ public class MestoController
 		
 		if(m==null)
 		{
-			return new ResponseEntity<String>("Postoji mesto sa tim imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_mesto_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
