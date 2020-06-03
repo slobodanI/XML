@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.xml.sifrarnik.dto.MestoNewDTO;
+import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Mesto;
 import rs.xml.sifrarnik.repository.mestoRepository;
 
@@ -24,7 +25,7 @@ public class MestoService
 	
 	public Mesto findOne(Long id) 
 	{
-		return mestoRepo.findById(id).orElseGet(null);
+		return mestoRepo.findById(id).orElseThrow(() -> new NotFoundException("Mesto with id:" +id+ " does not exist!"));
 	}
 
 	public List<Mesto> findAll() 
@@ -90,6 +91,7 @@ public class MestoService
 
 	public void deleteMesto(Long id) 
 	{
+		findOne(id);// okine error ako ne postoji
 		remove(id);
 	}
 	

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.xml.sifrarnik.dto.GorivoNewDTO;
+import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Gorivo;
 import rs.xml.sifrarnik.repository.gorivoRepository;
 
@@ -23,7 +24,7 @@ public class GorivoServices
 	
 	public Gorivo findOne(Long id) 
 	{
-		return gorivoRepo.findById(id).orElseGet(null);
+		return gorivoRepo.findById(id).orElseThrow(() -> new NotFoundException("Gorivo with id:" +id+ " does not exist!"));
 	}
 
 	public List<Gorivo> findAll() 
@@ -44,11 +45,6 @@ public class GorivoServices
 	public List<Gorivo> getAllGorivo() 
 	{
 		return findAll();
-	}
-
-	public Gorivo getGorivoById(Long Id) 
-	{
-		return findOne(Id);
 	}
 
 	public Gorivo updateGorivo(Long id, GorivoNewDTO info) 
@@ -89,6 +85,7 @@ public class GorivoServices
 
 	public void deleteGorivo(Long id) 
 	{
+		findOne(id); // okine error ako ne postoji
 		remove(id);
 	}
 

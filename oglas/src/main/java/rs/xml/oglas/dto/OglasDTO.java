@@ -9,6 +9,9 @@ import java.util.Base64.Encoder;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Slika;
 
+import rs.xml.oglas.model.Oglas;
+import rs.xml.oglas.model.Slika;
+
 public class OglasDTO {
 	
 	private Long id;
@@ -25,9 +28,11 @@ public class OglasDTO {
 	
 	private String klasa;
 	
+	private String mesto;
+	
 	private int cena; // cena za dan + cena za osiguranje ako postoji
 	
-	private String cenovnik; // ovo treba vremenom promeniti
+//	private String cenovnik; // ovo treba vremenom promeniti
 	
 	private int kilometraza;
 	
@@ -48,34 +53,31 @@ public class OglasDTO {
 	}
 	
 	public OglasDTO(Oglas o) {
-		this.id=o.getId();
-		this.agendId=o.getAgentID();
-		this.marka=o.getMarka();
-		this.model=o.getModel();
-		this.gorivo=o.getGorivo();
-		this.menjac=o.getMenjac();
-		this.klasa=o.getKlasa();
-		this.cena=o.getCena();
-		this.cenovnik=null;
-		this.kilometraza=o.getKilometraza();
-		this.planiranaKilometraza=o.getPlaniranaKilometraza();
-		this.osiguranje=o.isOsiguranje();
-		this.brSedistaZaDecu=o.getSedistaZaDecu();
-		this.Od=o.getOd();
-		this.Do=o.getDo();
-		for (Slika slika : o.getSlike()) {
+		this.id = o.getId();
+		this.marka = o.getMarka();
+		this.model = o.getModel();
+		this.menjac = o.getMenjac();
+		this.klasa = o.getKlasa();
+		this.mesto = o.getMesto();
+		this.gorivo = o.getGorivo();
+		this.cena = o.getCena();
+		this.kilometraza = o.getKilometraza();
+		this.planiranaKilometraza= o.getPlaniranaKilometraza();
+		this.osiguranje = o.isOsiguranje();
+		this.brSedistaZaDecu = o.getSedistaZaDecu();
+		this.Od = o.getOd();
+		this.Do = o.getDo();
+		for(Slika s: o.getSlike()) {		
 			String imageString;
-
 			Encoder encoder = Base64.getEncoder();
 			// radi i ako se kaze data:image/png
-			imageString = encoder.encodeToString(slika.getSlika());
+			imageString = encoder.encodeToString(s.getSlika());
 			SlikaDTO slikaDTO = new SlikaDTO();
 			slikaDTO.setSlika("data:image/jpeg;base64," + imageString);
-			this.slike.add(slikaDTO);
+			this.getSlike().add(slikaDTO);
 		}
-
 	}
-
+	
 	public String getMarka() {
 		return marka;
 	}
@@ -124,13 +126,13 @@ public class OglasDTO {
 		this.cena = cena;
 	}
 
-	public String getCenovnik() {
-		return cenovnik;
-	}
-
-	public void setCenovnik(String cenovnik) {
-		this.cenovnik = cenovnik;
-	}
+//	public String getCenovnik() {
+//		return cenovnik;
+//	}
+//
+//	public void setCenovnik(String cenovnik) {
+//		this.cenovnik = cenovnik;
+//	}
 
 	public int getKilometraza() {
 		return kilometraza;
@@ -164,28 +166,44 @@ public class OglasDTO {
 		this.brSedistaZaDecu = brSedistaZaDecu;
 	}
 
-	public Date getOD() {
-		return Od;
-	}
-
-	public void setOD(Date Od) {
-		this.Od = Od;
-	}
-
-	public Date getDO() {
-		return Do;
-	}
-
-	public void setDO(Date Do) {
-		this.Do = Do;
-	}
-
 	public List<SlikaDTO> getSlike() {
 		return slike;
 	}
 
 	public void setSlike(List<SlikaDTO> slike) {
 		this.slike = slike;
+	}
+
+	public String getMesto() {
+		return mesto;
+	}
+
+	public void setMesto(String mesto) {
+		this.mesto = mesto;
+	}
+
+	public Date getOd() {
+		return Od;
+	}
+
+	public void setOd(Date od) {
+		Od = od;
+	}
+
+	public Date getDo() {
+		return Do;
+	}
+
+	public void setDo(Date do1) {
+		Do = do1;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getId() {
@@ -203,6 +221,7 @@ public class OglasDTO {
 	public void setAgendId(Long agendId) {
 		this.agendId = agendId;
 	}
+	
 	
 	
 }

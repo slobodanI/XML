@@ -73,6 +73,9 @@ public class User implements UserDetails {
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 	
+    @Column(name = "deleted")
+    private boolean deleted;
+    
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -184,6 +187,14 @@ public class User implements UserDetails {
 	public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public List<Role> getRoles() {
 		return roles;
@@ -213,7 +224,7 @@ public class User implements UserDetails {
     
 	@Override
     public boolean isEnabled() {
-        return accepted; // && !blocked ;
+        return accepted && !deleted; // && !blocked ;
     }
     
 	/**

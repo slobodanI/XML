@@ -52,7 +52,7 @@ public class ModelController
 		
 		if(m==null)
 		{
-			return new ResponseEntity<String>("Postoji model sa tim imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_model_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
@@ -67,7 +67,7 @@ public class ModelController
 		
 		if(mod==null)
 		{
-			return new ResponseEntity<String>("Postoji model sa tim imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Postoji_model_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{

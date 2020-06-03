@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.xml.sifrarnik.dto.KlasaNewDTO;
+import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Klasa;
 import rs.xml.sifrarnik.repository.klasaRepository;
 
@@ -23,7 +24,7 @@ public class KlasaService
 	
 	public Klasa findOne(Long id) 
 	{
-		return klasaRepo.findById(id).orElseGet(null);
+		return klasaRepo.findById(id).orElseThrow(() -> new NotFoundException("Klasa with id:" +id+ " does not exist!"));
 	}
 
 	public List<Klasa> findAll() 
@@ -89,6 +90,7 @@ public class KlasaService
 
 	public void deleteKlasa(Long id) 
 	{
+		findOne(id); // // okine error ako ne postoji
 		remove(id);
 	}
 
