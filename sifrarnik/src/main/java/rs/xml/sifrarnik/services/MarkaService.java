@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rs.xml.sifrarnik.dto.MarkaNewDTO;
 import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Marka;
 import rs.xml.sifrarnik.repository.markaRepository;
@@ -53,47 +52,45 @@ public class MarkaService
 		return findOne(Id);
 	}
 
-	public Marka updateMarka(Long id, MarkaNewDTO info) 
+	public Marka updateMarka(Long id, String info) 
 	{
 		List<Marka> lista = findAll();
 		
 		for (Marka marka : lista) 
 		{
-			if(marka.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
+			if(marka.getName().toLowerCase().equals(info.toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Marka m = findOne(id);
-		m.setName(info.getName()); 
+		m.setName(info); 
 		save(m);
 		return m;
 	}
 
-	public Marka createMarka(MarkaNewDTO info) 
+	public Marka createMarka(String info) 
 	{
 		List<Marka> lista = findAll();
 		
 		for (Marka marka : lista) 
 		{
-			if(marka.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
+			if(marka.getName().toLowerCase().equals(info.toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Marka m = new Marka();
-		m.setName(info.getName());
+		m.setName(info);
 		save(m);
 		return m;
 	}
 
-	public Marka deleteMarka(Long id) 
+	public void deleteMarka(Long id) 
 	{
-		Marka m = findOne(id);// okine error ako ne postoji
 		remove(id);
-		return m;
 	}
 	
 	

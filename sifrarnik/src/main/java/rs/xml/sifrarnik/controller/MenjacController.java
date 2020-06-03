@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.xml.sifrarnik.dto.MenjacNewDTO;
 import rs.xml.sifrarnik.model.Menjac;
 import rs.xml.sifrarnik.services.MenjacService;
 
@@ -45,7 +44,7 @@ public class MenjacController
 	}
 	
 	@PutMapping(value = "/menjac/{Id}")
-	public ResponseEntity<?> updateMenjac(@PathVariable Long Id , @RequestBody MenjacNewDTO info) 
+	public ResponseEntity<?> updateMenjac(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Menjac m = menjacService.updateMenjac(Id, info);
 		
@@ -60,26 +59,26 @@ public class MenjacController
 	}
 	
 	@PostMapping(value = "/menjac", produces = "application/json")
-	public ResponseEntity<?> newMenjac(@RequestBody MenjacNewDTO info) 
+	public ResponseEntity<Menjac> newMenjac(@RequestBody String info) 
 	{	
 		Menjac menj = menjacService.createMenjac(info);
 		
-		if(menj==null)
+		if(menj!=null)
 		{
-			return new ResponseEntity<String>("Postoji_menjac_sa_tim_imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Menjac>(menj, HttpStatus.OK);
 		}
 		else
 		{
-			return new ResponseEntity<>(menj, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 	}
 	
 	@DeleteMapping(value = "/menjac/{Id}")
-	public ResponseEntity<Menjac>deleteMenjac(@PathVariable Long Id) 
+	public ResponseEntity<?> deleteMenjac(@PathVariable Long Id) 
 	{	
-		Menjac m = menjacService.deleteMenjac(Id);
+		menjacService.deleteMenjac(Id);
 		
-		return new ResponseEntity<>(m,HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	

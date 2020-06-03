@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import rs.xml.sifrarnik.dto.MestoNewDTO;
 import rs.xml.sifrarnik.exception.NotFoundException;
 import rs.xml.sifrarnik.model.Mesto;
 import rs.xml.sifrarnik.repository.mestoRepository;
@@ -53,47 +52,45 @@ public class MestoService
 		return findOne(Id);
 	}
 
-	public Mesto updateMesto(Long id, MestoNewDTO info) 
+	public Mesto updateMesto(Long id, String info) 
 	{
 		List<Mesto> lista = findAll();
 		
 		for (Mesto mesto : lista) 
 		{
-			if(mesto.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
+			if(mesto.getName().toLowerCase().equals(info.toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Mesto m = findOne(id);
-		m.setName(info.getName()); 
+		m.setName(info); 
 		save(m);
 		return m;
 	}
 
-	public Mesto createMesto(MestoNewDTO info) 
+	public Mesto createMesto(String info) 
 	{
 		List<Mesto> lista = findAll();
 		
 		for (Mesto mesto : lista) 
 		{
-			if(mesto.getName().toLowerCase().contentEquals(info.getName().toLowerCase()))
+			if(mesto.getName().toLowerCase().equals(info.toLowerCase()))
 			{
 				return null;
 			}
 		}
 		
 		Mesto m = new Mesto();
-		m.setName(info.getName());
+		m.setName(info);
 		save(m);
 		return m;
 	}
 
-	public Mesto deleteMesto(Long id) 
+	public void deleteMesto(Long id) 
 	{
-		Mesto m = findOne(id);// okine error ako ne postoji
 		remove(id);
-		return m;
 	}
 	
 	

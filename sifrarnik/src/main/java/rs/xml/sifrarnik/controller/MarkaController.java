@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.xml.sifrarnik.dto.MarkaNewDTO;
 import rs.xml.sifrarnik.model.Marka;
 import rs.xml.sifrarnik.services.MarkaService;
 
@@ -45,7 +44,7 @@ public class MarkaController
 	}
 	
 	@PutMapping(value = "/marka/{Id}")
-	public ResponseEntity<?> updateMarka(@PathVariable Long Id , @RequestBody MarkaNewDTO info) 
+	public ResponseEntity<?> updateMarka(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Marka m = markaService.updateMarka(Id, info);
 
@@ -60,26 +59,26 @@ public class MarkaController
 	}
 	
 	@PostMapping(value = "/marka", produces = "application/json")
-	public ResponseEntity<?> newMarka(@RequestBody MarkaNewDTO info) 
+	public ResponseEntity<Marka> newMarka(@RequestBody String info) 
 	{	
 		Marka mar = markaService.createMarka(info);
 		
-		if(mar==null)
+		if(mar!=null)
 		{
-			return new ResponseEntity<String>("Postoji_marka_sa_tim_imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Marka>(mar, HttpStatus.OK);
 		}
 		else
 		{
-			return new ResponseEntity<>(mar, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 	}
 	
 	@DeleteMapping(value = "/marka/{Id}")
-	public ResponseEntity<Marka>deleteMarka(@PathVariable Long Id) 
+	public ResponseEntity<?> deleteMarka(@PathVariable Long Id) 
 	{	
-		Marka m = markaService.deleteMarka(Id);
+		markaService.deleteMarka(Id);
 		
-		return new ResponseEntity<>(m,HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	

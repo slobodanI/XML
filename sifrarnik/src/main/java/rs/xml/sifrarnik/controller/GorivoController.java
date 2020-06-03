@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.xml.sifrarnik.dto.GorivoNewDTO;
 import rs.xml.sifrarnik.model.Gorivo;
 import rs.xml.sifrarnik.services.GorivoServices;
 
@@ -37,7 +36,7 @@ public class GorivoController
 	}
 	
 	@GetMapping(value = "/gorivo/{Id}")
-	public ResponseEntity<?> getGorivoById(@PathVariable Long Id) 
+	public ResponseEntity<Gorivo> getGorivoById(@PathVariable Long Id) 
 	{	
 		Gorivo gor = sifrarnikService.findOne(Id);
 
@@ -45,7 +44,7 @@ public class GorivoController
 	}
 	
 	@PutMapping(value = "/gorivo/{Id}")
-	public ResponseEntity<?> updateGorivo(@PathVariable Long Id , @RequestBody GorivoNewDTO info) 
+	public ResponseEntity<?> updateGorivo(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Gorivo gor = sifrarnikService.updateGorivo(Id, info);
 		
@@ -60,27 +59,27 @@ public class GorivoController
 	}
 	
 	@PostMapping(value = "/gorivo", produces = "application/json")
-	public ResponseEntity<?> newGorivo(@RequestBody GorivoNewDTO info) 
+	public ResponseEntity<Gorivo> newGorivo(@RequestBody String info) 
 	{	
 		Gorivo gor = sifrarnikService.createGorivo(info);
 		
-		if(gor==null)
+		if(gor!=null)
 		{
-			return new ResponseEntity<String>("Postoji_gorivo_sa_tim_imenom",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Gorivo>(gor, HttpStatus.OK);
 		}
 		else
 		{
-			return new ResponseEntity<>(gor, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		
 	}
 	
 	@DeleteMapping(value = "/gorivo/{Id}")
-	public ResponseEntity<Gorivo>deleteGorivo(@PathVariable Long Id) 
+	public ResponseEntity<?> deleteGorivo(@PathVariable Long Id) 
 	{	
-		Gorivo g = sifrarnikService.deleteGorivo(Id);
+		sifrarnikService.deleteGorivo(Id);
 		
-		return new ResponseEntity<>(g,HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	
