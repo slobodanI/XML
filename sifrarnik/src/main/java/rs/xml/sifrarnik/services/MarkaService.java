@@ -90,6 +90,7 @@ public class MarkaService
 
 	public void deleteMarka(Long id) 
 	{
+		findOne(id); // da okine error ako ne postoji marka sa prosledjenim Id
 		remove(id);
 	}
 	

@@ -90,6 +90,7 @@ public class ModelService
 
 	public void deleteModel(Long id) 
 	{
+		findOne(id); // da okine error ako ne postoji model sa prosledjenim Id
 		remove(id);
 	}
 	

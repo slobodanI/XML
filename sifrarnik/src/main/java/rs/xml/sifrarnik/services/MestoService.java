@@ -90,6 +90,7 @@ public class MestoService
 
 	public void deleteMesto(Long id) 
 	{
+		findOne(id); // da okine error ako ne postoji mesto sa prosledjenim Id
 		remove(id);
 	}
 	

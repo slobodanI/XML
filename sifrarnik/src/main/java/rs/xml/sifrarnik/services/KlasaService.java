@@ -89,6 +89,7 @@ public class KlasaService
 
 	public void deleteKlasa(Long id) 
 	{
+		findOne(id); // da okine error ako ne postoji klasa sa prosledjenim Id
 		remove(id);
 	}
 

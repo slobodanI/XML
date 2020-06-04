@@ -90,6 +90,7 @@ public class MenjacService
 
 	public void deleteMenjac(Long id) 
 	{
+		findOne(id); // da okine error ako ne postoji menjac sa prosledjenim Id
 		remove(id);
 	}
 	

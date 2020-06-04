@@ -85,6 +85,7 @@ public class GorivoServices
 
 	public void deleteGorivo(Long Id) 
 	{	
+		findOne(Id); // da okine error ako ne postoji gorivo sa prosledjenim Id
 		remove(Id);
 	}
 
