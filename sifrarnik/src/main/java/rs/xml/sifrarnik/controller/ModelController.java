@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.xml.sifrarnik.dto.ModelNewDTO;
 import rs.xml.sifrarnik.model.Model;
 import rs.xml.sifrarnik.services.ModelService;
 
@@ -46,7 +45,7 @@ public class ModelController
 	}
 	
 	@PutMapping(value = "/model/{Id}")
-	public ResponseEntity<?> updateModel(@PathVariable Long Id , @RequestBody ModelNewDTO info) 
+	public ResponseEntity<?> updateModel(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Model m = modelService.updateModel(Id, info);
 		
@@ -61,22 +60,22 @@ public class ModelController
 	}
 	
 	@PostMapping(value = "/model", produces = "application/json")
-	public ResponseEntity<?> newModel(@RequestBody ModelNewDTO info) 
+	public ResponseEntity<Model> newModel(@RequestBody String info) 
 	{	
 		Model mod = modelService.createModel(info);
 		
-		if(mod==null)
+		if(mod!=null)
 		{
-			return new ResponseEntity<String>("Postoji_model_sa_tim_imenom", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Model>(mod, HttpStatus.OK);
 		}
 		else
 		{
-			return new ResponseEntity<>(mod, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 	}
 	
 	@DeleteMapping(value = "/model/{Id}")
-	public ResponseEntity<List<Void>>deleteModel(@PathVariable Long Id) 
+	public ResponseEntity<?> deleteModel(@PathVariable Long Id) 
 	{	
 		modelService.deleteModel(Id);
 		
