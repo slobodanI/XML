@@ -53,8 +53,8 @@ public class Zahtev {
 	@Column(name="izvestaj")
 	private boolean izvestaj; // da li je kreiran izvestaj
 	
-	@Column(name="podnosilacId")
-	private Long podnosilacId;
+	@Column(name="podnosilac_username")
+	private String podnosilacUsername;
 	
 	@Column(name="chatId")
 	private Long chatId;
@@ -64,7 +64,7 @@ public class Zahtev {
 	}
 
 	public Zahtev(Set<Oglas> oglasi, ZahtevStatus status, String username, Date od, Date do1, boolean ocenjen,
-			boolean izvestaj, Long podnosilacId, Long chatId) {
+			boolean izvestaj, String podnosilacUsername, Long chatId) {
 		super();
 		this.oglasi = oglasi;
 		this.status = status;
@@ -73,22 +73,11 @@ public class Zahtev {
 		Do = do1;
 		this.ocenjen = ocenjen;
 		this.izvestaj = izvestaj;
-		this.podnosilacId = podnosilacId;
+		this.podnosilacUsername = podnosilacUsername;
 		this.chatId = chatId;
 	}
 
-	public Zahtev(NewZahtevDTO zahtevDTO) {
-		//super();
-		this.oglasi=zahtevDTO.getOglasi();
-		this.Od=zahtevDTO.getOd();
-		this.Do=zahtevDTO.getDo();
-		//this.username=zahtevDTO.;
-		this.status=ZahtevStatus.PENDING;
-		this.ocenjen=false;
-		this.izvestaj=false;
-		this.podnosilacId=null;
-		this.chatId=null;
-	}
+
 	
 	
 	public Long getId() {
@@ -157,13 +146,6 @@ public class Zahtev {
 		this.izvestaj = izvestaj;
 	}
 
-	public Long getPodnosilacId() {
-		return podnosilacId;
-	}
-
-	public void setPodnosilacId(Long podnosilacId) {
-		this.podnosilacId = podnosilacId;
-	}
 
 	public Long getChatId() {
 		return chatId;
@@ -171,6 +153,14 @@ public class Zahtev {
 
 	public void setChatId(Long chatId) {
 		this.chatId = chatId;
+	}
+
+	public String getPodnosilacUsername() {
+		return podnosilacUsername;
+	}
+
+	public void setPodnosilacUsername(String podnosilacUsername) {
+		this.podnosilacUsername = podnosilacUsername;
 	}
 	
 	

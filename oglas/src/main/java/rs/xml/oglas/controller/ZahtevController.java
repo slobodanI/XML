@@ -1,5 +1,7 @@
 package rs.xml.oglas.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class ZahtevController {
 	
 	@GetMapping("/zahtev")
 	public ResponseEntity<?> getZahtevi(){
-		return new ResponseEntity<>(zahtevService.findAll(),HttpStatus.OK);
+		return new ResponseEntity<>(zahtevService.findAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/zahtev/{zid}")
@@ -41,10 +43,11 @@ public class ZahtevController {
 	}
 	
 	@PostMapping("/zahtev")
-	public ResponseEntity<?> postZahtev(@RequestBody KorpaDTO korpa){
+	public ResponseEntity<?> postZahtev(@RequestBody KorpaDTO korpa, HttpServletRequest request){
 		
+		String username = request.getHeader("username");
 		
-		String odgovor = zahtevService.save(korpa);
+		String odgovor = zahtevService.save(korpa,username);
 		if(odgovor.equals("Kreirani zahtevi sa vise oglasa")) {
 		return new ResponseEntity<>(odgovor,HttpStatus.OK);
 		}else if(odgovor.equals("Kreirano je vise zahteva")) {

@@ -1,14 +1,11 @@
 package rs.xml.oglas.dto;
 
 import java.util.List;
-import java.util.Set;
-
-import rs.xml.oglas.model.Oglas;
 
 public class KorpaDTO {
 
 	private boolean bundle;
-	private List<OglasDTO> oglasi;
+	private List<OglasUKorpiDTO> oglasi;
 	
 	public KorpaDTO() {
 		
@@ -21,12 +18,18 @@ public class KorpaDTO {
 	public void setBundle(boolean bundle) {
 		this.bundle = bundle;
 	}
-	public List<OglasDTO> getOglasi() {
+
+
+	public List<OglasUKorpiDTO> getOglasi() {
 		return oglasi;
 	}
-	public void setOglasi(List<OglasDTO> oglasi) {
+
+
+	public void setOglasi(List<OglasUKorpiDTO> oglasi) {
 		this.oglasi = oglasi;
 	}
+
+	
 	
 	
 	

@@ -2,6 +2,8 @@ package rs.xml.oglas.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.List;
 
 import rs.xml.oglas.model.Oglas;
@@ -51,6 +53,7 @@ public class OglasDTO {
 	
 	public OglasDTO(Oglas o) {
 		this.id = o.getId();
+		this.username=o.getUsername();
 		this.marka = o.getMarka();
 		this.model = o.getModel();
 		this.menjac = o.getMenjac();
@@ -210,15 +213,6 @@ public class OglasDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	
 	
 }
