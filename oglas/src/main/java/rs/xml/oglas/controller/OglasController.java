@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,9 @@ import rs.xml.oglas.service.SlikaService;
 @RestController
 public class OglasController {
 
+	final static Logger logger = LoggerFactory.getLogger(OglasController.class);
+	
+	
 	/*
 	 * TODO: 
 	 * -dodaj cenovnik 
@@ -57,7 +62,7 @@ public class OglasController {
 	public ResponseEntity<?> getOglasi() {
 		// String ip = InetAddress.getLocalHost().getHostAddress();
 		List<Oglas> oglasList = oglasService.findAll();
-		
+		logger.info("get all oglasi {}", "test");;
 		List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
 		for(Oglas og: oglasList) {
 			OglasDTO oDTO = new OglasDTO(og);
