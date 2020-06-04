@@ -15,13 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,9 +43,13 @@ import rs.xml.oglas.service.SlikaService;
 @RestController
 public class OglasController {
 
+	final static Logger logger = LoggerFactory.getLogger(OglasController.class);
+	
+	
 	/*
 	 * TODO: 
-	 * -dodaj cenovnik 
+	 * -dodaj cenovnik
+	 * -da li da vracam brisane oglase metodom findAll ???
 	 */
 
 	@Autowired
@@ -57,7 +65,7 @@ public class OglasController {
 	public ResponseEntity<?> getOglasi() {
 		// String ip = InetAddress.getLocalHost().getHostAddress();
 		List<Oglas> oglasList = oglasService.findAll();
-		
+		logger.info("get all oglasi {}", "test");;
 		List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
 		for(Oglas og: oglasList) {
 			OglasDTO oDTO = new OglasDTO(og);
@@ -69,26 +77,13 @@ public class OglasController {
 
 	@GetMapping("/oglas/{oid}")
 	public ResponseEntity<?> getOglas(@PathVariable Long oid) {
-		// String ip = InetAddress.getLocalHost().getHostAddress();
 		Oglas oglas = oglasService.findOne(oid);
 
-		if (oglas == null) {
+		if (oglas == null || oglas.isDeleted()) {
 			return new ResponseEntity<String>("Oglas with id:" +oid+" does not exist!", HttpStatus.NOT_FOUND);
 		}
 				
 		OglasDTO oglasDTO = new OglasDTO(oglas);
-//		oglasDTO.setBrSedistaZaDecu(oglas.getSedistaZaDecu());
-//		oglasDTO.setCena(oglas.getCena());
-//		for (Slika slika : oglas.getSlike()) {
-//			String imageString;
-//
-//			Encoder encoder = Base64.getEncoder();
-//			// radi i ako se kaze data:image/png
-//			imageString = encoder.encodeToString(slika.getSlika());
-//			SlikaDTO slikaDTO = new SlikaDTO();
-//			slikaDTO.setSlika("data:image/jpeg;base64," + imageString);
-//			oglasDTO.getSlike().add(slikaDTO);
-//		}
 
 		return new ResponseEntity<>(oglasDTO, HttpStatus.OK);
 	}
@@ -105,9 +100,10 @@ public class OglasController {
 		String permisije = request.getHeader("permissions");
 		
 		Oglas oglas = new Oglas(oglasDTO);
-		if(!oglasService.createOglasWithFeignClient(oglas, oglasDTO)) {
-			return new ResponseEntity<String>("Ne_postoje_proslenjeni_model/marka/klasa/mesto/gorivo/menjac", HttpStatus.BAD_REQUEST);
-		}
+		oglasService.createOglasWithFeignClient(oglas, oglasDTO);
+//		if(!oglasService.createOglasWithFeignClient(oglas, oglasDTO)) {
+//			return new ResponseEntity<String>("Ne_postoje_proslenjeni_model/marka/klasa/mesto/gorivo/menjac", HttpStatus.BAD_REQUEST);
+//		}
 		oglas.setUsername(username);
 		//ako je obican user poslao zahtev
 		if(permisije.contains("ROLE_USER") && !permisije.contains("ROLE_AGENT") && !permisije.contains("ROLE_ADMIN")) {			
@@ -126,7 +122,37 @@ public class OglasController {
 		oglas.setSlike(null);
 		return new ResponseEntity<>(oglas, HttpStatus.OK);
     }
-
+	
+	@PutMapping("/oglas/{oid}")
+	public ResponseEntity<?> updateOglas(@PathVariable Long oid, @RequestBody @Valid NewOglasDTO oglasDTO, HttpServletRequest request) {
+		
+		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
+			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
+		}
+		
+		String username = request.getHeader("username");
+		String permisije = request.getHeader("permissions");
+		
+		Oglas oglas = oglasService.updateOglas(oid, oglasDTO, username);
+		if(oglas == null) {
+			return new ResponseEntity<String>("Nije_tvoj_oglas!", HttpStatus.FORBIDDEN);
+		}
+		OglasDTO oglasDTOret = new OglasDTO(oglas);
+		return new ResponseEntity<>(oglasDTOret, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("oglas/{oid}")
+	public ResponseEntity<?> deleteOglas(@PathVariable Long oid, HttpServletRequest request) {
+		
+		String username = request.getHeader("username");
+			
+		if(oglasService.deleteOglas(oid, username) == null) {
+			return new ResponseEntity<String>("Nije_tvoj_oglas!", HttpStatus.FORBIDDEN);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	// sto se tice datuma, vraticu oglas samo ako oglas OD-DO sadrzi trazeni OD-DO 
 	@GetMapping("/search")
 	public ResponseEntity<?> search(
