@@ -32,7 +32,7 @@ $(document).ready(function() {
 		event.preventDefault();
 		var username = $('input[name="username"]').val();
 		var password = $('input[name="password"]').val();		
-		
+
 		$.post({
 			url: 'auth/login',														
 			data: JSON.stringify({username, password}),
