@@ -1,7 +1,8 @@
 package rs.xml.oglas.model;
 
 import java.sql.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +18,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import rs.xml.oglas.dto.NewZahtevDTO;
+
 @Entity
 @Table(name = "ZAHTEV")
 public class Zahtev {
@@ -26,17 +29,17 @@ public class Zahtev {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "OGLAS_ZAHTEV",
             joinColumns = @JoinColumn(name = "zahtev_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "oglas_id", referencedColumnName = "id"))
-	private List<Oglas> oglasi;
+	private Set<Oglas> oglasi = new HashSet<Oglas>();
 	
 	@Enumerated(EnumType.STRING)
 	private ZahtevStatus status;
 	
-	@Column(name="agentId")
-	private Long agentId;
+	@Column(name="username")
+	private String username;
 	
 	@Column(name="Od")
 	private Date Od;
@@ -50,8 +53,8 @@ public class Zahtev {
 	@Column(name="izvestaj")
 	private boolean izvestaj; // da li je kreiran izvestaj
 	
-	@Column(name="podnosilacId")
-	private Long podnosilacId;
+	@Column(name="podnosilac_username")
+	private String podnosilacUsername;
 	
 	@Column(name="chatId")
 	private Long chatId;
@@ -60,20 +63,23 @@ public class Zahtev {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Zahtev(List<Oglas> oglasi, ZahtevStatus status, Long agentId, Date od, Date do1, boolean ocenjen,
-			boolean izvestaj, Long podnosilacId, Long chatId) {
+	public Zahtev(Set<Oglas> oglasi, ZahtevStatus status, String username, Date od, Date do1, boolean ocenjen,
+			boolean izvestaj, String podnosilacUsername, Long chatId) {
 		super();
 		this.oglasi = oglasi;
 		this.status = status;
-		this.agentId = agentId;
+		this.username = username;
 		Od = od;
 		Do = do1;
 		this.ocenjen = ocenjen;
 		this.izvestaj = izvestaj;
-		this.podnosilacId = podnosilacId;
+		this.podnosilacUsername = podnosilacUsername;
 		this.chatId = chatId;
 	}
 
+
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -82,11 +88,11 @@ public class Zahtev {
 		this.id = id;
 	}
 
-	public List<Oglas> getOglasi() {
+	public Set<Oglas> getOglasi() {
 		return oglasi;
 	}
 
-	public void setOglasi(List<Oglas> oglasi) {
+	public void setOglasi(Set<Oglas> oglasi) {
 		this.oglasi = oglasi;
 	}
 
@@ -98,12 +104,14 @@ public class Zahtev {
 		this.status = status;
 	}
 
-	public Long getAgentId() {
-		return agentId;
+	
+
+	public String getUsername() {
+		return username;
 	}
 
-	public void setAgentId(Long agentId) {
-		this.agentId = agentId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public Date getOd() {
@@ -138,13 +146,6 @@ public class Zahtev {
 		this.izvestaj = izvestaj;
 	}
 
-	public Long getPodnosilacId() {
-		return podnosilacId;
-	}
-
-	public void setPodnosilacId(Long podnosilacId) {
-		this.podnosilacId = podnosilacId;
-	}
 
 	public Long getChatId() {
 		return chatId;
@@ -152,6 +153,14 @@ public class Zahtev {
 
 	public void setChatId(Long chatId) {
 		this.chatId = chatId;
+	}
+
+	public String getPodnosilacUsername() {
+		return podnosilacUsername;
+	}
+
+	public void setPodnosilacUsername(String podnosilacUsername) {
+		this.podnosilacUsername = podnosilacUsername;
 	}
 	
 	

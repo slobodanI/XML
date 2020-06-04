@@ -3,12 +3,10 @@ package rs.xml.oglas.dto;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.Base64.Encoder;
+import java.util.List;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import rs.xml.oglas.model.Oglas;
 
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Slika;
@@ -16,6 +14,8 @@ import rs.xml.oglas.model.Slika;
 public class OglasDTO {
 	
 	private Long id;
+	
+	private String username;
 	
 	private String marka;
 	
@@ -53,6 +53,7 @@ public class OglasDTO {
 	
 	public OglasDTO(Oglas o) {
 		this.id = o.getId();
+		this.username=o.getUsername();
 		this.marka = o.getMarka();
 		this.model = o.getModel();
 		this.menjac = o.getMenjac();
@@ -204,7 +205,14 @@ public class OglasDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	
 	
 }
