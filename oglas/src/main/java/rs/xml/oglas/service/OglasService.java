@@ -25,8 +25,10 @@ import rs.xml.oglas.client.ModelDTO;
 import rs.xml.oglas.client.SifrarnikClient;
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
+import rs.xml.oglas.dto.SlikaDTO;
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Oglas;
+import rs.xml.oglas.model.Slika;
 import rs.xml.oglas.repository.OglasRepository;
 
 @Service
@@ -224,7 +226,46 @@ public class OglasService {
 			return true;
 		} catch (Exception e) {
 			System.out.println(">>>OglasService > createOglasWithFeignClient: ERROR!");
-			return false;
+			throw new NotFoundException("Ne_postoje_proslenjeni_model/marka/klasa/mesto/gorivo/menjac");
+//			return false;
 		}		
+	}
+
+	public Oglas updateOglas(Long oid, NewOglasDTO oglasDTO, String username) {
+		
+		Oglas ogl = findOne(oid);		
+		
+		if(!ogl.getUsername().equals(username)) {
+			return null;
+		}
+		
+		createOglasWithFeignClient(ogl, oglasDTO);
+		
+		ogl.setCena(oglasDTO.getCena());
+		ogl.setKilometraza(oglasDTO.getKilometraza());
+		ogl.setPlaniranaKilometraza(oglasDTO.getPlaniranaKilometraza());
+		ogl.setSedistaZaDecu(oglasDTO.getBrSedistaZaDecu());
+		ogl.setOsiguranje(oglasDTO.isOsiguranje());
+		ogl.setOd(oglasDTO.getOD());
+		ogl.setDo(oglasDTO.getDO());
+				
+		// prvo obrisati stare slike iz baze, ili...
+//		ogl.setSlike(new ArrayList<Slika>());
+//		for(SlikaDTO slikaDTO: )
+		
+		ogl = this.save(ogl);
+		return ogl;
+	}
+
+	public Oglas deleteOglas(Long oid, String username) {
+		
+		Oglas ogl = findOne(oid);// ako ne postoji okinuce exception
+		if(!ogl.getUsername().equals(username)) {
+			return null; // nije tvoj oglas
+		}
+		ogl.setDeleted(true);
+		this.save(ogl);
+		
+		return ogl;
 	}
 }

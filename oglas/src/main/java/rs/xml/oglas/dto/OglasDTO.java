@@ -47,6 +47,8 @@ public class OglasDTO {
 	
 	private List<SlikaDTO> slike = new ArrayList<SlikaDTO>();
 	
+	private boolean deleted;
+	
 	public OglasDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -67,6 +69,7 @@ public class OglasDTO {
 		this.brSedistaZaDecu = o.getSedistaZaDecu();
 		this.Od = o.getOd();
 		this.Do = o.getDo();
+		this.deleted = o.isDeleted();
 		for(Slika s: o.getSlike()) {		
 			String imageString;
 			Encoder encoder = Base64.getEncoder();
@@ -213,6 +216,15 @@ public class OglasDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
 	
 	
 }
