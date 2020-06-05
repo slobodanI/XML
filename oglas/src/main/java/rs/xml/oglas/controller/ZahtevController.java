@@ -1,5 +1,8 @@
 package rs.xml.oglas.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.xml.oglas.dto.KorpaDTO;
+import rs.xml.oglas.dto.OglasDTO;
 import rs.xml.oglas.dto.ZahtevDTO;
+import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.service.ZahtevService;
 
@@ -24,7 +29,23 @@ public class ZahtevController {
 	
 	@GetMapping("/zahtev")
 	public ResponseEntity<?> getZahtevi(){
-		return new ResponseEntity<>(zahtevService.findAll(), HttpStatus.OK);
+		
+		/*
+		 * List<Oglas> oglasList = oglasService.findAll();
+		logger.info("get all oglasi {}", "test");;
+		List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
+		for(Oglas og: oglasList) {
+			OglasDTO oDTO = new OglasDTO(og);
+			oglasListDTO.add(oDTO);
+		}
+		 */
+		List<Zahtev> zahteviList = zahtevService.findAll();
+		List<ZahtevDTO> zahteviListDTO = new ArrayList<ZahtevDTO>();
+		for(Zahtev zah: zahteviList) {
+			ZahtevDTO zDTO = new ZahtevDTO(zah);
+			zahteviListDTO.add(zDTO);
+		}
+		return new ResponseEntity<>(zahteviListDTO, HttpStatus.OK);
 	}
 	
 	@GetMapping("/zahtev/{zid}")
