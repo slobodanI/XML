@@ -18,7 +18,7 @@ public class ZahtevDTO {
 	private boolean izvestaj;
 	private String podnosilacUsername;
 	private Long chatId;
-	private Set<OglasDTO> oglasi =  new HashSet<OglasDTO>();
+	private Set<OglasDTOsearch> oglasi =  new HashSet<OglasDTOsearch>();
 	
 	public ZahtevDTO() {
 		
@@ -34,9 +34,9 @@ public class ZahtevDTO {
 		this.izvestaj=z.isIzvestaj();
 		this.podnosilacUsername=z.getPodnosilacUsername();
 		this.chatId=z.getChatId();
-		Set<OglasDTO> oglasi= new HashSet<OglasDTO>();
+		Set<OglasDTOsearch> oglasi= new HashSet<OglasDTOsearch>();
 		for(Oglas o : z.getOglasi()) {
-			oglasi.add(new OglasDTO(o));
+			oglasi.add(new OglasDTOsearch(o));
 		}
 		this.oglasi=oglasi;
 	}
@@ -91,11 +91,11 @@ public class ZahtevDTO {
 		this.chatId = chatId;
 	}
 
-	public Set<OglasDTO> getOglasi() {
+	public Set<OglasDTOsearch> getOglasi() {
 		return oglasi;
 	}
 
-	public void setOglasi(Set<OglasDTO> oglasi) {
+	public void setOglasi(Set<OglasDTOsearch> oglasi) {
 		this.oglasi = oglasi;
 	}
 

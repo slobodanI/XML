@@ -1,6 +1,10 @@
 package rs.xml.oglas.dto;
 
 import java.sql.Date;
+import java.util.Base64;
+import java.util.Base64.Encoder;
+
+import rs.xml.oglas.model.Oglas;
 
 public class OglasDTOsearch {
 
@@ -22,7 +26,32 @@ public class OglasDTOsearch {
     public OglasDTOsearch() {
 		// TODO Auto-generated constructor stub
 	}
-
+    
+    public OglasDTOsearch(Oglas oglas) {
+    	this.setId(oglas.getId());
+		this.setMesto(oglas.getMesto());
+		this.setMarka(oglas.getMarka());
+		this.setModel(oglas.getModel());
+		this.setMenjac(oglas.getMenjac());
+		this.setGorivo(oglas.getGorivo());
+		this.setKlasa(oglas.getKlasa());
+		this.setPredjenaInt(oglas.getKilometraza());
+		this.setPlaniranaInt(oglas.getPlaniranaKilometraza());
+		this.setOsiguranjeBool(oglas.isOsiguranje());
+		this.setBrSedZaDecuInt(oglas.getSedistaZaDecu());
+		this.setOdDate(oglas.getOd());
+		this.setDoDate(oglas.getDo());
+		
+		if(oglas.getSlike().isEmpty()) {
+			this.setSlika(null);
+		} else {
+			Encoder encoder = Base64.getEncoder();
+			String imageString;
+			imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
+			this.setSlika("data:image/jpeg;base64," + imageString);
+		}
+	}
+    
 	public Long getId() {
 		return id;
 	}
