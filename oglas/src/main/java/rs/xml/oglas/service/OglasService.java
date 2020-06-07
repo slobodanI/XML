@@ -29,7 +29,10 @@ import rs.xml.oglas.dto.SlikaDTO;
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Slika;
+import rs.xml.oglas.model.Zahtev;
+import rs.xml.oglas.model.ZahtevStatus;
 import rs.xml.oglas.repository.OglasRepository;
+import rs.xml.oglas.repository.ZahtevRepository;
 
 @Service
 public class OglasService {
@@ -39,6 +42,9 @@ public class OglasService {
 	
 	@Autowired
 	SifrarnikClient sifrarnikClient;
+	
+	@Autowired
+	ZahtevRepository zahtevRepository;
 	
 	public Oglas findOne(Long id) {
 		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
@@ -74,6 +80,9 @@ public class OglasService {
 				
 		Collection<Oglas> oglasi = oglasRepository.findAll();
 //		System.out.println("****** ukupno oglasa: " + oglasi.size());
+		
+		// za proveru zauzetosti auta
+		List<Zahtev> listaZahteva = zahtevRepository.findAll();
 		
 		for(Oglas oglas: oglasi) {
 			
@@ -156,6 +165,36 @@ public class OglasService {
 				if(oglas.getSedistaZaDecu() < brSedZaDecuInt) {
 					flag = false;
 					continue;
+				}
+			}
+			// ovako ili mozda inner join zahteva i oglas_zahtev tabela ?
+			// da li je zauzet auto u zadatom vremenu
+			int count = 0;
+			for(Zahtev zah: listaZahteva) {
+//				System.out.println("*** in for loop, count:" + count);
+				count++;
+				// ako sadrzi ovaj oglas i ako je rezervisan
+				if(zah.getOglasi().contains(oglas) && zah.getStatus().equals(ZahtevStatus.RESERVED)) {
+//					System.out.println("*** contains 'oglas' && is RESERVED");
+					// ako postoji presek sa nekim rezervisanim zahtevom
+					// deo vremena se preklapa, na pocetku zahteva
+					if(zah.getOd().after(odDateOVAJ) && zah.getOd().before(doDateOVAJ)) {
+						flag = false;
+//						System.out.println("*** flag = false, 1");
+						break;
+					}
+					// deo vremena se preklapa, na kraju zahteva
+					if(zah.getDo().after(odDateOVAJ) && zah.getDo().before(doDateOVAJ)) {
+						flag = false;
+//						System.out.println("*** flag = false, 2");
+						break;
+					}
+					// celo vreme se nalazi u nekom zahtevu
+					if(zah.getOd().before(odDateOVAJ) && zah.getDo().after(doDateOVAJ)) {
+						flag = false;
+//						System.out.println("*** flag = false, 3");
+						break;
+					}
 				}
 			}
 			
