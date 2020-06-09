@@ -63,10 +63,10 @@ public class Oglas {
 	@Column(name="kilometraza")
 	private int kilometraza;
 	
-	@Column(name="planiranaKilometraza")
+	@Column(name="planirana_kilometraza")
 	private int planiranaKilometraza;
 	
-	@Column(name="sedistaZaDecu")
+	@Column(name="sedista_za_decu")
 	private int sedistaZaDecu;
 	
 	@OneToMany(mappedBy = "oglas", cascade = CascadeType.ALL)
