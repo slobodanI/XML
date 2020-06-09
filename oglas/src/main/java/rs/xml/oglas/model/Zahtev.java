@@ -1,6 +1,8 @@
 package rs.xml.oglas.model;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,6 +49,9 @@ public class Zahtev {
 	@Column(name="Do")
 	private Date Do;
 	
+	@Column(name="vreme_podnosenja")
+	private Date vremePodnosenja;
+	
 	@Column(name="ocenjen")
 	private boolean ocenjen; // da li je ocenjen, 
 	
@@ -71,6 +76,9 @@ public class Zahtev {
 		this.username = username;
 		Od = od;
 		Do = do1;
+		long millis=System.currentTimeMillis();  
+	    Date date=new Date(millis); 
+		vremePodnosenja = date;
 		this.ocenjen = ocenjen;
 		this.izvestaj = izvestaj;
 		this.podnosilacUsername = podnosilacUsername;
@@ -161,6 +169,14 @@ public class Zahtev {
 
 	public void setPodnosilacUsername(String podnosilacUsername) {
 		this.podnosilacUsername = podnosilacUsername;
+	}
+
+	public Date getVremePodnosenja() {
+		return vremePodnosenja;
+	}
+
+	public void setVremePodnosenja(Date vremePodnosenja) {
+		this.vremePodnosenja = vremePodnosenja;
 	}
 	
 	

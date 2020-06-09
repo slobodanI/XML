@@ -1,6 +1,7 @@
 package rs.xml.oglas.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,14 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.xml.oglas.dto.KorpaDTO;
-import rs.xml.oglas.dto.OglasDTO;
 import rs.xml.oglas.dto.ZahtevDTO;
-import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
+import rs.xml.oglas.model.ZahtevStatus;
 import rs.xml.oglas.service.ZahtevService;
 
 @RestController
@@ -40,6 +41,17 @@ public class ZahtevController {
 		}
 		 */
 		List<Zahtev> zahteviList = zahtevService.findAll();
+		List<ZahtevDTO> zahteviListDTO = new ArrayList<ZahtevDTO>();
+		for(Zahtev zah: zahteviList) {
+			ZahtevDTO zDTO = new ZahtevDTO(zah);
+			zahteviListDTO.add(zDTO);
+		}
+		return new ResponseEntity<>(zahteviListDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping("/zahtev/pending")
+	public ResponseEntity<?> getPending(){
+		Collection<Zahtev> zahteviList = zahtevService.findPending();
 		List<ZahtevDTO> zahteviListDTO = new ArrayList<ZahtevDTO>();
 		for(Zahtev zah: zahteviList) {
 			ZahtevDTO zDTO = new ZahtevDTO(zah);
@@ -77,6 +89,39 @@ public class ZahtevController {
 			return new ResponseEntity<>(odgovor,HttpStatus.BAD_REQUEST);
 		}
 		
+		
+	}
+	
+	@PutMapping("/zahtev/{zId}/accept")
+	public ResponseEntity<?> acceptZahtev(@PathVariable(name="zId") Long zId, HttpServletRequest request){
+		
+		String username = request.getHeader("username");
+
+		Zahtev zah = zahtevService.findOne(zId);
+		
+		if(!zah.getUsername().equals(username)) {
+			return new ResponseEntity<String>("Nije_tvoj_zahtev!", HttpStatus.FORBIDDEN);
+		}
+		
+		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.acceptZahtev(zId));
+		
+		return new ResponseEntity<>(zDTO, HttpStatus.OK);
+		
+	}
+	
+	@PutMapping("/zahtev/{zId}/decline")
+	public ResponseEntity<?> declineZahtev(@PathVariable(name="zId") Long zId, HttpServletRequest request){
+		String username = request.getHeader("username");
+
+		Zahtev zah = zahtevService.findOne(zId);
+		
+		if(!zah.getUsername().equals(username)) {
+			return new ResponseEntity<String>("Nije_tvoj_zahtev!", HttpStatus.FORBIDDEN);
+		}
+		
+		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.declineZahtev(zId));
+		
+		return new ResponseEntity<>(zDTO, HttpStatus.OK);
 		
 	}
 
