@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Korpa</title>
+<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript"  src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/korpa.js"></script>
+<link rel="stylesheet" href="bootstrap.min.css">
+<!-- datatables -->
+	<script  src="js/datatables.min.js"></script>
+	<link rel="stylesheet" href="datatables.min.css">
+<!-- ########## -->
+</head>
+<body>
+
+	<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    	<h5 class="my-0 mr-md-auto font-weight-normal">Korpa</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="Index.html">TBA</a>
+        <a class="p-2 text-dark" href="SvaGoriva.html">TBA</a>
+        <a class="p-2 text-dark" href="NovoGorivo.html">TBA</a>
+        <a class="p-2 text-dark" href="PronadjiGorivo.html">TBA</a>
+        
+        </nav>
+       <a class="btn btn-outline-primary" href="../login.html">Izloguj se</a>
+	</div>
+
+	<h2></h2>
+	<div id="divTabela">
+	
+	</div>
+	
+	<hr>
+	<hr>
+	<hr>
+	
+	<form id="form-zahtev-create">
+		<div class="form-group">
+		<label for="select-bundle">Bundle?</label>
+		<select class="form-control" id="select-bundle">
+			<option value="1" selected>NE</option>
+			<option value="2">DA</option>
+		</select>
+	</div>
+	<input type="submit" value="Pošalji zahtev">
+	</form>
+</body>
+</html>

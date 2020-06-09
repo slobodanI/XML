@@ -44,7 +44,7 @@ function addOglas() {
 	var cena = $('#input-cena').val();
 	var kilometraza = $('#input-kilometraza').val();
 	var planiranaKilometraza = $('#input-planirana-kilometraza').val();
-	var osiguranje = $('#select-klasa :selected').val();
+	var osiguranje = $('#select-osiguranje :selected').val();
 	var brSedistaZaDecu = $('#select-brSedistaZaDecu').val();
 	
 	if(osiguranje === "1") {
@@ -62,10 +62,6 @@ function addOglas() {
 	
 	var split1 = Od.split("-");
 	var split2 = Do.split("-");
-	
-	console.log("Split1[0]:" + split1[0]);
-	console.log("Split1[1]:" + split1[1]);
-	console.log("Split1[2]:" + split1[2]);
 	
 	if(split1[0] > split2[0]) {
 		alert("OD datum mora biti pre DO datuma!");
@@ -100,6 +96,11 @@ function addOglas() {
 	var obj = JSON.stringify(
 			{mesto, marka, model, menjac, gorivo, klasa, cena, kilometraza, planiranaKilometraza, osiguranje, brSedistaZaDecu, Od, Do, slike}
 	);
+	
+	console.log("mesto:"+mesto+ "\nmarka:" + marka + "\nmodel:"+model+ "\nmenjac:"+menjac+ "\ngorivo:"+gorivo+ "\nklasa"+klasa);
+	console.log("cena:"+cena+ "\nkilometraza:" + kilometraza + "\nplaniranaKilometraza:"+planiranaKilometraza+ "\nosiguranje:"+osiguranje+ "\nbrSedistaZaDecu:"+brSedistaZaDecu);
+	
+	
 	$.post({
 		url: '/oglasi/oglas',
 		data: JSON.stringify(

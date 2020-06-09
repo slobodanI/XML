@@ -190,7 +190,12 @@ public class OglasController {
         	System.out.println("***Parametri za pretragu nisu dobro formirani!");
             return new ResponseEntity<String>("Parametri_za_pretragu_nisu_dobro_formirani!",HttpStatus.BAD_REQUEST);
         }
-               
+        
+        System.out.println(
+        "mesto:"+mesto + "\nOd:"+odDate.toString() + "\nDo:"+doDate.toString() +
+		"\nmarka:"+marka + "\nmodel:"+model + "\nmenjac:"+menjac + "\ngorivo:"+gorivo +"\nklasa:"+klasa +
+		"\npredjena:"+predjenaInt + "\nplanirana:"+planiranaInt + "\nosiguranje:"+osiguranje + "\nbrSedZaDecu:"+brSedZaDecuInt);
+        
         Collection<OglasDTOsearch> oglasi = oglasService.search(mesto, odDate, doDate, marka, model, menjac, gorivo, klasa,
         														predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt);
         return new ResponseEntity<Collection<OglasDTOsearch>>(oglasi, HttpStatus.OK);
@@ -201,11 +206,6 @@ public class OglasController {
 //		System.out.println("***LocalDateTime:" + asd); // ***LocalDateTime:2020-06-01T00:00:00.000
 //		System.out.println("***sql Date:" + proba); // ***sql Date:2020-06-01
 //		System.out.println("***LocalDate joda:" + ld); // ***LocalDate joda:2020-06-01
-//		return new ResponseEntity<String>(
-//				"mesto:"+mesto + "\nOd:"+odDate.toString() + "\nDo:"+doDate.toString() +
-//				"\nmarka:"+marka + "\nmodel:"+model + "\nmenjac:"+menjac + "\ngorivo:"+gorivo +"\nklasa:"+klasa +
-//				"\npredjena:"+predjenaInt + "\nplanirana:"+planiranaInt + "\nosiguranje:"+osiguranje + "\nbrSedZaDecu:"+brSedZaDecuInt
-//				,HttpStatus.OK);
 	}
 	
 }
