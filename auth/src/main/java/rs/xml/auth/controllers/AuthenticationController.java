@@ -26,7 +26,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -165,7 +164,7 @@ public class AuthenticationController {
 		return this.userService.findAll();
 	}
 
-	@GetMapping("/whoami")
+	@RequestMapping("/whoami")
 	public User user(Principal user) {
 		return this.userService.findByUsername(user.getName());
 	}
@@ -243,7 +242,7 @@ public class AuthenticationController {
     	return new ResponseEntity<User>(user, HttpStatus.OK);
     }
     
-    @DeleteMapping("/user/{uid}")
+    @PutMapping("/user/{uid}/delete")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public ResponseEntity<?> deleteUser(@PathVariable(name = "uid") Long uid) {
     	

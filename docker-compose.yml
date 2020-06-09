@@ -6,6 +6,7 @@ services:
     ports:
      - "8761:8761"
     tty: true
+    
   auth:
     build: ./auth
     ports:
