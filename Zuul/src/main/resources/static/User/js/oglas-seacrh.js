@@ -156,13 +156,22 @@ function dodajUKorpu(oglasId, odKad, doKad) {
 			}
 		}
 		
+		//provera za od i do datum
+		for(o of korpa.oglasi) {
+			if(o.od != odKad || o.do != doKad){
+				alert("U korpi se moraju nalaziti oglasi koji sadrze iste OD i DO datume!");
+				return;
+			}
+		}
+		
 		var oglasUKorpi = {
 				"oglasId": oglasId,
-				"Od": odKad,
-				"Do": doKad
+				"od": odKad,
+				"do": doKad
 		};
 		korpa.oglasi[korpa.oglasi.length] = oglasUKorpi;
 		sessionStorage.setItem('korpa', JSON.stringify(korpa));
+		alert("Uspesno dodavanje u korpu!");
 	}
 	
 }

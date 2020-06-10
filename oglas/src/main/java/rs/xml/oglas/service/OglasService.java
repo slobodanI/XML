@@ -174,17 +174,25 @@ public class OglasService {
 //				System.out.println("*** in for loop, count:" + count);
 				count++;
 				// ako sadrzi ovaj oglas i ako je rezervisan
-				if(zah.getOglasi().contains(oglas) && zah.getStatus().equals(ZahtevStatus.RESERVED)) {
+				if(zah.getOglasi().contains(oglas) && zah.getStatus().equals(ZahtevStatus.PAID)) {
 //					System.out.println("*** contains 'oglas' && is RESERVED");
 					// ako postoji presek sa nekim rezervisanim zahtevom
 					// deo vremena se preklapa, na pocetku zahteva
-					if(zah.getOd().after(odDateOVAJ) && zah.getOd().before(doDateOVAJ)) {
+					
+//					System.out.println("***zah.getOd():" + zah.getOd());
+//					System.out.println("***odDateOVAJ:" + odDateOVAJ);
+//					System.out.println("***doDateOVAJ:" + doDateOVAJ);
+					
+					//ovo bi trebalo da radi, clean je
+//					if(odDateOVAJ.before(zah.getDo()) && doDateOVAJ.after(zah.getOd()))
+					
+					if(!zah.getOd().before(odDateOVAJ) && !zah.getOd().after(doDateOVAJ)) {
 						flag = false;
 //						System.out.println("*** flag = false, 1");
 						break;
 					}
 					// deo vremena se preklapa, na kraju zahteva
-					if(zah.getDo().after(odDateOVAJ) && zah.getDo().before(doDateOVAJ)) {
+					if(!zah.getDo().before(odDateOVAJ) && !zah.getDo().after(doDateOVAJ)) {
 						flag = false;
 //						System.out.println("*** flag = false, 2");
 						break;

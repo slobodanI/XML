@@ -45,9 +45,9 @@ function popuniTabelu() {
 		var tdId = $("<td> </td>");
 		tdId.append(o.oglasId);
 		var tdOD = $("<td> </td>");
-		tdOD.append(o.Od);
+		tdOD.append(o.od);
 		var tdDO = $("<td> </td>");
-		tdDO.append(o.Do);
+		tdDO.append(o.do);
 		
 		var tdUkloni = $("<td> </td>");
 		var btn = $('<button>Ukloni iz korpe</button>');

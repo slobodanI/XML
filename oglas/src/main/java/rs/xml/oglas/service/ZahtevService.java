@@ -107,31 +107,16 @@ public class ZahtevService {
 				zahtev = zahtevRepository.save(zahtev);
 			}
 			return "Kreirani zahtevi sa vise oglasa";
-//			Zahtev zahtev = new Zahtev();
-//			for(OglasDTO og : korpaDTO.getOglasi()) {
-//				zahtev.getOglasi().add( oglasRepository.getOne(og.getId()));
-//				zahtev.setDo(og.getDO());
-//				zahtev.setOd(og.getOD());
-//				zahtev.setAgentId(og.getAgendId());
-//				zahtev.setOcenjen(false);
-//				zahtev.setIzvestaj(false);
-//				zahtev.setChatId(null);
-//				zahtev.setStatus(ZahtevStatus.PENDING);
-//				//jos dodati sta treba
-//				
-//			}
-//			
-//			zahtev = zahtevRepository.save(zahtev);
-//			return "Kreiran zahtev sa vise oglasa";
+
 
 		} else {
 			List<Oglas> listaOglasa = new ArrayList<Oglas>();
-			Date datumOd = null;
-			Date datumDo = null;
+			Date datumOd = new Date(millis);
+			Date datumDo = new Date(millis);
 			for (OglasUKorpiDTO og1 : korpaDTO.getOglasi()) {
 				Oglas oglas = oglasRepository.getOne(og1.getOglasId());
-				datumOd = og1.getOd();
-				datumDo = og1.getDo();
+				datumOd = new Date(og1.getOd().getTime());
+				datumDo = new Date(og1.getDo().getTime()); 
 				listaOglasa.add(oglas);
 			}
 			for (Oglas og1 : listaOglasa) {
