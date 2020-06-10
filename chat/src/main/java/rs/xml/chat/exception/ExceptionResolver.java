@@ -1,4 +1,4 @@
-package rs.xml.oglas.exception;
+package rs.xml.chat.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,13 +22,6 @@ public class ExceptionResolver {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
         return new ResponseEntity<String>(exception.getMessage(), headers, HttpStatus.BAD_REQUEST);
-    }
-	
-	@ExceptionHandler(ServiceNotAvailable.class)
-    public ResponseEntity<?> ServiceNotAwailable(ServiceNotAvailable exception) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<String>(exception.getMessage(), headers, HttpStatus.SERVICE_UNAVAILABLE);
     }
 	
 }
