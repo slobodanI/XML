@@ -16,8 +16,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import rs.xml.oglas.client.ChatClient;
+import rs.xml.oglas.client.ChatDTO;
+import rs.xml.oglas.client.ChatNewDTO;
+import rs.xml.oglas.client.SifrarnikClient;
 import rs.xml.oglas.dto.KorpaDTO;
 import rs.xml.oglas.dto.OglasUKorpiDTO;
+import rs.xml.oglas.exception.ServiceNotAvailable;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.model.ZahtevStatus;
@@ -31,7 +36,9 @@ public class ZahtevService {
 	ZahtevRepository zahtevRepository;
 	@Autowired
 	OglasRepository oglasRepository;
-
+	@Autowired
+	ChatClient chatClient;
+		
 	public Zahtev findOne(Long id) {
 		Optional<Zahtev> zahtev = zahtevRepository.findById(id);
 		return zahtev.orElseGet(null);
@@ -204,7 +211,7 @@ public class ZahtevService {
 
 	}
 
-	public Zahtev acceptZahtev(Long id) {
+	public Zahtev acceptZahtev(Long id, String username) {
 		Zahtev zahtev = this.findOne(id);
 
 
@@ -235,7 +242,19 @@ public class ZahtevService {
 		}
 		zahtev.setStatus(ZahtevStatus.PAID);
 		zahtevRepository.save(zahtev);
-
+		
+		// kreiranje chat-a
+		ChatNewDTO chatNewDTO = new ChatNewDTO();
+		chatNewDTO.setReceiverUsername(username);
+		chatNewDTO.setSendereUsername(zahtev.getPodnosilacUsername());
+		
+		try {
+			ChatDTO chatDTO = chatClient.postChat(chatNewDTO);
+		} catch (Exception e) {
+			System.out.println("***ERROR: zahtevService > acceptZahtev > chatClient ");
+			throw new ServiceNotAvailable("Chat service is not available");
+		}
+		
 		return zahtev;
 	}
 

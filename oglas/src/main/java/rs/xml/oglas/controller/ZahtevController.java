@@ -103,7 +103,7 @@ public class ZahtevController {
 			return new ResponseEntity<String>("Nije_tvoj_zahtev!", HttpStatus.FORBIDDEN);
 		}
 		
-		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.acceptZahtev(zId));
+		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.acceptZahtev(zId, username));
 		
 		return new ResponseEntity<>(zDTO, HttpStatus.OK);
 		
