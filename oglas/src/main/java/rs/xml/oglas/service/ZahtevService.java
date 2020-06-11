@@ -22,6 +22,7 @@ import rs.xml.oglas.client.ChatNewDTO;
 import rs.xml.oglas.client.SifrarnikClient;
 import rs.xml.oglas.dto.KorpaDTO;
 import rs.xml.oglas.dto.OglasUKorpiDTO;
+import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.exception.ServiceNotAvailable;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
@@ -40,8 +41,8 @@ public class ZahtevService {
 	ChatClient chatClient;
 		
 	public Zahtev findOne(Long id) {
-		Optional<Zahtev> zahtev = zahtevRepository.findById(id);
-		return zahtev.orElseGet(null);
+		Zahtev zahtev = zahtevRepository.findById(id).orElseThrow(() -> new NotFoundException("Zahtev with id:" +id+ " does not exist!"));
+		return zahtev;//.orElseGet(null);
 	}
 
 	public List<Zahtev> findAll() {

@@ -40,17 +40,21 @@ public class Ocena {
 	@Column(name = "oglasi")
 	private String oglasi; // marka: model | marka: model | itd...
 	
+	@Column(name = "deleted")
+	private boolean deleted;
+	
 	public Ocena() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Ocena(int ocena, String komentar, boolean approved, String odgovor, Long oglasId) {
+	public Ocena(int ocena, String komentar, boolean approved, String odgovor, Long oglasId, boolean deleted) {
 		super();
 		this.ocena = ocena;
 		this.komentar = komentar;
 		this.approved = approved;
 		this.odgovor = odgovor;
 		this.zahtevId = oglasId;
+		this.deleted = deleted;
 	}
 
 	public Long getId() {
@@ -123,6 +127,14 @@ public class Ocena {
 
 	public void setOglasi(String oglasi) {
 		this.oglasi = oglasi;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	
