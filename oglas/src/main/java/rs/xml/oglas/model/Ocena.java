@@ -1,4 +1,4 @@
-package rs.xml.izvestaj.model;
+package rs.xml.oglas.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
