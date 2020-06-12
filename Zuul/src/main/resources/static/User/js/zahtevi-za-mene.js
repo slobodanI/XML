@@ -64,9 +64,11 @@ function popuniTabelu(zahtevi) {
 		if(zahtev.status == 'PENDING') {
 //			doradi...			
 			var btnPrihvati = $('<button>Prihvati</button>');
+			btnPrihvati.click(prihvatiZahtev(zahtev.id));
 			tdPrihvati.append(btnPrihvati);
 //			doradi...			
 			var btnOtkazi = $('<button>Otkaži</button>');
+			btnOtkazi.click(odbijZahtev(zahtev.id))
 			tdOtkazivanje.append(btnOtkazi);
 		}
 	
@@ -89,5 +91,50 @@ function oceniOglaseUZahtevu(zahtevId) {
 	return function() {		
 		window.location = "./ocenjivanje.html?zahtevId=" + zahtevId;
 	}	
+}
+
+
+function odbijZahtev(zahtevId){
+	
+	return function(){
+		$.ajax({
+			url: "/oglasi/zahtev/"+zahtevId+"/decline",
+			type: 'PUT',
+			headers: {
+		        'Auth': 'Bearer ' + token
+		    },
+			success: function(){
+				alert("Uspeh");
+				window.location = "./zahtevi-za-mene.html";
+				
+			},
+			error: function(jqXhr, textStatus, errorMessage) {
+	            console.log("Error: ", textStatus);
+	        }
+		});
+		
+
+	}
+}
+
+function prihvatiZahtev(zahtevId){
+	
+	return function(){
+		$.ajax({
+			url: "/oglasi/zahtev/"+zahtevId+"/accept",
+			type: 'PUT',
+			headers: {
+		        'Auth': 'Bearer ' + token
+		    },
+			success: function(){
+				alert("Uspeh");
+				window.location = "./zahtevi-za-mene.html";
+				
+			},
+			error: function(jqXhr, textStatus, errorMessage) {
+	            console.log("Error: ", textStatus);
+	        }
+		});
+	}
 }
 
