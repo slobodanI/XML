@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.xml.oglas.dto.KorpaDTO;
@@ -28,19 +29,30 @@ public class ZahtevController {
 	@Autowired
 	ZahtevService zahtevService;
 	
+	/**
+	 * @param filter
+	 * @param request
+	 * @return 
+	 * filter=zaMene - vraca sve zahteve koji su poslati meni,
+	 * filter=moje - vraca sve zahteve koje sam ja poslao,
+	 * filter= - vraca sve zahteve
+	 */
 	@GetMapping("/zahtev")
-	public ResponseEntity<?> getZahtevi(){
+	public ResponseEntity<?> getZahtevi(@RequestParam(required = false, defaultValue = "nema") String filter, HttpServletRequest request){
+		String username = request.getHeader("username");
+				
+		List<Zahtev> zahteviList = new ArrayList<Zahtev>();
 		
-		/*
-		 * List<Oglas> oglasList = oglasService.findAll();
-		logger.info("get all oglasi {}", "test");;
-		List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
-		for(Oglas og: oglasList) {
-			OglasDTO oDTO = new OglasDTO(og);
-			oglasListDTO.add(oDTO);
+		// zahtevni za moje oglase
+		if(filter.equals("zaMene")){
+			zahteviList = zahtevService.findZahteviForMe(username);			
+		//ocene koje sam ja dao
+		} else if (filter.equals("moje")) {
+			zahteviList = zahtevService.findMyZahtevi(username);
+		} else {
+			zahteviList = zahtevService.findAll();
 		}
-		 */
-		List<Zahtev> zahteviList = zahtevService.findAll();
+	
 		List<ZahtevDTO> zahteviListDTO = new ArrayList<ZahtevDTO>();
 		for(Zahtev zah: zahteviList) {
 			ZahtevDTO zDTO = new ZahtevDTO(zah);

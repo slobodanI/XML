@@ -285,6 +285,14 @@ public class ZahtevService {
 			}
 		}
 	}
+
+	public List<Zahtev> findMyZahtevi(String username) {
+		return zahtevRepository.findMyZahtevi(username);
+	}
+
+	public List<Zahtev> findZahteviForMe(String username) {
+		return zahtevRepository.findZahteviForMe(username);
+	}
 	
 	
 
