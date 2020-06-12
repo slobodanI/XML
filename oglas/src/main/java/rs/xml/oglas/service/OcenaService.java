@@ -39,8 +39,8 @@ public class OcenaService {
 		ocenaRepository.deleteById(id);
 	}
 	
-	public List<Ocena> findMyOcene(String username) {
-		return ocenaRepository.findMyOcene(username);
-	}
-	
+//	public List<Ocena> findMyOcene(String username) {
+//		return ocenaRepository.findMyOcene(username);
+//	}
+//	
 }

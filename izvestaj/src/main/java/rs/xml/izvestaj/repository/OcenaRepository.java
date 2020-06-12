@@ -12,7 +12,7 @@ import rs.xml.izvestaj.model.Ocena;
 @Repository
 public interface OcenaRepository extends JpaRepository<Ocena, Long>{
 
-	@Query("SELECT o FROM Ocena WHERE USERNAME_KOGA = :username")
-	List<Ocena> findMyOcene(@Param("username") String username);
+//	@Query("SELECT o FROM Ocena WHERE USERNAME_KOGA = :username")
+//	List<Ocena> findMyOcene(@Param("username") String username);
 	
 }
