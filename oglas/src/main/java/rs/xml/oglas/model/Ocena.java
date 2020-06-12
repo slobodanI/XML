@@ -2,10 +2,15 @@ package rs.xml.oglas.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+
+import rs.xml.oglas.dto.OcenaNewDTO;
 
 @Entity
 @Table(name = "OCENA")
@@ -14,7 +19,7 @@ public class Ocena {
 	@Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 	
 	@Column(name = "ocena")
 	private int ocena;
@@ -28,29 +33,49 @@ public class Ocena {
 	@Column(name = "odgovor")
 	private String odgovor; // od agenta
 	
-	@Column(name = "zahtev_id")
-	private Long zahtevId;
-	
 	@Column(name = "username_ko")
 	private String usernameKo; //username onog koji je dao ocenu
 	
 	@Column(name = "username_koga")
 	private String usernameKoga; //username onog za koga je ocena
 	
-	@Column(name = "oglasi")
-	private String oglasi; // marka: model | marka: model | itd...
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Oglas oglas; // marka: model | marka: model | itd...
+	
+	@Column(name = "zahtev_id")
+	private Long zahtevId;
+	
+	@Column(name = "deleted")
+	private boolean deleted;
 	
 	public Ocena() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public Ocena(int ocena, String komentar, boolean approved, String odgovor, Long oglasId) {
-		super();
+	
+	public Ocena(Long id, int ocena, String komentar, boolean approved, String odgovor, String usernameKo,
+			String usernameKoga, Oglas oglas, Long zahtevId, boolean deleted) {
+		this.id = id;
 		this.ocena = ocena;
 		this.komentar = komentar;
 		this.approved = approved;
 		this.odgovor = odgovor;
-		this.zahtevId = oglasId;
+		this.usernameKo = usernameKo;
+		this.usernameKoga = usernameKoga;
+		this.oglas = oglas;
+		this.zahtevId = zahtevId;
+		this.deleted = deleted;
+	}
+
+	public Ocena(OcenaNewDTO ocenaNewDTO, String usernameKo, String usernameKoga, Oglas oglas) {
+		this.ocena = ocenaNewDTO.getOcena();
+		this.komentar = ocenaNewDTO.getKomentar();
+		this.approved = false;
+		this.odgovor = "nema odgovora...";
+		this.usernameKo = usernameKo;
+		this.usernameKoga = usernameKoga;
+		this.oglas = oglas;
+		this.zahtevId = ocenaNewDTO.getZahtevId();
+		this.deleted = false;
 	}
 
 	public Long getId() {
@@ -93,14 +118,6 @@ public class Ocena {
 		this.odgovor = odgovor;
 	}
 
-	public Long getZahtevId() {
-		return zahtevId;
-	}
-
-	public void setZahtevId(Long zahtevId) {
-		this.zahtevId = zahtevId;
-	}
-
 	public String getUsernameKo() {
 		return usernameKo;
 	}
@@ -117,14 +134,30 @@ public class Ocena {
 		this.usernameKoga = usernameKoga;
 	}
 
-	public String getOglasi() {
-		return oglasi;
+	public Oglas getOglas() {
+		return oglas;
+	}
+	
+	public void setOglas(Oglas oglas) {
+		this.oglas = oglas;
 	}
 
-	public void setOglasi(String oglasi) {
-		this.oglasi = oglasi;
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public Long getZahtevId() {
+		return zahtevId;
+	}
+
+	public void setZahtevId(Long zahtevId) {
+		this.zahtevId = zahtevId;
 	}
 
 	
-	
+		
 }

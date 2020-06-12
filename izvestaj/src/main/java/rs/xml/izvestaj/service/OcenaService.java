@@ -18,8 +18,11 @@ public class OcenaService {
 	private OcenaRepository ocenaRepository;
 	
 	public Ocena findOne(Long id) {
-		Ocena Chat = ocenaRepository.findById(id).orElseThrow(() -> new NotFoundException("Ocena with id:" +id+ " does not exist!"));
-		return Chat;
+		Ocena ocena = ocenaRepository.findById(id).orElseThrow(() -> new NotFoundException("Ocena with id:" +id+ " does not exist!"));
+		if(ocena.isDeleted()) {
+			throw new NotFoundException("Ocena with id:" +id+ " does not exist!");
+		}
+		return ocena;
 	}
 
 	public List<Ocena> findAll() {
