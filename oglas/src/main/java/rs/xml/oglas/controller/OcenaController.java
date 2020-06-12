@@ -1,5 +1,6 @@
 package rs.xml.oglas.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,16 +84,23 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	
 	@PostMapping("/ocena")
     public ResponseEntity<?> postOcena(@RequestBody @Valid OcenaNewDTO ocenaNewDTO, HttpServletRequest request) {        		
+		
 		String username = request.getHeader("username");
 		
 		Zahtev zahtev = zahtevService.findOne(ocenaNewDTO.getZahtevId());
 		
 		// provere...
-		// da li je zahtev istekao
+		// da li je zahtev placen
 		if(zahtev.getStatus() != ZahtevStatus.PAID) {
+			return new ResponseEntity<String>("Zahtev_nije_PAID!", HttpStatus.FORBIDDEN);
+		}
+		
+		// da li je koriscenje vozila proslo
+		Date sada = new Date(System.currentTimeMillis());
+		if(zahtev.getDo().after(sada)) {
 			return new ResponseEntity<String>("Još_nije_istekao_zahtev!", HttpStatus.FORBIDDEN);
 		}
-				
+		
 		// da li sam ja taj koji je poslao zahtev na osnovu koga ocenjujem
 		 if(!zahtev.getPodnosilacUsername().equals(username)) {
 			 return new ResponseEntity<String>("Nemaš_pravo_da_ocenjujes_ovaj_oglas!", HttpStatus.FORBIDDEN);
