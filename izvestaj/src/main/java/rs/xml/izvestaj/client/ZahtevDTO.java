@@ -1,16 +1,11 @@
-package rs.xml.oglas.dto;
+package rs.xml.izvestaj.client;
 
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import rs.xml.oglas.model.Oglas;
-import rs.xml.oglas.model.Zahtev;
-import rs.xml.oglas.model.ZahtevStatus;
-
 public class ZahtevDTO {
 	
-	private Long id;
 	private String username;
 	private ZahtevStatus status;
 	private Date od;
@@ -25,33 +20,7 @@ public class ZahtevDTO {
 		
 	}
 	
-	public ZahtevDTO(Zahtev z) {
-		super();
-		this.id = z.getId();
-		this.username=z.getUsername();
-		this.status=z.getStatus();
-		this.od=z.getOd();
-		this.do1=z.getDo();
-		this.ocenjen=z.isOcenjen();
-		this.izvestaj=z.isIzvestaj();
-		this.podnosilacUsername=z.getPodnosilacUsername();
-		this.chatId=z.getChatId();
-		Set<OglasDTOsearch> oglasi= new HashSet<OglasDTOsearch>();
-		for(Oglas o : z.getOglasi()) {
-			oglasi.add(new OglasDTOsearch(o));
-		}
-		this.oglasi=oglasi;
-	}
 	
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -113,14 +82,6 @@ public class ZahtevDTO {
 	public void setPodnosilacUsername(String podnosilacUsername) {
 		this.podnosilacUsername = podnosilacUsername;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
-
+	
 }
