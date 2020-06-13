@@ -1,6 +1,7 @@
 package rs.xml.oglas.dto;
 
 import rs.xml.oglas.model.Ocena;
+import rs.xml.oglas.model.OcenaApprovedStatus;
 
 public class OcenaDTO {
 	
@@ -18,12 +19,14 @@ public class OcenaDTO {
 	
 		private String oglas; // marka: model
 		
+		private OcenaApprovedStatus status;
+		
 		public OcenaDTO() {
 			// TODO Auto-generated constructor stub
 		}
 
 		public OcenaDTO(Long id, double ocena, String komentar, String odgovor, String usernameKo, String usernameKoga,
-				String oglas) {
+				String oglas, OcenaApprovedStatus status) {
 			this.id = id;
 			this.ocena = ocena;
 			this.komentar = komentar;
@@ -31,6 +34,7 @@ public class OcenaDTO {
 			this.usernameKo = usernameKo;
 			this.usernameKoga = usernameKoga;
 			this.oglas = oglas;
+			this.status = status;
 		}
 		
 		public OcenaDTO(Ocena ocena) {
@@ -47,6 +51,8 @@ public class OcenaDTO {
 			this.usernameKo = ocena.getUsernameKo();
 			this.usernameKoga = ocena.getUsernameKoga();
 			this.oglas = ocena.getOglas().getMarka() + " - " + ocena.getOglas().getModel();
+			
+			this.status = ocena.getApproved();
 		}
 		
 		public Long getId() {
@@ -103,6 +109,14 @@ public class OcenaDTO {
 
 		public void setOglas(String oglas) {
 			this.oglas = oglas;
+		}
+
+		public OcenaApprovedStatus getStatus() {
+			return status;
+		}
+
+		public void setStatus(OcenaApprovedStatus status) {
+			this.status = status;
 		}
 		
 		

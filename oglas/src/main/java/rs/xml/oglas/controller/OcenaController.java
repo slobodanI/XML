@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rs.xml.oglas.client.ChatDTO;
 import rs.xml.oglas.dto.OcenaDTO;
 import rs.xml.oglas.dto.OcenaNewDTO;
+import rs.xml.oglas.dto.OcenaOdgovorDTO;
 import rs.xml.oglas.model.Ocena;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
@@ -57,8 +59,11 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		if(filter.equals("zaMene")){
 			ocenaList = ocenaService.findOceneForMe(username);			
 		//ocene koje sam ja dao
-		} else if (filter.equals("moje")) {
+		} else if(filter.equals("moje")) {
+		//ocene koje treba da se odobre
 			ocenaList = ocenaService.findMyOcene(username);
+		} else if(filter.equals("toBeApproved")){
+			ocenaList = ocenaService.findOceneToBeApproved();
 		} else {
 			ocenaList = ocenaService.findAll();
 		}
@@ -138,6 +143,42 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	public ResponseEntity<?> deleteOcena(@PathVariable Long oid) {
 		
 		ocenaService.remove(oid);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping("/ocena/{oid}/approve")
+	public ResponseEntity<?> approveOcena(@PathVariable Long oid) {
+
+		if(!ocenaService.approveOcena(oid)) {
+			return new ResponseEntity<String>("Ova_ocena_je_već_APPROVED_ili_DENIED!",HttpStatus.BAD_REQUEST);			
+		}		
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping("/ocena/{oid}/deny")
+	public ResponseEntity<?> denyOcena(@PathVariable Long oid) {
+		
+		if(!ocenaService.denyOcena(oid)) {
+			return new ResponseEntity<String>("Ova_ocena_je_već_APPROVED_ili_DENIED!",HttpStatus.BAD_REQUEST);			
+		}		
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping("/ocena/{oid}/odgovor")
+	public ResponseEntity<?> ocenaOdgovor(@PathVariable Long oid, @RequestBody @Valid OcenaOdgovorDTO odgovor, HttpServletRequest request) {
+		String username = request.getHeader("username");
+		
+		Ocena ocena = ocenaService.findOne(oid);
+		if(!ocena.getUsernameKoga().equals(username)) {
+			return new ResponseEntity<String>("Nije_tvoja_ocena,_ne_mozeš_da_odgovoriš_na_nju!",HttpStatus.FORBIDDEN);
+		}
+		
+		if(!ocenaService.giveOdgovor(ocena, odgovor.getOdgovor())) {
+			return new ResponseEntity<String>("Već_ste_dali_odgovor_na_ovu_ocenu!",HttpStatus.BAD_REQUEST);			
+		}
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
