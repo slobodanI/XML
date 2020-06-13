@@ -25,5 +25,7 @@ public interface OcenaRepository extends JpaRepository<Ocena, Long>{
 	@Query("SELECT o FROM Ocena o WHERE o.approved = 'UNKNOWN' and o.deleted = false")
 	List<Ocena> findOceneToBeApproved();
 	
+	@Query(value = "SELECT AVG(ocena) FROM OCENA WHERE approved = 'APPROVED' and deleted = false and OGLAS_ID = :oglasId", nativeQuery = true)
+	Double getAvgOcenaForOglas(@Param("oglasId") Long oglasId);
 	
 }
