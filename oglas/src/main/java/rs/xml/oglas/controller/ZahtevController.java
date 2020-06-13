@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.xml.oglas.dto.KorpaDTO;
+import rs.xml.oglas.dto.OglasDTO;
+import rs.xml.oglas.dto.OglasDTOsearch;
 import rs.xml.oglas.dto.ZahtevDTO;
+import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
-import rs.xml.oglas.model.ZahtevStatus;
 import rs.xml.oglas.service.ZahtevService;
 
 @RestController
@@ -62,12 +64,15 @@ public class ZahtevController {
 	}
 	
 	@GetMapping("/zahtev/pending")
-	public ResponseEntity<?> getPending(){
+	public ResponseEntity<?> getPending(HttpServletRequest request){
+		String username = request.getHeader("username");
 		Collection<Zahtev> zahteviList = zahtevService.findPending();
 		List<ZahtevDTO> zahteviListDTO = new ArrayList<ZahtevDTO>();
 		for(Zahtev zah: zahteviList) {
 			ZahtevDTO zDTO = new ZahtevDTO(zah);
+			if(zDTO.getUsername().equals(username)) {
 			zahteviListDTO.add(zDTO);
+			}
 		}
 		return new ResponseEntity<>(zahteviListDTO, HttpStatus.OK);
 	}
@@ -86,6 +91,26 @@ public class ZahtevController {
 		
 		return new ResponseEntity<>(zahtevDTO,HttpStatus.OK);
 	}
+	
+	@GetMapping("/zahtev/{zid}/oglasi")
+	public ResponseEntity<?> getOglaseZahteva(@PathVariable Long zid){
+		
+		Zahtev zahtev = zahtevService.findOne(zid);
+		
+		if(zahtev==null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			
+		}
+		
+		List<OglasDTOsearch> oglasiDTO =  new ArrayList<OglasDTOsearch>();
+		for(Oglas o : zahtev.getOglasi()) {
+			oglasiDTO.add(new OglasDTOsearch(o));
+		}
+		
+		
+		return new ResponseEntity<>(oglasiDTO,HttpStatus.OK);
+	}
+	
 	
 	@PostMapping("/zahtev")
 	public ResponseEntity<?> postZahtev(@RequestBody KorpaDTO korpa, HttpServletRequest request){
@@ -136,5 +161,8 @@ public class ZahtevController {
 		return new ResponseEntity<>(zDTO, HttpStatus.OK);
 		
 	}
+	
+	
+	
 
 }

@@ -261,6 +261,7 @@ public class ZahtevService {
 
 	public Zahtev declineZahtev(Long id) {
 		Zahtev z = this.findOne(id);
+		
 		z.setStatus(ZahtevStatus.CANCELED);
 		zahtevRepository.save(z);
 		return z;
@@ -273,7 +274,7 @@ public class ZahtevService {
 		if(listZ.isEmpty()) {
 			return;
 		}
-		long millis=System.currentTimeMillis()-(60 * 60 * 1000);
+		long millis=System.currentTimeMillis()-(24 * 60 * 60 * 1000);
 		Date oneHourAgo=new Date(millis);
 		
 		System.out.println(oneHourAgo);

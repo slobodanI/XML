@@ -58,7 +58,6 @@ services:
       - eureka-serviceregistry
       - auth
       - chat
-      - izvestaj
       - oglas
       - sifrarnik
 
