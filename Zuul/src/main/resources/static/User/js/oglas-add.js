@@ -1,11 +1,7 @@
 $(document).ready(function() {
 //	https://github.com/slobodanI/psw-isa/blob/master/src/main/resources/static/js/PretragaLekaraPrekoKlinike.js
 //	na linku ti je dodavanje u select
-//	popuniMesta();
-//	popuniMarke();
-//	popuniModele();
-//	popuniKLase();
-//	popuniGoriva();
+
 	
 	$('input[name="image1"]').change(function() { // za sliku
 		readImage1(this);
@@ -31,6 +27,12 @@ $(document).ready(function() {
 		return;
 	}
 	
+	popuniMesta();
+	popuniMarke();
+	popuniModele();
+	popuniKLase();
+	popuniGoriva();
+	popuniMenjac();
 });
 
 function addOglas() {
@@ -171,3 +173,138 @@ function readImage3(input) { // za sliku
 		reader.readAsDataURL(input.files[0]);
 	}
 }
+
+
+function popuniMesta() {
+	$.get({
+		url: '/sifrarnik/mesto',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(mesta){
+			
+			var selectMesto = $("#select-mesto");
+			
+			for(var mesto of mesta){
+				selectMesto.append('<option value="'+mesto.id+'">'+mesto.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniMarke() {
+	$.get({
+		url: '/sifrarnik/marka',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(marke){
+			
+			var selectMarka = $("#select-marka");
+			
+			for(var marka of marke){
+				selectMarka.append('<option value="'+marka.id+'">'+marka.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniModele() {
+	$.get({
+		url: '/sifrarnik/model',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(modeli){
+			
+			var selectModel = $("#select-model");
+		
+			for(var model of modeli){
+				selectModel.append('<option value="'+model.id+'">'+model.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniKLase() {
+	$.get({
+		url: '/sifrarnik/klasa',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(klase){
+			
+			var selectKlasa = $("#select-klasa");
+		
+			for(var klasa of klase){
+				selectKlasa.append('<option value="'+klasa.id+'">'+klasa.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniGoriva() {
+	$.get({
+		url: '/sifrarnik/gorivo',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(goriva){
+			
+			var selectGorivo = $("#select-gorivo");
+		
+			for(var gorivo of goriva){
+				selectGorivo.append('<option value="'+gorivo.id+'">'+gorivo.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniMenjac() {
+	$.get({
+		url: '/sifrarnik/menjac',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(menjaci){
+			
+			var selectMenjac = $("#select-menjac");
+		
+			for(var menjac of menjaci){
+				selectMenjac.append('<option value="'+menjac.id+'">'+menjac.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+

@@ -191,10 +191,10 @@ public class OglasController {
             return new ResponseEntity<String>("Parametri_za_pretragu_nisu_dobro_formirani!",HttpStatus.BAD_REQUEST);
         }
         
-        System.out.println(
-        "mesto:"+mesto + "\nOd:"+odDate.toString() + "\nDo:"+doDate.toString() +
-		"\nmarka:"+marka + "\nmodel:"+model + "\nmenjac:"+menjac + "\ngorivo:"+gorivo +"\nklasa:"+klasa +
-		"\npredjena:"+predjenaInt + "\nplanirana:"+planiranaInt + "\nosiguranje:"+osiguranje + "\nbrSedZaDecu:"+brSedZaDecuInt);
+//        System.out.println(
+//        "mesto:"+mesto + "\nOd:"+odDate.toString() + "\nDo:"+doDate.toString() +
+//		"\nmarka:"+marka + "\nmodel:"+model + "\nmenjac:"+menjac + "\ngorivo:"+gorivo +"\nklasa:"+klasa +
+//		"\npredjena:"+predjenaInt + "\nplanirana:"+planiranaInt + "\nosiguranje:"+osiguranje + "\nbrSedZaDecu:"+brSedZaDecuInt);
         
         Collection<OglasDTOsearch> oglasi = oglasService.search(mesto, odDate, doDate, marka, model, menjac, gorivo, klasa,
         														predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt);

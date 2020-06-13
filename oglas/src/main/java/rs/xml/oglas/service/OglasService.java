@@ -31,6 +31,7 @@ import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Slika;
 import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.model.ZahtevStatus;
+import rs.xml.oglas.repository.OcenaRepository;
 import rs.xml.oglas.repository.OglasRepository;
 import rs.xml.oglas.repository.ZahtevRepository;
 
@@ -45,6 +46,9 @@ public class OglasService {
 	
 	@Autowired
 	ZahtevRepository zahtevRepository;
+	
+	@Autowired
+	OcenaRepository ocenaRepository;
 	
 	public Oglas findOne(Long id) {
 		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
@@ -229,6 +233,12 @@ public class OglasService {
 					oglasDTO.setSlika("data:image/jpeg;base64," + imageString);
 				}
 				
+				Double avgOcena = ocenaRepository.getAvgOcenaForOglas(oglas.getId());
+				if(avgOcena == null) {
+					avgOcena = 5.0;
+				}
+				
+				oglasDTO.setOcena(avgOcena.doubleValue());
 				ret.add(oglasDTO);
 			}
 		}
