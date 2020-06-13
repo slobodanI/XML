@@ -2,6 +2,8 @@ package rs.xml.oglas.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,8 +29,8 @@ public class Ocena {
 	@Column(name = "komentar")
 	private String komentar;
 	
-	@Column(name = "approved")
-	private boolean approved; // od strane admina
+	@Enumerated(EnumType.STRING)
+	private OcenaApprovedStatus approved; // od strane admina
 	
 	@Column(name = "odgovor")
 	private String odgovor; // od agenta
@@ -52,7 +54,7 @@ public class Ocena {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Ocena(Long id, int ocena, String komentar, boolean approved, String odgovor, String usernameKo,
+	public Ocena(Long id, int ocena, String komentar, OcenaApprovedStatus approved, String odgovor, String usernameKo,
 			String usernameKoga, Oglas oglas, Long zahtevId, boolean deleted) {
 		this.id = id;
 		this.ocena = ocena;
@@ -69,7 +71,7 @@ public class Ocena {
 	public Ocena(OcenaNewDTO ocenaNewDTO, String usernameKo, String usernameKoga, Oglas oglas) {
 		this.ocena = ocenaNewDTO.getOcena();
 		this.komentar = ocenaNewDTO.getKomentar();
-		this.approved = false;
+		this.approved = OcenaApprovedStatus.UNKNOWN;
 		this.odgovor = "nema odgovora...";
 		this.usernameKo = usernameKo;
 		this.usernameKoga = usernameKoga;
@@ -101,12 +103,12 @@ public class Ocena {
 	public void setKomentar(String komentar) {
 		this.komentar = komentar;
 	}
-
-	public boolean isApproved() {
+	
+	public OcenaApprovedStatus getApproved() {
 		return approved;
 	}
 
-	public void setApproved(boolean approved) {
+	public void setApproved(OcenaApprovedStatus approved) {
 		this.approved = approved;
 	}
 
