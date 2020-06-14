@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Ocena;
+import rs.xml.oglas.model.OcenaApprovedStatus;
 import rs.xml.oglas.repository.OcenaRepository;
 
 
@@ -56,4 +57,44 @@ public class OcenaService {
 		return ocenaRepository.findOcenaIfExists(zahtevId, oglasId);
 	}
 		
+	public List<Ocena> findOceneToBeApproved() {
+		return ocenaRepository.findOceneToBeApproved();
+	}
+
+	public boolean approveOcena(Long oid) {		
+		Ocena ocena = findOne(oid);
+		
+		if(ocena.getApproved().equals(OcenaApprovedStatus.UNKNOWN)) {
+			ocena.setApproved(OcenaApprovedStatus.APPROVED);
+			this.save(ocena);
+			return true;
+		}
+		
+		return false;				
+	}
+	
+	public boolean denyOcena(Long oid) {
+		Ocena ocena = findOne(oid);
+		
+		if(ocena.getApproved().equals(OcenaApprovedStatus.UNKNOWN)) {
+			ocena.setApproved(OcenaApprovedStatus.DENIED);
+			this.save(ocena);
+			return true;
+		}
+			
+		return false;				
+	}
+
+	public boolean giveOdgovor(Ocena ocena, String odgovor) {
+
+		
+		if(ocena.getOdgovor().equals("nema odgovora...")) {
+			ocena.setOdgovor(odgovor);
+			this.save(ocena);
+			return true;
+		}
+
+		return false;
+	}
+	
 }

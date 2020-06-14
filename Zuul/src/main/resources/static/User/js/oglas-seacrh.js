@@ -20,6 +20,14 @@ $(document).ready(function() {
 		sessionStorage.setItem('korpa', JSON.stringify(korpa));
 	}
 	
+	
+	popuniMesta();
+	popuniMarke();
+	popuniModele();
+	popuniKLase();
+	popuniGoriva();
+	popuniMenjac();
+	
 });
 
 function searchOglas() {
@@ -91,7 +99,7 @@ function izlistajOglase(oglasi){
 		var tableUDivu = $("<table id='tabelaOglasa' class='display'> </table>");
 		
 		var thead = $("<thead> </thead>");
-		thead.append("<tr><th>ID</th><th>Slika</th><th>Mesto</th><th>Marka</th><th>Model</th><th>Menjac</th><th>Gorivo</th><th>Klasa</th><th>Dodaj</th></tr>")
+		thead.append("<tr><th>ID</th><th>Slika</th><th>Mesto</th><th>Ocena</th><th>Kilometraža</th><th>Marka</th><th>Model</th><th>Menjac</th><th>Gorivo</th><th>Klasa</th><th>Dodaj</th></tr>")
 		
 		var tbody = $("<tbody id='teloTabele'> </tbody>");
 		
@@ -105,6 +113,10 @@ function izlistajOglase(oglasi){
 			tdSlika.append(imgSlika);
 			var tdMesto = $("<td> </td>");
 			tdMesto.append(o.mesto);
+			var tdOcena = $("<td> </td>");
+			tdOcena.append(o.ocena)
+			var tdKilometraza = $("<td> </td>");
+			tdKilometraza.append(o.predjenaInt)
 			var tdMarka = $("<td> </td>");
 			tdMarka.append(o.marka);
 			var tdModel = $("<td> </td>");
@@ -120,8 +132,8 @@ function izlistajOglase(oglasi){
 			var btn = $('<button>Dodaj u korpu</button>');
 			btn.click(dodajUKorpu(o.id, Od, Do));
 			tdDodaj.append(btn);
-			
-			tr.append(tdId).append(tdSlika).append(tdMesto).append(tdMarka).append(tdModel).append(tdMenjac).append(tdGorivo).append(tdKlasa).append(tdDodaj);
+			console.log("alooo");
+			tr.append(tdId).append(tdSlika).append(tdMesto).append(tdOcena).append(tdKilometraza).append(tdMarka).append(tdModel).append(tdMenjac).append(tdGorivo).append(tdKlasa).append(tdDodaj);
 			tbody.append(tr);
 		}
 		
@@ -176,4 +188,135 @@ function dodajUKorpu(oglasId, odKad, doKad) {
 	
 }
 
+function popuniMesta() {
+	$.get({
+		url: '/sifrarnik/mesto',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(mesta){
+			
+			var selectMesto = $("#select-mesto");
+			
+			for(var mesto of mesta){
+				selectMesto.append('<option value="'+mesto.name+'">'+mesto.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniMarke() {
+	$.get({
+		url: '/sifrarnik/marka',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(marke){
+			
+			var selectMarka = $("#select-marka");
+			
+			for(var marka of marke){
+				selectMarka.append('<option value="'+marka.name+'">'+marka.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniModele() {
+	$.get({
+		url: '/sifrarnik/model',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(modeli){
+			
+			var selectModel = $("#select-model");
+		
+			for(var model of modeli){
+				selectModel.append('<option value="'+model.name+'">'+model.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniKLase() {
+	$.get({
+		url: '/sifrarnik/klasa',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(klase){
+			
+			var selectKlasa = $("#select-klasa");
+		
+			for(var klasa of klase){
+				selectKlasa.append('<option value="'+klasa.name+'">'+klasa.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniGoriva() {
+	$.get({
+		url: '/sifrarnik/gorivo',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(goriva){
+			
+			var selectGorivo = $("#select-gorivo");
+		
+			for(var gorivo of goriva){
+				selectGorivo.append('<option value="'+gorivo.name+'">'+gorivo.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniMenjac() {
+	$.get({
+		url: '/sifrarnik/menjac',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(menjaci){
+			
+			var selectMenjac = $("#select-menjac");
+		
+			for(var menjac of menjaci){
+				selectMenjac.append('<option value="'+menjac.name+'">'+menjac.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
 

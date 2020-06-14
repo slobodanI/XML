@@ -22,6 +22,7 @@ public class OglasDTOsearch {
     boolean osiguranjeBool;
     int brSedZaDecuInt;
     String slika;
+    double ocena;
     
     public OglasDTOsearch() {
 		// TODO Auto-generated constructor stub
@@ -162,6 +163,14 @@ public class OglasDTOsearch {
 
 	public void setSlika(String slika) {
 		this.slika = slika;
+	}
+
+	public double getOcena() {
+		return ocena;
+	}
+
+	public void setOcena(double ocena) {
+		this.ocena = ocena;
 	}
     
     
