@@ -28,15 +28,19 @@ function getMyZahtevi() {
 }
 
 function popuniTabelu(zahtevi) {
+	
+
 		
 	var tableUDivu = $("<table id='tabelaZahteva' class='display'> </table>");
 	
 	var thead = $("<thead> </thead>");
-	thead.append("<tr><th>Zahtev ID</th><th>Status</th><th>Olgasi</th><th>Od</th><th>Do</th><th>Prihvatanje</th><th>Otkazivanje</th></tr>")
+	thead.append("<tr><th>Zahtev ID</th><th>Status</th><th>Olgasi</th><th>Od</th><th>Do</th><th>Prihvatanje</th><th>Otkazivanje</th><th>Izvestaj</th></tr>")
 	
 	var tbody = $("<tbody id='teloTabele'> </tbody>");
 	
 	for(var zahtev of zahtevi){
+		var now = new Date();
+		var doDate = new Date(zahtev.do1);
 		var tr = $("<tr> </tr>")
 		
 		var tdId = $("<td> </td>");
@@ -61,6 +65,7 @@ function popuniTabelu(zahtevi) {
 		
 		var tdPrihvati = $("<td> </td>");
 		var tdOtkazivanje = $("<td> </td>");
+		var tdIzvestaj = $("<td> </td>");
 		if(zahtev.status == 'PENDING') {
 //			doradi...			
 			var btnPrihvati = $('<button>Prihvati</button>');
@@ -71,8 +76,13 @@ function popuniTabelu(zahtevi) {
 			btnOtkazi.click(odbijZahtev(zahtev.id))
 			tdOtkazivanje.append(btnOtkazi);
 		}
+		if(zahtev.status == 'PAID' && doDate<now){
+			var btnIzvestaj = $('<button>Izvestaj</button>');
+			btnIzvestaj.click(unesiIzvestaj(zahtev.id));
+			tdIzvestaj.append(btnIzvestaj);
+		}
 	
-		tr.append(tdId).append(tdStatus).append(tdOglasi).append(tdOd).append(tdDo).append(tdPrihvati).append(tdOtkazivanje);
+		tr.append(tdId).append(tdStatus).append(tdOglasi).append(tdOd).append(tdDo).append(tdPrihvati).append(tdOtkazivanje).append(tdIzvestaj);
 		tbody.append(tr);
 	}
 	
@@ -91,6 +101,14 @@ function oceniOglaseUZahtevu(zahtevId) {
 	return function() {		
 		window.location = "./ocenjivanje.html?zahtevId=" + zahtevId;
 	}	
+}
+
+function unesiIzvestaj(zahtevId){
+	
+	return function(){
+		window.location = "./izvestaj.html?zahtevId=" + zahtevId;
+	}
+	
 }
 
 
