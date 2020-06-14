@@ -62,6 +62,11 @@ public class OglasService {
 	public Page<Oglas> findAll(Pageable page) {
 		return oglasRepository.findAll(page);
 	}
+	
+	public List<Oglas> findMyOglasi(String username){
+		return oglasRepository.findActiveOglaseFromUser(username);
+		
+	}
 
 	public Oglas save(Oglas oglas) {
 		return oglasRepository.save(oglas);
@@ -248,7 +253,7 @@ public class OglasService {
 	
 	public Oglas saveAsBasicUser(Oglas oglas, String username) {
 		
-		Collection<Oglas> oglasi = oglasRepository.findActiveOglaseFromUser(username);
+		List<Oglas> oglasi = oglasRepository.findActiveOglaseFromUser(username);
 		
 		if(oglasi.size() < 3) {
 			return oglasRepository.save(oglas);

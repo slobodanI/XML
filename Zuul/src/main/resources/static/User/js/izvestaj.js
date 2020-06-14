@@ -67,9 +67,10 @@ function ucitajIzvestaje(zahtev){
 function popuniDiv(izvestaji,zahtev) {
 	
 	var count = 1;
+	var count2 = 0;
 
 	for(oglas of zahtev.oglasi){
-		alert(oglas.id+"****");
+		
 		
 
 		
@@ -92,7 +93,7 @@ function popuniDiv(izvestaji,zahtev) {
 		var pom = 0;
 		if(izvestaji != null){
 		for(izvestaj of izvestaji){
-			
+			count2++;
 			if(izvestaj.oglasId == oglas.id){
 				pom = 1;
 			}
@@ -113,6 +114,10 @@ function popuniDiv(izvestaji,zahtev) {
 		
 		
 		count++;
+		if(count == count2){
+			alert("Uneli ste sve izvestaje!");
+			window.location = "./zahtevi-za-mene.html";
+		}
 	}
 	
 //	console.log(count- 1);

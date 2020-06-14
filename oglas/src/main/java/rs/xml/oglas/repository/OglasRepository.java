@@ -2,6 +2,7 @@ package rs.xml.oglas.repository;
 
 import java.sql.Date;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import rs.xml.oglas.model.Oglas;
+import rs.xml.oglas.model.Zahtev;
 
 @Repository
 public interface OglasRepository extends JpaRepository<Oglas, Long> {
@@ -25,5 +27,8 @@ public interface OglasRepository extends JpaRepository<Oglas, Long> {
 	Collection<Oglas> searchOdDo(@Param("od") Date od, @Param("do") Date dod);
 	
 	@Query("SELECT o FROM Oglas o WHERE o.username = :username and o.deleted = false") // COUNT(o)
-	Collection<Oglas> findActiveOglaseFromUser(@Param("username") String username);
+	List<Oglas> findActiveOglaseFromUser(@Param("username") String username);
+	
+
+
 }

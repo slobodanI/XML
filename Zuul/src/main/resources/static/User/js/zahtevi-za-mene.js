@@ -76,7 +76,7 @@ function popuniTabelu(zahtevi) {
 			btnOtkazi.click(odbijZahtev(zahtev.id))
 			tdOtkazivanje.append(btnOtkazi);
 		}
-		if(zahtev.status == 'PAID' && doDate<now){
+		if(zahtev.status == 'PAID' && doDate<now && zahtev.izvestaj == false){
 			var btnIzvestaj = $('<button>Izvestaj</button>');
 			btnIzvestaj.click(unesiIzvestaj(zahtev.id));
 			tdIzvestaj.append(btnIzvestaj);
