@@ -24,7 +24,12 @@ public class IzvestajService {
 		return izvestaj;
 	}
 	
-	public List<Izvestaj> findAll(){
+	public List<Izvestaj> findAll(Long zahtevId){
+		
+		if(!(zahtevId==0)) {
+			return izvestajRepository.findIzvestajZahteva(zahtevId);
+		}
+		
 		return izvestajRepository.findAll();
 	}
 	

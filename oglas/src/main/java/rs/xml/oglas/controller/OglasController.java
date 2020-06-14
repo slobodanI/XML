@@ -62,17 +62,34 @@ public class OglasController {
 	SlikaService slikaService;
 
 	@GetMapping("/oglas")
-	public ResponseEntity<?> getOglasi() {
+	public ResponseEntity<?> getOglasi(@RequestParam(required = false, defaultValue = "nema") String filter, HttpServletRequest request) {
 		// String ip = InetAddress.getLocalHost().getHostAddress();
-		List<Oglas> oglasList = oglasService.findAll();
-		logger.info("get all oglasi {}", "test");;
-		List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
-		for(Oglas og: oglasList) {
-			OglasDTO oDTO = new OglasDTO(og);
-			oglasListDTO.add(oDTO);
+		
+		String username = request.getHeader("username");
+		List<Oglas> oglasList = new ArrayList<Oglas>();
+		
+		if(filter.equals("moje")) {
+			oglasList = oglasService.findMyOglasi(username);
+			List<OglasDTOsearch> oglasListDTO = new ArrayList<OglasDTOsearch>();
+			for(Oglas og: oglasList) {
+				OglasDTOsearch oDTO = new OglasDTOsearch(og);
+				oglasListDTO.add(oDTO);
+			}
+			logger.info("get all oglasi {}", "test");;
+			return new ResponseEntity<>(oglasListDTO, HttpStatus.OK);
+			
+		}else {
+			oglasList = oglasService.findAll();
+			List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
+			for(Oglas og: oglasList) {
+				OglasDTO oDTO = new OglasDTO(og);
+				oglasListDTO.add(oDTO);
+			}
+			logger.info("get all oglasi {}", "test");;
+			return new ResponseEntity<>(oglasListDTO, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<>(oglasListDTO, HttpStatus.OK);
+
 	}
 
 	@GetMapping("/oglas/{oid}")

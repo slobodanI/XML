@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.xml.oglas.dto.IzvestajDTO;
@@ -43,10 +44,13 @@ public class IzvestajController {
 	
 		
 	@GetMapping("/izvestaj")
-	public ResponseEntity<?> getIzvestaji(){
+	public ResponseEntity<?> getIzvestaji(@RequestParam(required = false, defaultValue = "0") Long zahtevId, HttpServletRequest request){
 		
-		List<Izvestaj> izvestaji = izvestajService.findAll();
+		
+		List<Izvestaj> izvestaji = izvestajService.findAll(zahtevId);
 		List<IzvestajDTO> izvestajiDTO = new ArrayList<IzvestajDTO>();
+		
+		
 		
 		for(Izvestaj iz : izvestaji) {
 			IzvestajDTO izDTO = new IzvestajDTO(iz);
@@ -100,14 +104,18 @@ public class IzvestajController {
 		if(!zahtev.getDo().before(dateNow)) {
 			return new ResponseEntity<>("Greska!Zahtev jos nije zavrsen",HttpStatus.BAD_REQUEST);
 		}
-		if(zahtev.isIzvestaj()) {
-			return new ResponseEntity<>("Greska!Vec je unet izvestaj za ovaj zahtev",HttpStatus.BAD_REQUEST);
-		}
-		
-		
+//		if(zahtev.isIzvestaj()) {
+//			return new ResponseEntity<>("Greska!Vec je unet izvestaj za ovaj zahtev",HttpStatus.BAD_REQUEST);
+//		}
 		izvestajService.save(izvestajDTO, username);
-		zahtev.setIzvestaj(true);
-		zahtevRepository.save(zahtev);
+		List<Izvestaj> izvestaji = izvestajService.findAll(zahtev.getId());
+		
+		if(izvestaji.size() == zahtev.getOglasi().size()) {
+			
+			zahtev.setIzvestaj(true);
+			zahtevRepository.save(zahtev);
+		}
+
 		
 		return new ResponseEntity<>(izvestajDTO,HttpStatus.OK);
 		
