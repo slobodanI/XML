@@ -1,0 +1,36 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://xml.rs/oglas/xsd"
+           targetNamespace="http://xml.rs/oglas/xsd" elementFormDefault="qualified">
+
+    <xs:element name="getStudentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getStudentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="student" type="tns:student"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="student">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="year" type="xs:int"/>
+            <xs:element name="faculty" type="tns:faculty"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="faculty">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FTN"/>
+            <xs:enumeration value="ETF"/>
+            <xs:enumeration value="DIF"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
