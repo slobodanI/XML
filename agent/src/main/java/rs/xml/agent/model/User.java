@@ -1,9 +1,15 @@
 package rs.xml.agent.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.joda.time.DateTime;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,11 +24,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name="USERS")
-public class User /*implements userdetails*/{
+public class User implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -31,13 +35,23 @@ public class User /*implements userdetails*/{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @JsonIgnore
     @Column(name = "password")
     private String password;
+    
+    @JsonIgnore
+    @Column(name = "salt")
+    private String salt;
+    
+    @Column(name = "first_name")
+    private String firstName;
 
+    @Column(name = "last_name")
+    private String lastName;
+    
     @Column(name = "email")
     private String email;
 
@@ -50,8 +64,8 @@ public class User /*implements userdetails*/{
     @Column(name = "canceled")
     private int canceled; // koliko puta je otkazao zahtev
     
-    @Column(name = "ads")
-    private int ads; // broj postavljenih oglasa
+//    @Column(name = "ads")
+//    private int ads; // broj postavljenih oglasa
     
     @Column(name = "owes")
     private int owes; // treba da plati dodatne kilometre
@@ -59,6 +73,9 @@ public class User /*implements userdetails*/{
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 	
+    @Column(name = "deleted")
+    private boolean deleted;
+    
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -89,6 +106,30 @@ public class User /*implements userdetails*/{
 		Timestamp now = new Timestamp(DateTime.now().getMillis());
         this.setLastPasswordResetDate( now );
         this.password = password;
+	}
+	
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -123,13 +164,13 @@ public class User /*implements userdetails*/{
 		this.canceled = canceled;
 	}
 
-	public int getAds() {
-		return ads;
-	}
-
-	public void setAds(int ads) {
-		this.ads = ads;
-	}
+//	public int getAds() {
+//		return ads;
+//	}
+//
+//	public void setAds(int ads) {
+//		this.ads = ads;
+//	}
 
 	public int getOwes() {
 		return owes;
@@ -146,6 +187,14 @@ public class User /*implements userdetails*/{
 	public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public List<Role> getRoles() {
 		return roles;
@@ -155,31 +204,48 @@ public class User /*implements userdetails*/{
 		this.roles = roles;
 	}
 	
-//	@JsonIgnore
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @JsonIgnore
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @JsonIgnore
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
+	@JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
     
-//	@Override
-//    public boolean isEnabled() {
-//        return accepted && !blocked;
-//    }
+	@Override
+    public boolean isEnabled() {
+        return accepted && !deleted && !blocked; //
+    }
     
-//	@Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return this.roles;
-//    }
+	/**
+	 * Vraca listu 'GrantedAuthority'.
+	 * U listi se nalaze role koje korisnik ima, i sve
+	 * prermisije koje su dodeljene tim rolama;
+	 */
+	@Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //return this.roles;
+        
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+        getRoles().forEach(role -> {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+            role.getPermissions().forEach(permission -> {
+                grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName()));
+            });
+
+        });
+        return grantedAuthorities;
+        
+    }
 }

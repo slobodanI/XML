@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Oglas-add</title>
+<script src="js/jquery-3.5.1.min.js"></script>
+<script  src="js/bootstrap.min.js"></script>
+<script src="js/oglas-add.js"></script>
+<link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+	
+	<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    	<h5 class="my-0 mr-md-auto font-weight-normal">Dodavanje oglasa</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="oglas-search.html">Pretraga oglasa</a>
+        <a class="p-2 text-dark" href="oglas-add.html">Dodavanje oglasa</a>
+        <a class="p-2 text-dark" href="chats-all.html">Chats</a>
+        <a class="p-2 text-dark" href="zahtevi-poslati.html">Poslati zahtevi</a>
+        <a class="p-2 text-dark" href="zahtevi-za-mene.html">Primljeni zahtevi</a>
+        <a class="p-2 text-dark" href="ocene-moje.html">Poslate ocene</a>
+        <a class="p-2 text-dark" href="ocene-za-mene.html">Ocene za mene</a>
+        <a class="p-2 text-dark" href="korpa.html">Korpa</a>
+        
+        
+        </nav>
+       <a class="btn btn-outline-primary" href="../login.html">Izloguj se</a>
+	</div>
+	
+<form id="form-add-oglas" class="col-sm-12">
+
+  <div class="form-group">
+    <label for="select-mesto">Mesto</label>
+    <select class="form-control col-sm-6" id="select-mesto" required>
+<!--       <option selected value=1>1</option> -->
+<!--       <option value=2>2</option> -->
+<!--       <option value=3>3</option> -->
+<!--       <option value=4>4</option> -->
+<!--       <option value=5>5</option> -->
+    </select>
+    <label for="select-marka">Marka</label>
+    <select class="form-control col-sm-6" id="select-marka" required>
+<!--       <option selected value=1>1</option> -->
+<!--       <option value=2>2</option> -->
+<!--       <option value=3>3</option> -->
+<!--       <option value=4>4</option> -->
+<!--       <option value=5>5</option> -->
+    </select>
+    <label for="select-model">Model</label>
+    <select class="form-control col-sm-6" id="select-model" required>
+<!--       <option selected value=1>1</option> -->
+<!--       <option value=2>2</option> -->
+<!--       <option value=3>3</option> -->
+<!--       <option value=4>4</option> -->
+<!--       <option value=5>5</option> -->
+    </select>
+    <label for="select-menjac">Menjac</label>
+    <select class="form-control col-sm-6" id="select-menjac" required>
+<!--       <option selected value=1>1</option> -->
+<!--       <option value=2>2</option> -->
+<!--       <option value=3>3</option> -->
+<!--       <option value=4>4</option> -->
+<!--       <option value=5>5</option> -->
+    </select>
+    <label for="select-gorivo">Gorivo</label>
+    <select class="form-control col-sm-6" id="select-gorivo" required>
+<!--       <option selected value=1>1</option> -->
+<!--       <option value=2>2</option> -->
+<!--       <option value=3>3</option> -->
+<!--       <option value=4>4</option> -->
+<!--       <option value=5>5</option> -->
+    </select>
+    <label for="select-klasa">Klasa</label>
+    <select class="form-control col-sm-6" id="select-klasa" required>
+<!--       <option selected value=1>1</option> -->
+<!--       <option value=2>2</option> -->
+<!--       <option value=3>3</option> -->
+<!--       <option value=4>4</option> -->
+<!--       <option value=5>5</option> -->
+    </select>
+  </div>
+  
+  <div class="form-group row">
+    <label for="input-cena" class="col-sm-12 col-form-label">Cena</label>
+    <div class="col-sm-6">
+      <input type="number" class="form-control" id="input-cena" placeholder="Cena">
+    </div>
+  </div>
+	
+	<div class="form-group row">
+		<label for="input-kilometraza" class="col-sm-12 col-form-label">Predjena Kilometraza</label>
+	    <div class="col-sm-6">
+	      <input type="number" class="form-control" id="input-kilometraza" placeholder="Predjena Kilometraza">
+	    </div>
+	</div>
+	<div class="form-group row">
+		<label for="input-planirana-kilometraza" class="col-sm-12 col-form-label">Planirana Kilometraza</label>
+	    <div class="col-sm-6">
+	      <input type="number" class="form-control" id="input-planirana-kilometraza" placeholder="Planirana Kilometraza">
+	    </div>
+	</div>
+	<div class="form-group">
+		<label for="select-osiguranje">Osiguranje</label>
+		<select class="form-control col-sm-6" id="select-osiguranje" required>
+			<option selected value="1">DA</option>
+			<option value="2">NE</option>
+		</select>
+	</div>
+	<div class="form-group">
+	<label for="select-brSedistaZaDecu">Broj sedišta za decu</label>
+		<select class="form-control col-sm-6" id="select-brSedistaZaDecu" required>
+			<option selected value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+		</select>
+	</div>
+	<div class="form-group row">
+		<label for="input-od" class="col-sm-2 col-form-label">OD</label>
+		<input type="date" name="od" id="input-od" required>
+	</div>
+	<div class="form-group row">
+		<label for="input-do" class="col-sm-2 col-form-label">DO</label>
+		<input type="date" name="do" id="input-do" required>
+	</div>
+	
+	<div class="form-group row">
+		<label for="image1" class="col-sm-2 col-form-label">Slika 1(do 200kB)</label>
+		<input type="file" name="image1" accept="image/*" required>
+		<img id="previewImage1" src="#" alt="slika1" width="200" height="200"/>
+	</div>
+	
+	<div class="form-group row">
+		<label for="image2" class="col-sm-2 col-form-label">Slika 2(do 200kB)</label>
+		<input type="file" name="image2" accept="image/*" required>
+	<img id="previewImage2" src="#" alt="slika2" width="200" height="200"/>
+	</div>
+	
+	<div class="form-group row">
+		<label for="image3" class="col-sm-2 col-form-label">Slika 3(do 200kB)</label>
+		<input type="file" name="image3" accept="image/*" required>
+	<img id="previewImage3" src="#" alt="slika3" width="200" height="200"/>
+	</div>
+	<input type="submit" value="Postavi Oglas">
+</form>
+	
+</body>
+</html>

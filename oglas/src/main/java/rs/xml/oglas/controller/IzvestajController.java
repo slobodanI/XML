@@ -107,10 +107,18 @@ public class IzvestajController {
 //		if(zahtev.isIzvestaj()) {
 //			return new ResponseEntity<>("Greska!Vec je unet izvestaj za ovaj zahtev",HttpStatus.BAD_REQUEST);
 //		}
-		izvestajService.save(izvestajDTO, username);
 		List<Izvestaj> izvestaji = izvestajService.findAll(zahtev.getId());
+		for(Izvestaj i : izvestaji) {
+			if(i.getOglasId().equals(izvestajDTO.getOglasId())) {
+				return new ResponseEntity<>("Greska!Vec je unet izvestaj za ovaj oglas!",HttpStatus.BAD_REQUEST);
+			}
+		}
 		
-		if(izvestaji.size() == zahtev.getOglasi().size()) {
+		izvestajService.save(izvestajDTO, username);
+		
+
+		
+		if(izvestaji.size()+1  == zahtev.getOglasi().size()) {
 			
 			zahtev.setIzvestaj(true);
 			zahtevRepository.save(zahtev);
