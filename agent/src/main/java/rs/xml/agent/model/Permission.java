@@ -24,6 +24,11 @@ private static final long serialVersionUID = 1L;
 	public Permission() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Permission(String name) {
+		super();
+		this.name = name;
+	}
 
 	public Long getId() {
 		return id;

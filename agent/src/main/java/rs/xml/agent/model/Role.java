@@ -58,6 +58,14 @@ public class Role /*implements GrantedAuthority*/{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public List<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(List<Permission> permissions) {
+		this.permissions = permissions;
+	}
 	
 	
 }

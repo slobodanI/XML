@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="js/jquery-3.5.1.min.js"></script>
+	<script  src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<script src="js/PronadjiMesto.js"></script>
+<meta charset="UTF-8">
+<title>Pronađi mesto</title>
+</head>
+<body>
+
+	<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    	<h5 class="my-0 mr-md-auto font-weight-normal">MESTO</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+     	<a class="p-2 text-dark" href="Mesto.html">Back</a>
+        </nav>
+    </div>
+	
+	<form id="pronMesto">
+	
+		<div id="formaMesto" class="card mb-4 box-shadow">
+		
+			<div class="card-header text-center">
+            	<h4 class="my-0 font-weight-normal">Pronađi Mesto</h4>
+        	</div>
+        
+        	<br/>
+	
+			<div class="form-group col-md-6">
+	    		<label>Šifra:</label>
+	    		<input id='sifraTxt' class="form-control" type="number" required>
+	    	</div>
+	    
+	    	<div class="form-group col-md-6">
+	    		<label>Naziv:</label>
+	    		<input id='nazivTxt' class="form-control" type="text" disabled>
+	    	</div>
+	    	
+	    	<br/>
+	    	
+	    	<input type="submit" class="btn btn-lg btn-block btn-outline-primary" value="Pronađi mesto po ID-ju">
+	    	
+		</div>
+	</form>
+	
+</body>
+</html>
