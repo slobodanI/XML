@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+
+import rs.xml.agent.dto.PorukaNewDTO;
 
 @Entity
 @Table(name = "PORUKA")
@@ -28,15 +31,26 @@ public class Poruka {
 	@Column(name = "body")
 	private String body;
 	
+	@Column(name = "sender_username")
+	private String senderUsername;
+	
 	public Poruka() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Poruka(Chat chat, Timestamp timestamp, String body) {
+	public Poruka(Chat chat, Timestamp timestamp, String body, String senderUsername) {
 		super();
 		this.chat = chat;
 		this.timestamp = timestamp;
 		this.body = body;
+		this.senderUsername = senderUsername;
+	}
+
+	public Poruka(PorukaNewDTO porukaNewDTO, Chat chat, String username) {		
+		this.chat = chat;
+		this.timestamp = new Timestamp(System.currentTimeMillis());
+		this.body = porukaNewDTO.getBody();
+		this.senderUsername = username;
 	}
 
 	public Long getId() {
@@ -69,6 +83,14 @@ public class Poruka {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	public String getSenderUsername() {
+		return senderUsername;
+	}
+
+	public void setSenderUsername(String senderUsername) {
+		this.senderUsername = senderUsername;
 	}
 	
 	

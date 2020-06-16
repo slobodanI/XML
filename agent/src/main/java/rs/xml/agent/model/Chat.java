@@ -1,5 +1,6 @@
 package rs.xml.agent.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+
+import rs.xml.agent.dto.ChatNewDTO;
 
 @Entity
 @Table(name = "CHAT")
@@ -19,24 +23,28 @@ public class Chat {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "sender")
-	private Long senderId;
+	@Column(name = "sender_username")
+	private String senderUsername;
 	
-	@Column(name = "receiver")
-	private Long receiverId;
+	@Column(name = "receiver_username")
+	private String receiverUsername;
 	
 	@OneToMany(mappedBy = "chat")
-	private List<Poruka> poruke;
+	private List<Poruka> poruke = new ArrayList<Poruka>();
 	
 	public Chat() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public Chat(Long senderId, Long receiverId, List<Poruka> poruke) {
-		super();
-		this.senderId = senderId;
-		this.receiverId = receiverId;
+	
+	public Chat(String senderUsername, String receiverUsername, List<Poruka> poruke) {
+		this.senderUsername = senderUsername;
+		this.receiverUsername = receiverUsername;
 		this.poruke = poruke;
+	}
+
+	public Chat(@Valid ChatNewDTO chatDTO) {
+		this.senderUsername = chatDTO.getSendereUsername();
+		this.receiverUsername = chatDTO.getReceiverUsername();
 	}
 
 	public Long getId() {
@@ -47,20 +55,20 @@ public class Chat {
 		this.id = id;
 	}
 
-	public Long getSenderId() {
-		return senderId;
+	public String getSenderUsername() {
+		return senderUsername;
 	}
 
-	public void setSenderId(Long senderId) {
-		this.senderId = senderId;
+	public void setSenderUsername(String senderUsername) {
+		this.senderUsername = senderUsername;
 	}
 
-	public Long getReceiverId() {
-		return receiverId;
+	public String getReceiverUsername() {
+		return receiverUsername;
 	}
 
-	public void setReceiverId(Long receiverId) {
-		this.receiverId = receiverId;
+	public void setReceiverUsername(String receiverUsername) {
+		this.receiverUsername = receiverUsername;
 	}
 
 	public List<Poruka> getPoruke() {

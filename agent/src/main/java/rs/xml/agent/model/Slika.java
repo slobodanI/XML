@@ -2,6 +2,7 @@ package rs.xml.agent.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class Slika {
     @Column(name = "slika", columnDefinition="BLOB")
 	private byte[] slika;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     private Oglas oglas;
 	
 	public Slika() {

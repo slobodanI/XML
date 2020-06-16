@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import rs.xml.agent.dto.NewCenovnikDTO;
+
 @Entity
 @Table(name = "CENOVNIK")
 public class Cenovnik {
@@ -16,38 +18,52 @@ public class Cenovnik {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(name="cenaZaDan")
+	@Column(name="name", unique = true)
+	private String name;
+	
+	@Column(name="cena_za_dan")
 	private int cenaZaDan;
 	
-	@Column(name="cenaPoKilometru")
+	@Column(name="cena_po_kilometru")
 	private int cenaPoKilometru;
 	
-	@Column(name="cenaOsiguranja")
+	@Column(name="cena_osiguranja")
 	private int cenaOsiguranja;
 	
 	@Column(name="popust")
 	private int popust;
 	
-	@Column(name="zaViseOd")
+	@Column(name="za_vise_d")
 	private int zaViseOd; // za vise od koliko dana vazi popust
 	
 	@Column(name="userId")
-	private Long userId;
+	private String username;
 	
 	public Cenovnik() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cenovnik(int cenaZaDan, int cenaPoKilometru, int cenaOsiguranja, int popust, int zaViseOd, Long userId) {
+	public Cenovnik(int cenaZaDan, int cenaPoKilometru, int cenaOsiguranja, int popust, int zaViseOd, String username, String name) {
 		super();
 		this.cenaZaDan = cenaZaDan;
 		this.cenaPoKilometru = cenaPoKilometru;
 		this.cenaOsiguranja = cenaOsiguranja;
 		this.popust = popust;
 		this.zaViseOd = zaViseOd;
-		this.userId = userId;
+		this.username = username;
+		this.name = name;
 	}
-
+	
+	public Cenovnik(NewCenovnikDTO newcenovnikDTO, String username) {
+		this.cenaZaDan = newcenovnikDTO.getCenaZaDan();
+		this.cenaPoKilometru = newcenovnikDTO.getCenaPoKilometru();
+		this.cenaOsiguranja = newcenovnikDTO.getCenaOsiguranja();
+		this.popust = newcenovnikDTO.getPopust();
+		this.zaViseOd = newcenovnikDTO.getZaViseOd();
+		this.name = username + "-" +newcenovnikDTO.getName();
+		this.username = username;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -96,12 +112,20 @@ public class Cenovnik {
 		this.zaViseOd = zaViseOd;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
