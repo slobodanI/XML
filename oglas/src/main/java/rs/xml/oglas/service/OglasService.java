@@ -2,14 +2,10 @@ package rs.xml.oglas.service;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import java.util.Base64.Encoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,12 +21,11 @@ import rs.xml.oglas.client.ModelDTO;
 import rs.xml.oglas.client.SifrarnikClient;
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
-import rs.xml.oglas.dto.SlikaDTO;
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Oglas;
-import rs.xml.oglas.model.Slika;
 import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.model.ZahtevStatus;
+import rs.xml.oglas.repository.IzvestajRepository;
 import rs.xml.oglas.repository.OcenaRepository;
 import rs.xml.oglas.repository.OglasRepository;
 import rs.xml.oglas.repository.ZahtevRepository;
@@ -49,6 +44,9 @@ public class OglasService {
 	
 	@Autowired
 	OcenaRepository ocenaRepository;
+	
+	@Autowired
+	IzvestajRepository izvestajRepository;
 	
 	public Oglas findOne(Long id) {
 		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
@@ -75,6 +73,21 @@ public class OglasService {
 	public void remove(Long id) {
 		oglasRepository.deleteById(id);
 	}
+	
+	//vraca prednje kilometre datog oglasa
+		public int getKilometri(Long id) {
+			return(izvestajRepository.findPredjeniKilometri(id));
+		}
+		
+		public int getSumOcena(Long id) {
+			int ocena = ocenaRepository.getSumOcena(id);
+			return(ocena);
+		}
+		
+		public int getBrojOcena(Long id) {
+			return(ocenaRepository.getBrojOcena(id));
+		}
+	
 
 	public Collection<OglasDTOsearch> search(String mesto, Date odDate, Date doDate, String marka, String model,
 											 String menjac, String gorivo, String klasa, int predjenaInt, int planiranaInt,

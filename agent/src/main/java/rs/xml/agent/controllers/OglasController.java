@@ -84,6 +84,32 @@ public class OglasController {
 			List<OglasDTOsearch> oglasListDTO = new ArrayList<OglasDTOsearch>();
 			for(Oglas og: oglasList) {
 				OglasDTOsearch oDTO = new OglasDTOsearch(og);
+				int suma = 0;
+				int broj  = 0;
+				float d = 0;
+				int km = 0;
+				try {
+					suma = oglasService.getSumOcena(og.getId());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				try {
+					broj = oglasService.getBrojOcena(og.getId());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				if(broj != 0) {
+				 d = (float) suma/broj;
+				}
+				
+				try {
+					km = oglasService.getKilometri(og.getId());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}			
+				oDTO.setOcena2(d);
+				oDTO.setPredjenaInt(km);
+				oDTO.setBrojOcena(broj);
 				oglasListDTO.add(oDTO);
 			}
 			logger.info("get all oglasi {}", "test");;
