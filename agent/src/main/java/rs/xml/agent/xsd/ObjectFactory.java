@@ -6,7 +6,7 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.agent.xsd;
 
 import javax.xml.bind.annotation.XmlRegistry;
 

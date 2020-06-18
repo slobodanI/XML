@@ -6,4 +6,4 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://xml.rs/oglas/xsd", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package rs.xml.oglas.xsd;
+package rs.xml.agent.xsd;

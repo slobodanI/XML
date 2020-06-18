@@ -33,6 +33,7 @@ import rs.xml.agent.repository.markaRepository;
 import rs.xml.agent.repository.menjacRepository;
 import rs.xml.agent.repository.mestoRepository;
 import rs.xml.agent.repository.modelRepository;
+import rs.xml.agent.soap.OglasClient;
 
 @Service
 public class OglasService {
@@ -64,6 +65,9 @@ public class OglasService {
 	@Autowired
 	OcenaRepository ocenaRepository;
 	
+	@Autowired
+	OglasClient oglasClient;
+	
 	public Oglas findOne(Long id) {
 		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
 		return oglas;
@@ -83,6 +87,7 @@ public class OglasService {
 	}
 
 	public Oglas save(Oglas oglas) {
+		sendToMicroServices(oglas);
 		return oglasRepository.save(oglas);
 	}
 
@@ -270,7 +275,7 @@ public class OglasService {
 		List<Oglas> oglasi = oglasRepository.findActiveOglaseFromUser(username);
 		
 		if(oglasi.size() < 3) {
-			return oglasRepository.save(oglas);
+			return this.save(oglas);
 		}
 		else {
 			return null;
@@ -344,5 +349,13 @@ public class OglasService {
 		this.save(ogl);
 		
 		return ogl;
+	}
+	
+	private void sendToMicroServices(Oglas oglas) {
+		if(oglasClient.postOglas(oglas) == null) {
+			System.out.println("***ERROR OglasService > sendToMicroServices > oglasClient > returned NULL!");
+		} else {
+			System.out.println("***OglasService > sendToMicroServices > oglasClient > uspesno poslat oglaS!");
+		}
 	}
 }
