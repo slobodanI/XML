@@ -123,13 +123,9 @@ public class OglasController {
 		String permisijeMoje = tokenUtils.getPermissionFromToken(token);
 		String usernameMoje = tokenUtils.getUsernameFromToken(token);
 		
-		System.out.println("****permisije MOJE: " + permisijeMoje);
-		System.out.println("****username MOJE:" + usernameMoje);
-		
 		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
 			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
 		}
-		System.out.println("------------"+request);
 		String username = "";
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -138,28 +134,13 @@ public class OglasController {
 			} else {
 			 username = principal.toString();
 			}
-		System.out.println("*****"+username);
 		
-//		if (authToken != null) {
-//			// uzmi username iz tokena
-//			username = tokenUtils.getUsernameFromToken(authToken);
-//		}
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 		String permisije = userDetails.getAuthorities().toString();
-		System.out.println(permisije);
-//		System.out.println(userDetails.getAuthorities());
-//		System.out.println("aaaaaaaaaaaaa*****"+request.getPrincipal());
-//		String username = request.getHeader("username");
-//		String permisije = request.getHeader("permissions");
-		//String permisije = "aaa";
-
-
-		
+	
 		Oglas oglas = new Oglas(oglasDTO);
 		oglasService.createOglasWithFeignClient(oglas, oglasDTO);
-//		if(!oglasService.createOglasWithFeignClient(oglas, oglasDTO)) {
-//			return new ResponseEntity<String>("Ne_postoje_proslenjeni_model/marka/klasa/mesto/gorivo/menjac", HttpStatus.BAD_REQUEST);
-//		}
+
 		oglas.setUsername(username);
 		//ako je obican user poslao zahtev
 		if(permisijeMoje.contains("ROLE_USER") && !permisijeMoje.contains("ROLE_AGENT") && !permisijeMoje.contains("ROLE_ADMIN")) {			

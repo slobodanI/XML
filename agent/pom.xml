@@ -89,6 +89,24 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.8</version>
 		</dependency>
+		
+<!-- 		soap -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web-services</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+				<groupId>org.glassfish.jaxb</groupId>
+				<artifactId>jaxb-runtime</artifactId>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>

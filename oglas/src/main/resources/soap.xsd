@@ -1,0 +1,45 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://xml.rs/oglas/xsd"
+           targetNamespace="http://xml.rs/oglas/xsd" elementFormDefault="qualified">
+   
+    <xs:element name="postOglasRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="oglas" type="tns:Oglas"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postOglasResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="Oglas">
+        <xs:sequence>
+            <xs:element name="mesto" type="xs:string"/>
+            <xs:element name="marka" type="xs:string"/>
+            <xs:element name="model" type="xs:string"/>
+            <xs:element name="gorivo" type="xs:string"/>
+            <xs:element name="menjac" type="xs:string"/>
+            <xs:element name="klasa" type="xs:string"/>
+            <xs:element name="cena" type="xs:int"/>
+            <xs:element name="kilometraza" type="xs:int"/>
+            <xs:element name="planiranaKilometraza" type="xs:int"/>
+            <xs:element name="sedistaZaDecu" type="xs:int"/>
+            <xs:element name="osiguranje" type="xs:boolean"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="odDate" type="xs:long"/>
+            <xs:element name="doDate" type="xs:long"/>
+            <xs:element name="deleted" type="xs:boolean"/>
+            <xs:element name="slike" type="tns:Slika" maxOccurs="3" minOccurs="3"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Slika">
+        <xs:sequence>
+            <xs:element name="slika" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
