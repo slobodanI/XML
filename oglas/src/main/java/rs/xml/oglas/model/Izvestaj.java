@@ -19,6 +19,9 @@ public class Izvestaj {
 	@Column(name="oglasId")
 	private Long oglasId;
 	
+	@Column(name="iid")
+	private String iid;
+	
 	@Column(name="predjeniKilometri")
 	private int predjeniKilometri;
 	
@@ -78,6 +81,14 @@ public class Izvestaj {
 
 	public void setZahtevId(Long zahtevId) {
 		this.zahtevId = zahtevId;
+	}
+
+	public String getIid() {
+		return iid;
+	}
+
+	public void setIid(String iid) {
+		this.iid = iid;
 	}
 	
 	

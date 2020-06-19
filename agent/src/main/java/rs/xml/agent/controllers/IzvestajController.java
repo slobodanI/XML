@@ -121,8 +121,10 @@ public class IzvestajController {
 			}
 		}
 		
-		izvestajService.save(izvestajDTO, username);
-		
+		Izvestaj izvestaj = izvestajService.save(izvestajDTO, username);
+		if(izvestaj != null) {
+			izvestajService.postIzvestajUMikroservice(izvestaj);
+		}
 		
 		
 		if(izvestaji.size()+1 == zahtev.getOglasi().size()) {

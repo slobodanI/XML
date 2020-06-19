@@ -6,7 +6,7 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.agent.xsd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="ocena" type="{http://xml.rs/oglas/xsd}Ocena"/&gt;
+ *         &lt;element name="izvestaj" type="{http://xml.rs/oglas/xsd}Izvestaj"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "ocena"
+    "izvestaj"
 })
-@XmlRootElement(name = "postOcenaRequest")
-public class PostOcenaRequest {
+@XmlRootElement(name = "postIzvestajRequest")
+public class PostIzvestajRequest {
 
     @XmlElement(required = true)
-    protected Ocena ocena;
+    protected Izvestaj izvestaj;
 
     /**
-     * Gets the value of the ocena property.
+     * Gets the value of the izvestaj property.
      * 
      * @return
      *     possible object is
-     *     {@link Ocena }
+     *     {@link Izvestaj }
      *     
      */
-    public Ocena getOcena() {
-        return ocena;
+    public Izvestaj getIzvestaj() {
+        return izvestaj;
     }
 
     /**
-     * Sets the value of the ocena property.
+     * Sets the value of the izvestaj property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Ocena }
+     *     {@link Izvestaj }
      *     
      */
-    public void setOcena(Ocena value) {
-        this.ocena = value;
+    public void setIzvestaj(Izvestaj value) {
+        this.izvestaj = value;
     }
 
 }

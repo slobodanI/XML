@@ -23,6 +23,7 @@ import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Oglas;
+import rs.xml.oglas.model.Slika;
 import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.model.ZahtevStatus;
 import rs.xml.oglas.repository.IzvestajRepository;

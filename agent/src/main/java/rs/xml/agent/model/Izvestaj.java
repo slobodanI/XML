@@ -16,6 +16,10 @@ public class Izvestaj {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 	
+	@Column(name="iid")
+	private String iid;
+	
+	
 	@Column(name="oglasId")
 	private Long oglasId;
 	
@@ -79,6 +83,15 @@ public class Izvestaj {
 	public void setZahtevId(Long zahtevId) {
 		this.zahtevId = zahtevId;
 	}
+
+	public String getIid() {
+		return iid;
+	}
+
+	public void setIid(String iid) {
+		this.iid = iid;
+	}
+	
 	
 	
 }

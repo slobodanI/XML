@@ -49,6 +49,38 @@
         </xs:complexType>
     </xs:element>
     
+    <xs:element name="putOcenaRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ocena" type="tns:Ocena"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="putOcenaResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postIzvestajRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="izvestaj" type="tns:Izvestaj"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postIzvestajResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
     <xs:element name="getEverythingRequest">
         <xs:complexType>
             <xs:sequence>
@@ -162,6 +194,16 @@
             <xs:element name="body" type="xs:string"/>
             <xs:element name="timestamp" type="xs:long"/>
             <xs:element name="senderUsername" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+        <xs:complexType name="Izvestaj">
+        <xs:sequence>
+            <xs:element name="iid" type="xs:string"/>
+            <xs:element name="oglasId" type="xs:string"/>
+            <xs:element name="zahtevId" type="xs:string"/>
+            <xs:element name="predjeniKilometri" type="xs:int"/>
+             <xs:element name="tekst" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
     

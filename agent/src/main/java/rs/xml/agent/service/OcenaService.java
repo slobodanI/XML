@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Ocena;
 import rs.xml.agent.model.OcenaApprovedStatus;
-import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.repository.OcenaRepository;
 import rs.xml.agent.soap.OcenaClient;
-import rs.xml.agent.util.UtilClass;
 import rs.xml.agent.xsd.PostOcenaResponse;
-import rs.xml.agent.xsd.PostZahtevResponse;
+import rs.xml.agent.xsd.PutOcenaResponse;
 
 
 @Service
@@ -107,6 +105,20 @@ public class OcenaService {
 	
 	public void postOcenaUMikroservise(Ocena ocena) {
 		PostOcenaResponse response = ocenaClient.postOcena(ocena);
+		if(response != null) {
+			if(response.isSuccess()) {
+				System.out.println("*** OcenaService > saveZahtev > PostZahtev u mirkoservise > USPESNO");
+			} else {
+				System.out.println("*** OcenaService > saveZahtev > PostZahtev u mirkoservise > NEUSPESNO");
+			}
+		} else {
+			System.out.println("*** OcenaService > saveZahtev > PostZahtev u mirkoservise > NEUSPESNO");
+		}
+		
+	}
+	
+	public void putOcenaUMikroservise(Ocena ocena) {
+		PutOcenaResponse response = ocenaClient.putOcena(ocena);
 		if(response != null) {
 			if(response.isSuccess()) {
 				System.out.println("*** OcenaService > saveZahtev > PostZahtev u mirkoservise > USPESNO");
