@@ -29,6 +29,7 @@ import rs.xml.oglas.repository.IzvestajRepository;
 import rs.xml.oglas.repository.OcenaRepository;
 import rs.xml.oglas.repository.OglasRepository;
 import rs.xml.oglas.repository.ZahtevRepository;
+import rs.xml.oglas.util.UtilClass;
 
 @Service
 public class OglasService {
@@ -44,6 +45,9 @@ public class OglasService {
 	
 	@Autowired
 	OcenaRepository ocenaRepository;
+	
+	@Autowired
+	UtilClass util;
 	
 	@Autowired
 	IzvestajRepository izvestajRepository;
@@ -67,12 +71,19 @@ public class OglasService {
 	}
 
 	public Oglas save(Oglas oglas) {
+		oglas.setOid(oglas.getUsername() + "-" + util.randomString());
 		return oglasRepository.save(oglas);
 	}
 
 	public void remove(Long id) {
 		oglasRepository.deleteById(id);
 	}
+	
+	public Oglas findOneByOid(String oid) {
+		Oglas oglas = oglasRepository.findOglasByOid(oid);
+		return oglas;
+	}
+	
 	
 	//vraca prednje kilometre datog oglasa
 		public int getKilometri(Long id) {
@@ -95,7 +106,7 @@ public class OglasService {
 		
 		Collection<OglasDTOsearch> ret = new ArrayList<OglasDTOsearch>();
 		Encoder encoder = Base64.getEncoder();
-		String imageString;
+		String imageString = "";
 		
 		java.sql.Date odDateOVAJ = new java.sql.Date(odDate.getTime());
 		java.sql.Date doDateOVAJ = new java.sql.Date(doDate.getTime());
@@ -246,8 +257,12 @@ public class OglasService {
 				
 				if(oglas.getSlike().isEmpty()) {
 					oglasDTO.setSlika(null);
-				} else {				
-					imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
+				} else {		
+					for(Slika slika : oglas.getSlike()) {
+						imageString = encoder.encodeToString(slika.getSlika());
+						break;
+					}
+//					imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
 					oglasDTO.setSlika("data:image/jpeg;base64," + imageString);
 				}
 				

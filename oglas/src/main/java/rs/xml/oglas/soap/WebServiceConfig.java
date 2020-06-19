@@ -26,7 +26,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 	@Bean(name = "soap")
 	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema soapSchema) {
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-		wsdl11Definition.setPortTypeName("StudentsPort");
+		wsdl11Definition.setPortTypeName("OglasPort");
 		wsdl11Definition.setLocationUri("/ws");
 		wsdl11Definition.setTargetNamespace("http://xml.rs/oglas/xsd");
 		wsdl11Definition.setSchema(soapSchema);

@@ -36,6 +36,9 @@ public class Oglas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@Column(name="oid")
+	private String oid;
+	
 	@Column(name="mesto")
 	private String mesto;
 	
@@ -69,9 +72,9 @@ public class Oglas {
 	@Column(name="sedista_za_decu")
 	private int sedistaZaDecu;
 	
-	@OneToMany(mappedBy = "oglas", cascade = CascadeType.ALL)
-    private List<Slika> slike = new ArrayList<Slika>();
-	
+	@OneToMany(mappedBy = "oglas", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Slika> slike = new HashSet<Slika>();
+
 	@Column(name="osiguranje")
 	private boolean osiguranje;
 	
@@ -99,7 +102,7 @@ public class Oglas {
 	}
 
 	public Oglas(String mesto, String marka, String model, String gorivo, String menjac, String klasa, int cena, Cenovnik cenovnik,
-			int kilometraza, int planiranaKilometraza, int sedistaZaDecu, List<Slika> slike, boolean osiguranje,
+			int kilometraza, int planiranaKilometraza, int sedistaZaDecu, HashSet<Slika> slike, boolean osiguranje,
 			String username, Date od, Date do1, List<Zahtev> zahtevi) {
 		super();
 		this.mesto = mesto; 
@@ -258,11 +261,11 @@ public class Oglas {
 		this.sedistaZaDecu = sedistaZaDecu;
 	}
 
-	public List<Slika> getSlike() {
+	public Set<Slika> getSlike() {
 		return slike;
 	}
 
-	public void setSlike(List<Slika> slike) {
+	public void setSlike(Set<Slika> slike) {
 		this.slike = slike;
 	}
 
@@ -313,6 +316,15 @@ public class Oglas {
 	public void setZahtevi(List<Zahtev> zahtevi) {
 		this.zahtevi = zahtevi;
 	}
+
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+
 	
 	
 }

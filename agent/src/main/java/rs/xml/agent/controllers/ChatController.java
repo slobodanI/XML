@@ -100,7 +100,7 @@ public class ChatController {
 //		String username = request.getHeader("username");
 //		String permisije = request.getHeader("permissions");
 		
-		ChatDTO chatDTO = new ChatDTO(chatService.save(chatNewDTO));
+		ChatDTO chatDTO = new ChatDTO(chatService.save(chatNewDTO, username));
 		
 		return new ResponseEntity<>(chatDTO, HttpStatus.OK);
     }

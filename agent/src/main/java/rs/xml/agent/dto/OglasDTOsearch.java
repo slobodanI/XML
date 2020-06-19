@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.Base64.Encoder;
 
 import rs.xml.agent.model.Oglas;
+import rs.xml.agent.model.Slika;
 
 public class OglasDTOsearch {
 
@@ -49,8 +50,12 @@ public class OglasDTOsearch {
 			this.setSlika(null);
 		} else {
 			Encoder encoder = Base64.getEncoder();
-			String imageString;
-			imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
+			String imageString = "";
+			for(Slika slika : oglas.getSlike()) {
+				imageString = encoder.encodeToString(slika.getSlika());
+				break;
+			}
+//			imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
 			this.setSlika("data:image/jpeg;base64," + imageString);
 		}
 	}

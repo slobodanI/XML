@@ -30,6 +30,9 @@ public class Zahtev {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+	@Column(name="zid")
+	private String zid;
 	
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "OGLAS_ZAHTEV",
@@ -178,7 +181,14 @@ public class Zahtev {
 	public void setVremePodnosenja(Date vremePodnosenja) {
 		this.vremePodnosenja = vremePodnosenja;
 	}
-	
+
+	public String getZid() {
+		return zid;
+	}
+
+	public void setZid(String zid) {
+		this.zid = zid;
+	}
 	
 	
 }

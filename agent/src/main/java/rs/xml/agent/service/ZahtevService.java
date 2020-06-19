@@ -28,6 +28,9 @@ import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.model.ZahtevStatus;
 import rs.xml.agent.repository.OglasRepository;
 import rs.xml.agent.repository.ZahtevRepository;
+import rs.xml.agent.soap.ZahtevClient;
+import rs.xml.agent.util.UtilClass;
+import rs.xml.agent.xsd.PostZahtevResponse;
 
 @Service
 public class ZahtevService {
@@ -38,12 +41,21 @@ public class ZahtevService {
 	OglasRepository oglasRepository;
 	@Autowired
 	ChatService chatService;
-		
+	@Autowired
+	UtilClass util;
+	@Autowired
+	ZahtevClient zahtevClient;
+	
 	public Zahtev findOne(Long id) {
 		Zahtev zahtev = zahtevRepository.findById(id).orElseThrow(() -> new NotFoundException("Zahtev with id:" +id+ " does not exist!"));
 		return zahtev;//.orElseGet(null);
 	}
 
+	public Zahtev findOneByZid(String zahtevId) {
+		Zahtev zahtev = zahtevRepository.findOglasByZid(zahtevId);
+		return zahtev;
+	}
+	
 	public List<Zahtev> findAll() {
 		return zahtevRepository.findAll();
 	}
@@ -107,11 +119,12 @@ public class ZahtevService {
 
 						zahtev.setStatus(ZahtevStatus.PENDING);
 						zahtev.setPodnosilacUsername(username);
-
+						zahtev.setZid(username + "-" + util.randomString());
 					}
 				}
 				zahtev.setOglasi(ogl);
 				zahtev = zahtevRepository.save(zahtev);
+				postZahtevUMikroservise(zahtev);
 			}
 			return "Kreirani zahtevi sa vise oglasa";
 
@@ -140,7 +153,7 @@ public class ZahtevService {
 					zahtev.setPodnosilacUsername(username);
 					zahtev.setVremePodnosenja(dateNow);
 					zahtev.setStatus(ZahtevStatus.PAID);
-					
+					zahtev.setZid(username + "-" + util.randomString());
 
 					List<Zahtev> zahtevi = zahtevRepository.findAll();
 
@@ -185,10 +198,12 @@ public class ZahtevService {
 								}
 								z.setStatus(ZahtevStatus.CANCELED);
 								zahtevRepository.save(z);
+								postZahtevUMikroservise(zahtev);
 							}
 						}
 					}
 					zahtevRepository.save(zahtev);
+					postZahtevUMikroservise(zahtev);
 				} else {
 					Zahtev zahtev = new Zahtev();
 					// jos dodati sta treba
@@ -202,7 +217,9 @@ public class ZahtevService {
 					zahtev.setVremePodnosenja(dateNow);
 					zahtev.setStatus(ZahtevStatus.PENDING);
 					zahtev.setPodnosilacUsername(username);
+					zahtev.setZid(username + "-" + util.randomString());
 					zahtev = zahtevRepository.save(zahtev);
+					postZahtevUMikroservise(zahtev);
 				}
 			}
 			return "Kreirano je vise zahteva";
@@ -249,7 +266,8 @@ public class ZahtevService {
 		chatNewDTO.setSendereUsername(zahtev.getPodnosilacUsername());
 		
 		try {
-			ChatDTO chatDTO = new ChatDTO(chatService.save(chatNewDTO));
+//			ChatDTO chatDTO = new ChatDTO(chatService.save(chatNewDTO));
+			chatService.save(chatNewDTO, username);
 		} catch (Exception e) {
 			System.out.println("***ERROR: zahtevService > acceptZahtev > chatClient ");
 			throw new ServiceNotAvailable("Chat service is not available");
@@ -294,6 +312,18 @@ public class ZahtevService {
 		return zahtevRepository.findZahteviForMe(username);
 	}
 	
+	private void postZahtevUMikroservise(Zahtev zahtev) {
+		PostZahtevResponse response = zahtevClient.postZahtev(zahtev);
+		if(response != null) {
+			if(response.isSuccess()) {
+				System.out.println("*** ZahtevService > saveZahtev > PostZahtev u mirkoservise > USPESNO");
+			} else {
+				System.out.println("*** ZahtevService > saveZahtev > PostZahtev u mirkoservise > NEUSPESNO");
+			}
+		} else {
+			System.out.println("*** ZahtevService > saveZahtev > PostZahtev u mirkoservise > NEUSPESNO");
+		}
+		
+	}
 	
-
 }

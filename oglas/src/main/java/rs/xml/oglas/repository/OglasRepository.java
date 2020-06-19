@@ -29,6 +29,8 @@ public interface OglasRepository extends JpaRepository<Oglas, Long> {
 	@Query("SELECT o FROM Oglas o WHERE o.username = :username and o.deleted = false") // COUNT(o)
 	List<Oglas> findActiveOglaseFromUser(@Param("username") String username);
 	
-
+	@Query("SELECT o FROM Oglas o WHERE o.oid = :oid")
+	Oglas findOglasByOid(@Param("oid") String oid);
+	
 
 }

@@ -44,6 +44,8 @@ import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.CenovnikService;
 import rs.xml.agent.service.OglasService;
 import rs.xml.agent.service.SlikaService;
+import rs.xml.agent.soap.EverythingClient;
+import rs.xml.agent.xsd.GetEverythingResponse;
 
 @RestController
 public class OglasController {
@@ -274,4 +276,14 @@ public class OglasController {
 //		System.out.println("***LocalDate joda:" + ld); // ***LocalDate joda:2020-06-01
 	}
 	
+	@Autowired
+	EverythingClient everythingClient;
+	
+	@GetMapping("/oglas/testSaopEverything")
+	public ResponseEntity<?> testSaopEverything() {
+		
+		GetEverythingResponse response = everythingClient.getEverything("agent");
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 }

@@ -17,7 +17,7 @@ public class OglasClient extends WebServiceGatewaySupport {
 	public PostOglasResponse postOglas(Oglas oglasToXSD) {
 		
 		rs.xml.agent.xsd.Oglas oglas = new rs.xml.agent.xsd.Oglas();
-		
+		oglas.setOid(oglasToXSD.getOid());
 		oglas.setMesto(oglasToXSD.getMesto());
 		oglas.setMarka(oglasToXSD.getMarka());
 		oglas.setModel(oglasToXSD.getModel());

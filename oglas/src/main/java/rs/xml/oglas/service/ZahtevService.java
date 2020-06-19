@@ -1,13 +1,10 @@
 package rs.xml.oglas.service;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 import rs.xml.oglas.client.ChatClient;
 import rs.xml.oglas.client.ChatDTO;
 import rs.xml.oglas.client.ChatNewDTO;
-import rs.xml.oglas.client.SifrarnikClient;
 import rs.xml.oglas.dto.KorpaDTO;
 import rs.xml.oglas.dto.OglasUKorpiDTO;
 import rs.xml.oglas.exception.NotFoundException;
@@ -29,6 +25,7 @@ import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.model.ZahtevStatus;
 import rs.xml.oglas.repository.OglasRepository;
 import rs.xml.oglas.repository.ZahtevRepository;
+import rs.xml.oglas.util.UtilClass;
 
 @Service
 public class ZahtevService {
@@ -39,7 +36,9 @@ public class ZahtevService {
 	OglasRepository oglasRepository;
 	@Autowired
 	ChatClient chatClient;
-		
+	@Autowired
+	UtilClass utilClass;
+	
 	public Zahtev findOne(Long id) {
 		Zahtev zahtev = zahtevRepository.findById(id).orElseThrow(() -> new NotFoundException("Zahtev with id:" +id+ " does not exist!"));
 		return zahtev;//.orElseGet(null);
@@ -56,7 +55,11 @@ public class ZahtevService {
 	public Page<Zahtev> findAll(Pageable page) {
 		return zahtevRepository.findAll(page);
 	}
-
+	
+	public Zahtev save(Zahtev zahtev) {
+		return zahtevRepository.save(zahtev);
+	}
+	
 	// paziti i na reserved,kad rucno unese upozoriti ga ako vec ima reserved
 	public String save(KorpaDTO korpaDTO, String username) {
 		
@@ -108,6 +111,7 @@ public class ZahtevService {
 
 						zahtev.setStatus(ZahtevStatus.PENDING);
 						zahtev.setPodnosilacUsername(username);
+						zahtev.setZid(username + "-" + utilClass.randomString());
 
 					}
 				}
@@ -141,7 +145,7 @@ public class ZahtevService {
 					zahtev.setPodnosilacUsername(username);
 					zahtev.setVremePodnosenja(dateNow);
 					zahtev.setStatus(ZahtevStatus.PAID);
-					
+					zahtev.setZid(username + "-" + utilClass.randomString());
 
 					List<Zahtev> zahtevi = zahtevRepository.findAll();
 
@@ -203,6 +207,7 @@ public class ZahtevService {
 					zahtev.setVremePodnosenja(dateNow);
 					zahtev.setStatus(ZahtevStatus.PENDING);
 					zahtev.setPodnosilacUsername(username);
+					zahtev.setZid(username + "-" + utilClass.randomString());
 					zahtev = zahtevRepository.save(zahtev);
 				}
 			}
@@ -294,6 +299,13 @@ public class ZahtevService {
 	public List<Zahtev> findZahteviForMe(String username) {
 		return zahtevRepository.findZahteviForMe(username);
 	}
+
+	public Zahtev findOneByZid(String zahtevId) {
+		Zahtev zahtev = zahtevRepository.findOglasByZid(zahtevId);
+		return zahtev;
+	}
+	
+	
 	
 	
 

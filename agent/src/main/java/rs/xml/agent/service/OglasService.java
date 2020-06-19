@@ -22,6 +22,7 @@ import rs.xml.agent.dto.NewOglasDTO;
 import rs.xml.agent.dto.OglasDTOsearch;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Oglas;
+import rs.xml.agent.model.Slika;
 import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.model.ZahtevStatus;
 import rs.xml.agent.repository.IzvestajRepository;
@@ -35,6 +36,7 @@ import rs.xml.agent.repository.menjacRepository;
 import rs.xml.agent.repository.mestoRepository;
 import rs.xml.agent.repository.modelRepository;
 import rs.xml.agent.soap.OglasClient;
+import rs.xml.agent.util.UtilClass;
 
 @Service
 public class OglasService {
@@ -72,6 +74,9 @@ public class OglasService {
 	@Autowired
 	OglasClient oglasClient;
 	
+	@Autowired
+	UtilClass util;
+	
 	public Oglas findOne(Long id) {
 		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
 		return oglas;
@@ -106,6 +111,7 @@ public class OglasService {
 	}
 
 	public Oglas save(Oglas oglas) {
+		oglas.setOid(oglas.getUsername() + "-" + util.randomString());
 		sendToMicroServices(oglas);
 		return oglasRepository.save(oglas);
 	}
@@ -120,7 +126,7 @@ public class OglasService {
 		
 		Collection<OglasDTOsearch> ret = new ArrayList<OglasDTOsearch>();
 		Encoder encoder = Base64.getEncoder();
-		String imageString;
+		String imageString = "";
 		
 		java.sql.Date odDateOVAJ = new java.sql.Date(odDate.getTime());
 		java.sql.Date doDateOVAJ = new java.sql.Date(doDate.getTime());
@@ -271,8 +277,12 @@ public class OglasService {
 				
 				if(oglas.getSlike().isEmpty()) {
 					oglasDTO.setSlika(null);
-				} else {				
-					imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
+				} else {	
+					for(Slika slika : oglas.getSlike()) {
+						imageString = encoder.encodeToString(slika.getSlika());
+						break;
+					}
+//					imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
 					oglasDTO.setSlika("data:image/jpeg;base64," + imageString);
 				}
 				

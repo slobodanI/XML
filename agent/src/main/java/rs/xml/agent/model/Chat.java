@@ -1,7 +1,9 @@
 package rs.xml.agent.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +25,9 @@ public class Chat {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "cid")
+	private String cid;
+	
 	@Column(name = "sender_username")
 	private String senderUsername;
 	
@@ -30,19 +35,19 @@ public class Chat {
 	private String receiverUsername;
 	
 	@OneToMany(mappedBy = "chat")
-	private List<Poruka> poruke = new ArrayList<Poruka>();
+	private Set<Poruka> poruke = new HashSet<Poruka>();
 	
 	public Chat() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Chat(String senderUsername, String receiverUsername, List<Poruka> poruke) {
+	public Chat(String senderUsername, String receiverUsername, Set<Poruka> poruke) {
 		this.senderUsername = senderUsername;
 		this.receiverUsername = receiverUsername;
 		this.poruke = poruke;
 	}
 
-	public Chat(@Valid ChatNewDTO chatDTO) {
+	public Chat(ChatNewDTO chatDTO) {
 		this.senderUsername = chatDTO.getSendereUsername();
 		this.receiverUsername = chatDTO.getReceiverUsername();
 	}
@@ -71,13 +76,22 @@ public class Chat {
 		this.receiverUsername = receiverUsername;
 	}
 
-	public List<Poruka> getPoruke() {
+	public Set<Poruka> getPoruke() {
 		return poruke;
 	}
 
-	public void setPoruke(List<Poruka> poruke) {
+	public void setPoruke(Set<Poruka> poruke) {
 		this.poruke = poruke;
 	}
+
+	public String getCid() {
+		return cid;
+	}
+
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+
 	
 	
 }
