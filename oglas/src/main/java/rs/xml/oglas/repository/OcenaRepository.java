@@ -28,4 +28,9 @@ public interface OcenaRepository extends JpaRepository<Ocena, Long>{
 	@Query(value = "SELECT AVG(ocena) FROM OCENA WHERE approved = 'APPROVED' and deleted = false and OGLAS_ID = :oglasId", nativeQuery = true)
 	Double getAvgOcenaForOglas(@Param("oglasId") Long oglasId);
 	
+	@Query(value = "SELECT COUNT(ocena) FROM OCENA WHERE approved = 'APPROVED' and deleted = false and OGLAS_ID = :oglasId", nativeQuery = true)
+	int getBrojOcena(@Param("oglasId") Long oglasId);
+	
+	@Query(value = "SELECT SUM(ocena) FROM OCENA WHERE approved = 'APPROVED' and deleted = false and OGLAS_ID = :oglasId", nativeQuery = true)
+	int getSumOcena(@Param("oglasId") Long oglasId);
 }

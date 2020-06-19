@@ -25,6 +25,7 @@ import rs.xml.agent.model.Oglas;
 import rs.xml.agent.model.Slika;
 import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.model.ZahtevStatus;
+import rs.xml.agent.repository.IzvestajRepository;
 import rs.xml.agent.repository.OcenaRepository;
 import rs.xml.agent.repository.OglasRepository;
 import rs.xml.agent.repository.ZahtevRepository;
@@ -68,6 +69,9 @@ public class OglasService {
 	OcenaRepository ocenaRepository;
 	
 	@Autowired
+	IzvestajRepository izvestajRepository;
+	
+	@Autowired
 	OglasClient oglasClient;
 	
 	@Autowired
@@ -77,6 +81,21 @@ public class OglasService {
 		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
 		return oglas;
 	}
+	
+	//vraca prednje kilometre datog oglasa
+	public int getKilometri(Long id) {
+		return(izvestajRepository.findPredjeniKilometri(id));
+	}
+	
+	public int getSumOcena(Long id) {
+		int ocena = ocenaRepository.getSumOcena(id);
+		return(ocena);
+	}
+	
+	public int getBrojOcena(Long id) {
+		return(ocenaRepository.getBrojOcena(id));
+	}
+	
 
 	public List<Oglas> findAll() {
 		return oglasRepository.findAll();

@@ -23,9 +23,9 @@ import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Oglas;
-import rs.xml.oglas.model.Slika;
 import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.model.ZahtevStatus;
+import rs.xml.oglas.repository.IzvestajRepository;
 import rs.xml.oglas.repository.OcenaRepository;
 import rs.xml.oglas.repository.OglasRepository;
 import rs.xml.oglas.repository.ZahtevRepository;
@@ -48,6 +48,9 @@ public class OglasService {
 	
 	@Autowired
 	UtilClass util;
+	
+	@Autowired
+	IzvestajRepository izvestajRepository;
 	
 	public Oglas findOne(Long id) {
 		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
@@ -81,6 +84,22 @@ public class OglasService {
 		return oglas;
 	}
 	
+	
+	//vraca prednje kilometre datog oglasa
+		public int getKilometri(Long id) {
+			return(izvestajRepository.findPredjeniKilometri(id));
+		}
+		
+		public int getSumOcena(Long id) {
+			int ocena = ocenaRepository.getSumOcena(id);
+			return(ocena);
+		}
+		
+		public int getBrojOcena(Long id) {
+			return(ocenaRepository.getBrojOcena(id));
+		}
+	
+
 	public Collection<OglasDTOsearch> search(String mesto, Date odDate, Date doDate, String marka, String model,
 											 String menjac, String gorivo, String klasa, int predjenaInt, int planiranaInt,
 											 String osiguranje, int brSedZaDecuInt) {

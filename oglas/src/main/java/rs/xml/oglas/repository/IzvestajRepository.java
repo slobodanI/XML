@@ -15,5 +15,6 @@ public interface IzvestajRepository extends JpaRepository<Izvestaj, Long> {
 	@Query("Select i from Izvestaj i WHERE i.zahtevId = :zahtevId")
 	List<Izvestaj> findIzvestajZahteva(@Param("zahtevId") Long zahtevId);
 	
-	
+	@Query("Select SUM(predjeniKilometri) from Izvestaj i where i.oglasId = :oglasId")
+	Integer  findPredjeniKilometri(@Param("oglasId") Long oglasId);
 }
