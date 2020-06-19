@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.xml.oglas.client.ChatDTO;
 import rs.xml.oglas.dto.OcenaDTO;
 import rs.xml.oglas.dto.OcenaNewDTO;
 import rs.xml.oglas.dto.OcenaOdgovorDTO;
@@ -32,6 +31,7 @@ import rs.xml.oglas.model.ZahtevStatus;
 import rs.xml.oglas.service.OcenaService;
 import rs.xml.oglas.service.OglasService;
 import rs.xml.oglas.service.ZahtevService;
+import rs.xml.oglas.util.UtilClass;
 
 
 @RestController
@@ -48,6 +48,9 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	
 	@Autowired
 	OglasService oglasService;
+	
+	@Autowired
+	private UtilClass utilClass;
 	
 	@GetMapping("/ocena")
 	public ResponseEntity<?> getOcenas(@RequestParam(required = false, defaultValue = "nema") String filter, HttpServletRequest request) {
@@ -132,6 +135,7 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		Oglas oglas = oglasService.findOne(ocenaNewDTO.getOglasId());
 		
 		Ocena ocena = new Ocena(ocenaNewDTO, username, zahtev.getUsername(), oglas);
+		ocena.setOid(username + "-" + utilClass.randomString());
 		ocenaService.save(ocena);
 		
 		OcenaDTO ocenaDTO = new OcenaDTO(ocena);

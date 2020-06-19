@@ -11,12 +11,16 @@ import rs.xml.agent.dto.ChatNewDTO;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Chat;
 import rs.xml.agent.repository.ChatRepository;
+import rs.xml.agent.util.UtilClass;
 
 @Service
 public class ChatService {
 	
 	@Autowired
 	private ChatRepository chatRepository;
+	
+	@Autowired
+	private UtilClass utilClass;
 	
 	public Chat findOne(Long id) {
 		Chat Chat = chatRepository.findById(id).orElseThrow(() -> new NotFoundException("Chat with id:" +id+ " does not exist!"));
@@ -31,9 +35,10 @@ public class ChatService {
 		return chatRepository.findAll(page);
 	}
 
-	public Chat save(ChatNewDTO chatDTO) {
+	public Chat save(ChatNewDTO chatDTO, String username) {
 		
 		Chat chat = new Chat(chatDTO);
+		chat.setCid(username + "-" + utilClass.randomString());
 		return chatRepository.save(chat);
 	}
 

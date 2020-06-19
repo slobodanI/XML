@@ -1,8 +1,8 @@
 -- treba dodati cenovnik posle cene
-INSERT INTO OGLAS(mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted)
- VALUES ('NS', 'audi', 'A3', 'benzin', 'manuelni', 'limuzina', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false);
-INSERT INTO OGLAS(mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted)
- VALUES ('NS', 'audi', 'A3', 'benzin', 'manuelni', 'sedan', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false);
+INSERT INTO OGLAS(oid, mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted)
+ VALUES ('agent-12g87shv078hq27rnnsd', 'NS', 'audi', 'A3', 'benzin', 'manuelni', 'limuzina', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false);
+INSERT INTO OGLAS(oid, mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted)
+ VALUES ('agent-insdfbh8jn23r9jidv798', 'NS', 'audi', 'A3', 'benzin', 'manuelni', 'sedan', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false);
 --INSERT INTO OGLAS(mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted)
 -- VALUES ('NS', 'audi', 'A3', 'benzin', 'manuelni', 'sedan', 4000, 10000, 9999, 2, true, 'user', '2020-05-27', '2020-08-27', false);
 

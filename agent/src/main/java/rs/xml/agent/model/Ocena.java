@@ -23,6 +23,9 @@ public class Ocena {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@Column(name = "oid")
+	private String oid;
+	
 	@Column(name = "ocena")
 	private int ocena;
 	
@@ -158,6 +161,14 @@ public class Ocena {
 
 	public void setZahtevId(Long zahtevId) {
 		this.zahtevId = zahtevId;
+	}
+
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
 	}
 
 	

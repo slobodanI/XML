@@ -10,7 +10,12 @@ import org.springframework.stereotype.Service;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Ocena;
 import rs.xml.agent.model.OcenaApprovedStatus;
+import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.repository.OcenaRepository;
+import rs.xml.agent.soap.OcenaClient;
+import rs.xml.agent.util.UtilClass;
+import rs.xml.agent.xsd.PostOcenaResponse;
+import rs.xml.agent.xsd.PostZahtevResponse;
 
 
 @Service
@@ -18,6 +23,9 @@ public class OcenaService {
 	
 	@Autowired
 	private OcenaRepository ocenaRepository;
+	
+	@Autowired
+	private OcenaClient ocenaClient;
 	
 	public Ocena findOne(Long id) {
 		Ocena ocena = ocenaRepository.findById(id).orElseThrow(() -> new NotFoundException("Ocena with id:" +id+ " does not exist!"));
@@ -95,6 +103,20 @@ public class OcenaService {
 		}
 
 		return false;
+	}
+	
+	public void postOcenaUMikroservise(Ocena ocena) {
+		PostOcenaResponse response = ocenaClient.postOcena(ocena);
+		if(response != null) {
+			if(response.isSuccess()) {
+				System.out.println("*** OcenaService > saveZahtev > PostZahtev u mirkoservise > USPESNO");
+			} else {
+				System.out.println("*** OcenaService > saveZahtev > PostZahtev u mirkoservise > NEUSPESNO");
+			}
+		} else {
+			System.out.println("*** OcenaService > saveZahtev > PostZahtev u mirkoservise > NEUSPESNO");
+		}
+		
 	}
 	
 }

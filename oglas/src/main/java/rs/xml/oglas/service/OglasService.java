@@ -2,14 +2,10 @@ package rs.xml.oglas.service;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import java.util.Base64.Encoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +21,6 @@ import rs.xml.oglas.client.ModelDTO;
 import rs.xml.oglas.client.SifrarnikClient;
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
-import rs.xml.oglas.dto.SlikaDTO;
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Slika;
@@ -34,6 +29,7 @@ import rs.xml.oglas.model.ZahtevStatus;
 import rs.xml.oglas.repository.OcenaRepository;
 import rs.xml.oglas.repository.OglasRepository;
 import rs.xml.oglas.repository.ZahtevRepository;
+import rs.xml.oglas.util.UtilClass;
 
 @Service
 public class OglasService {
@@ -49,6 +45,9 @@ public class OglasService {
 	
 	@Autowired
 	OcenaRepository ocenaRepository;
+	
+	@Autowired
+	UtilClass util;
 	
 	public Oglas findOne(Long id) {
 		Oglas oglas = oglasRepository.findById(id).orElseThrow(() -> new NotFoundException("Oglas with id:" +id+ " does not exist!"));
@@ -69,20 +68,26 @@ public class OglasService {
 	}
 
 	public Oglas save(Oglas oglas) {
+		oglas.setOid(oglas.getUsername() + "-" + util.randomString());
 		return oglasRepository.save(oglas);
 	}
 
 	public void remove(Long id) {
 		oglasRepository.deleteById(id);
 	}
-
+	
+	public Oglas findOneByOid(String oid) {
+		Oglas oglas = oglasRepository.findOglasByOid(oid);
+		return oglas;
+	}
+	
 	public Collection<OglasDTOsearch> search(String mesto, Date odDate, Date doDate, String marka, String model,
 											 String menjac, String gorivo, String klasa, int predjenaInt, int planiranaInt,
 											 String osiguranje, int brSedZaDecuInt) {
 		
 		Collection<OglasDTOsearch> ret = new ArrayList<OglasDTOsearch>();
 		Encoder encoder = Base64.getEncoder();
-		String imageString;
+		String imageString = "";
 		
 		java.sql.Date odDateOVAJ = new java.sql.Date(odDate.getTime());
 		java.sql.Date doDateOVAJ = new java.sql.Date(doDate.getTime());
@@ -233,8 +238,12 @@ public class OglasService {
 				
 				if(oglas.getSlike().isEmpty()) {
 					oglasDTO.setSlika(null);
-				} else {				
-					imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
+				} else {		
+					for(Slika slika : oglas.getSlike()) {
+						imageString = encoder.encodeToString(slika.getSlika());
+						break;
+					}
+//					imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
 					oglasDTO.setSlika("data:image/jpeg;base64," + imageString);
 				}
 				

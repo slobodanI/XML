@@ -20,6 +20,9 @@ public interface ZahtevRepository extends JpaRepository<Zahtev,Long> {
 
 	@Query("SELECT z FROM Zahtev z WHERE z.username = :username")
 	List<Zahtev> findZahteviForMe(@Param("username") String username);
+
+	@Query("SELECT z FROM Zahtev z WHERE z.zid = :zid")
+	Zahtev findOglasByZid(@Param("zid") String zid);
 	
 
 }

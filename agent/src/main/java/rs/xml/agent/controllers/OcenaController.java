@@ -32,6 +32,8 @@ import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.OcenaService;
 import rs.xml.agent.service.OglasService;
 import rs.xml.agent.service.ZahtevService;
+import rs.xml.agent.soap.OcenaClient;
+import rs.xml.agent.util.UtilClass;
 
 
 @RestController
@@ -51,6 +53,9 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	
 	@Autowired
 	TokenUtils tokenUtils;
+	
+	@Autowired
+	private UtilClass utilClass;
 	
 	@GetMapping("/ocena")
 	public ResponseEntity<?> getOcenas(@RequestParam(required = false, defaultValue = "nema") String filter, HttpServletRequest request) {
@@ -144,8 +149,11 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		Oglas oglas = oglasService.findOne(ocenaNewDTO.getOglasId());
 		
 		Ocena ocena = new Ocena(ocenaNewDTO, username, zahtev.getUsername(), oglas);
-		ocenaService.save(ocena);
-		
+		ocena.setOid(username + "-" + utilClass.randomString());
+		ocena = ocenaService.save(ocena);
+		if(ocena != null) {
+			ocenaService.postOcenaUMikroservise(ocena);
+		}
 		OcenaDTO ocenaDTO = new OcenaDTO(ocena);
 		
 		return new ResponseEntity<>(ocenaDTO, HttpStatus.OK);
