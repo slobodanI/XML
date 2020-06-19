@@ -61,6 +61,15 @@ public class SoapConfiguration {
 	}
 	
 	@Bean
+	public IzvestajClient izvestajClient(Jaxb2Marshaller marshaller) {
+		IzvestajClient client = new IzvestajClient();
+		client.setDefaultUri("http://localhost:8085/ws");
+		client.setMarshaller(marshaller);
+		client.setUnmarshaller(marshaller);
+		return client;
+	}
+	
+	@Bean
 	public EverythingClient everythingClient(Jaxb2Marshaller marshaller) {
 
 		EverythingClient client = new EverythingClient();

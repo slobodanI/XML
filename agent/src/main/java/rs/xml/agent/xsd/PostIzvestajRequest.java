@@ -6,25 +6,26 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.agent.xsd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for Slika complex type.
+ * <p>Java class for anonymous complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Slika"&gt;
+ * &lt;complexType&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="slika" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/&gt;
+ *         &lt;element name="izvestaj" type="{http://xml.rs/oglas/xsd}Izvestaj"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -34,34 +35,37 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Slika", propOrder = {
-    "slika"
+@XmlType(name = "", propOrder = {
+    "izvestaj"
 })
-public class Slika {
+@XmlRootElement(name = "postIzvestajRequest")
+public class PostIzvestajRequest {
 
     @XmlElement(required = true)
-    protected byte[] slika;
+    protected Izvestaj izvestaj;
 
     /**
-     * Gets the value of the slika property.
+     * Gets the value of the izvestaj property.
      * 
      * @return
      *     possible object is
-     *     byte[]
+     *     {@link Izvestaj }
+     *     
      */
-    public byte[] getSlika() {
-        return slika;
+    public Izvestaj getIzvestaj() {
+        return izvestaj;
     }
 
     /**
-     * Sets the value of the slika property.
+     * Sets the value of the izvestaj property.
      * 
      * @param value
      *     allowed object is
-     *     byte[]
+     *     {@link Izvestaj }
+     *     
      */
-    public void setSlika(byte[] value) {
-        this.slika = value;
+    public void setIzvestaj(Izvestaj value) {
+        this.izvestaj = value;
     }
 
 }

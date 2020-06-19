@@ -11,10 +11,13 @@ import rs.xml.oglas.dto.NewIzvestajDTO;
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Izvestaj;
 import rs.xml.oglas.repository.IzvestajRepository;
+import rs.xml.oglas.util.UtilClass;
 
 @Service
 public class IzvestajService {
 	
+	@Autowired
+	UtilClass utilClass;
 	
 	@Autowired 
 	private IzvestajRepository izvestajRepository;
@@ -44,7 +47,12 @@ public class IzvestajService {
 		iz.setPredjeniKilometri(izvestajDTO.getPredjeniKilometri());
 		iz.setTekst(izvestajDTO.getTekst());
 		iz.setZahtevId(izvestajDTO.getZahtevId());
+		iz.setIid(username + "-" + utilClass.randomString());
 		
+		return izvestajRepository.save(iz);
+	}
+	
+	public Izvestaj save(Izvestaj iz) {
 		return izvestajRepository.save(iz);
 	}
 	

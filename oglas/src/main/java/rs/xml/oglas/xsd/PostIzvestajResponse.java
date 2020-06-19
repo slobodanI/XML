@@ -10,21 +10,21 @@ package rs.xml.oglas.xsd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for Slika complex type.
+ * <p>Java class for anonymous complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Slika"&gt;
+ * &lt;complexType&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="slika" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/&gt;
+ *         &lt;element name="success" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -34,34 +34,28 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Slika", propOrder = {
-    "slika"
+@XmlType(name = "", propOrder = {
+    "success"
 })
-public class Slika {
+@XmlRootElement(name = "postIzvestajResponse")
+public class PostIzvestajResponse {
 
-    @XmlElement(required = true)
-    protected byte[] slika;
+    protected boolean success;
 
     /**
-     * Gets the value of the slika property.
+     * Gets the value of the success property.
      * 
-     * @return
-     *     possible object is
-     *     byte[]
      */
-    public byte[] getSlika() {
-        return slika;
+    public boolean isSuccess() {
+        return success;
     }
 
     /**
-     * Sets the value of the slika property.
+     * Sets the value of the success property.
      * 
-     * @param value
-     *     allowed object is
-     *     byte[]
      */
-    public void setSlika(byte[] value) {
-        this.slika = value;
+    public void setSuccess(boolean value) {
+        this.success = value;
     }
 
 }
