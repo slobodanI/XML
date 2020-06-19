@@ -49,6 +49,10 @@ public class OcenaService {
 		return ocenaRepository.findMyOcene(username);
 	}
 	
+	public Ocena findOcenaByOID(String oid) {
+		return ocenaRepository.findOcenaByOID(oid);
+	}
+	
 	public List<Ocena> findOceneForMe(String username) {
 		return ocenaRepository.findOceneForMe(username);
 	}

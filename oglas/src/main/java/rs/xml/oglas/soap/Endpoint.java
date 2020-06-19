@@ -26,6 +26,8 @@ import rs.xml.oglas.xsd.PostOglasRequest;
 import rs.xml.oglas.xsd.PostOglasResponse;
 import rs.xml.oglas.xsd.PostZahtevRequest;
 import rs.xml.oglas.xsd.PostZahtevResponse;
+import rs.xml.oglas.xsd.PutOcenaRequest;
+import rs.xml.oglas.xsd.PutOcenaResponse;
 
 @org.springframework.ws.server.endpoint.annotation.Endpoint
 public class Endpoint {
@@ -197,6 +199,46 @@ public class Endpoint {
 		rs.xml.oglas.model.Oglas oglas = oglasService.findOneByOid(ocenaXSD.getOglasId());
 		ocena.setOglas(oglas);
 		ocena.setOid(ocenaXSD.getOid());
+		ocena.setUsernameKo(ocenaXSD.getUsernameKo());
+		ocena.setUsernameKoga(ocenaXSD.getUsernameKoga());
+		rs.xml.oglas.model.Zahtev zahtev = zahtevService.findOneByZid(ocenaXSD.getZahtevId());
+		ocena.setZahtevId(zahtev.getId());
+
+		ocena = ocenaService.save(ocena);
+		if (ocena == null) {
+			response.setSuccess(false);
+		} else {
+			response.setSuccess(true);
+		}
+
+		return response;
+	}
+	
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "putOcenaRequest")
+	@ResponsePayload
+	public PutOcenaResponse putOcena(@RequestPayload PutOcenaRequest request) {
+		System.out.println("*** putOcena > " + request.getOcena().getUsernameKo() + " za "
+				+ request.getOcena().getUsernameKoga() + ", ocena: " + request.getOcena().getOcena());
+		PutOcenaResponse response = new PutOcenaResponse();
+
+		
+		rs.xml.oglas.xsd.Ocena ocenaXSD = request.getOcena();
+		rs.xml.oglas.model.Ocena ocena = ocenaService.findOcenaByOID(ocenaXSD.getOid());
+
+		if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.APPROVED)) {
+			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.APPROVED);
+		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.DENIED)) {
+			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.DENIED);
+		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.UNKNOWN)) {
+			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.UNKNOWN);
+		}
+
+		ocena.setDeleted(ocenaXSD.isDeleted());
+		ocena.setKomentar(ocenaXSD.getKomentar());
+		ocena.setOcena(ocenaXSD.getOcena());
+		ocena.setOdgovor(ocenaXSD.getOdgovor());
+		rs.xml.oglas.model.Oglas oglas = oglasService.findOneByOid(ocenaXSD.getOglasId());
+		ocena.setOglas(oglas);
 		ocena.setUsernameKo(ocenaXSD.getUsernameKo());
 		ocena.setUsernameKoga(ocenaXSD.getUsernameKoga());
 		rs.xml.oglas.model.Zahtev zahtev = zahtevService.findOneByZid(ocenaXSD.getZahtevId());

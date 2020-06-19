@@ -33,4 +33,8 @@ public interface OcenaRepository extends JpaRepository<Ocena, Long>{
 	
 	@Query(value = "SELECT SUM(ocena) FROM OCENA WHERE approved = 'APPROVED' and deleted = false and OGLAS_ID = :oglasId", nativeQuery = true)
 	int getSumOcena(@Param("oglasId") Long oglasId);
+	
+	@Query("SELECT o FROM Ocena o WHERE o.oid = :OID")
+	Ocena findOcenaByOID(@Param("OID") String OID);
+	
 }

@@ -38,8 +38,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "ocena"
 })
-@XmlRootElement(name = "postOcenaRequest")
-public class PostOcenaRequest {
+@XmlRootElement(name = "putOcenaRequest")
+public class PutOcenaRequest {
 
     @XmlElement(required = true)
     protected Ocena ocena;

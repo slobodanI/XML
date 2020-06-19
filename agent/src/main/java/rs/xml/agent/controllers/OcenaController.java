@@ -172,8 +172,11 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 
 		if(!ocenaService.approveOcena(oid)) {
 			return new ResponseEntity<String>("Ova_ocena_je_već_APPROVED_ili_DENIED!",HttpStatus.BAD_REQUEST);			
-		}		
-		
+		}
+		Ocena ocena = ocenaService.findOne(oid);
+		if(ocena != null) {
+			ocenaService.putOcenaUMikroservise(ocena);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -183,7 +186,10 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		if(!ocenaService.denyOcena(oid)) {
 			return new ResponseEntity<String>("Ova_ocena_je_već_APPROVED_ili_DENIED!",HttpStatus.BAD_REQUEST);			
 		}		
-		
+		Ocena ocena = ocenaService.findOne(oid);
+		if(ocena != null) {
+			ocenaService.putOcenaUMikroservise(ocena);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -203,6 +209,9 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		
 		if(!ocenaService.giveOdgovor(ocena, odgovor.getOdgovor())) {
 			return new ResponseEntity<String>("Već_ste_dali_odgovor_na_ovu_ocenu!",HttpStatus.BAD_REQUEST);			
+		}
+		if(ocena != null) {
+			ocenaService.putOcenaUMikroservise(ocena);
 		}
 		
 		return new ResponseEntity<>(HttpStatus.OK);

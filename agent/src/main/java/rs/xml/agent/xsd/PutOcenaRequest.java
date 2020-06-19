@@ -6,7 +6,7 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.agent.xsd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,8 +38,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "ocena"
 })
-@XmlRootElement(name = "postOcenaRequest")
-public class PostOcenaRequest {
+@XmlRootElement(name = "putOcenaRequest")
+public class PutOcenaRequest {
 
     @XmlElement(required = true)
     protected Ocena ocena;
