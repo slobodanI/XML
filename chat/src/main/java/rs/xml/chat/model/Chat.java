@@ -22,6 +22,9 @@ public class Chat {
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name="cid")
+	private String cid;
 
 	@Column(name = "sender_username")
 	private String senderUsername;
@@ -78,6 +81,15 @@ public class Chat {
 	public void setPoruke(List<Poruka> poruke) {
 		this.poruke = poruke;
 	}
+
+	public String getCid() {
+		return cid;
+	}
+
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+	
 	
 	
 }

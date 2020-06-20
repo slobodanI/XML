@@ -1,13 +1,10 @@
 package rs.xml.agent.service;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +13,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-//import rs.xml.agent.client.ChatClient;
-import rs.xml.agent.dto.ChatDTO;
 import rs.xml.agent.dto.ChatNewDTO;
 import rs.xml.agent.dto.KorpaDTO;
 import rs.xml.agent.dto.OglasUKorpiDTO;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.exceptions.ServiceNotAvailable;
+import rs.xml.agent.model.Chat;
 import rs.xml.agent.model.Oglas;
 import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.model.ZahtevStatus;
@@ -198,7 +194,6 @@ public class ZahtevService {
 								}
 								z.setStatus(ZahtevStatus.CANCELED);
 								zahtevRepository.save(z);
-								postZahtevUMikroservise(zahtev);
 							}
 						}
 					}
@@ -267,7 +262,10 @@ public class ZahtevService {
 		
 		try {
 //			ChatDTO chatDTO = new ChatDTO(chatService.save(chatNewDTO));
-			chatService.save(chatNewDTO, username);
+			Chat chat = chatService.save(chatNewDTO, username);
+			if(chat != null) {
+				chatService.postChatUMikroservise(chat);
+			}
 		} catch (Exception e) {
 			System.out.println("***ERROR: zahtevService > acceptZahtev > chatClient ");
 			throw new ServiceNotAvailable("Chat service is not available");
