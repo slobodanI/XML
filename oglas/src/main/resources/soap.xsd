@@ -81,6 +81,38 @@
         </xs:complexType>
     </xs:element>
     
+    <xs:element name="postChatRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="chat" type="tns:Chat"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postChatResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="postPorukaRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="poruka" type="tns:Poruka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postPorukaResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>    
+    
     <xs:element name="getEverythingRequest">
         <xs:complexType>
             <xs:sequence>
@@ -185,12 +217,14 @@
             <xs:element name="cid" type="xs:string"/>
             <xs:element name="senderUsername" type="xs:string"/>
             <xs:element name="receiverUsername" type="xs:string"/>
-            <xs:element name="poruke" type="tns:Poruka" minOccurs="1"/>
+            <xs:element name="poruke" type="tns:Poruka" minOccurs="1" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
     
     <xs:complexType name="Poruka">
         <xs:sequence>
+            <xs:element name="cid" type="xs:string"/>
+        	<xs:element name="pid" type="xs:string"/>
             <xs:element name="body" type="xs:string"/>
             <xs:element name="timestamp" type="xs:long"/>
             <xs:element name="senderUsername" type="xs:string"/>

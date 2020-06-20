@@ -10,9 +10,14 @@ import org.springframework.stereotype.Service;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Poruka;
 import rs.xml.agent.repository.PorukaRepository;
+import rs.xml.agent.soap.ChatClient;
+import rs.xml.agent.xsd.PostPorukaResponse;
 
 @Service
 public class PorukaService {
+	
+	@Autowired
+	private ChatClient chatClient;
 
 	@Autowired
 	private PorukaRepository porukaRepository;
@@ -36,6 +41,19 @@ public class PorukaService {
 
 	public void remove(Long id) {
 		porukaRepository.deleteById(id);
+	}
+	
+	public void postPorukaUMikroservice(Poruka poruka) {
+		PostPorukaResponse response = chatClient.postPoruka(poruka);
+		if(response != null) {
+			if(response.isSuccess()) {
+				System.out.println("*** ChatService > savePoruka > PostPoruka u mirkoservise > USPESNO");
+			} else {
+				System.out.println("*** ChatService > savePoruka > PostPoruka u mirkoservise > NEUSPESNO");
+			}
+		} else {
+			System.out.println("*** ChatService > savePoruka > PostPoruka u mirkoservise > NEUSPESNO");
+		}
 	}
 	
 }
