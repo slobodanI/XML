@@ -22,6 +22,9 @@ public class Poruka {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="pid")
+	private String pid;
+	
 	@ManyToOne
 	private Chat chat;
 	
@@ -91,6 +94,14 @@ public class Poruka {
 
 	public void setSenderUsername(String senderUsername) {
 		this.senderUsername = senderUsername;
+	}
+
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
 	}
 	
 	

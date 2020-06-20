@@ -27,6 +27,7 @@ import rs.xml.agent.model.Poruka;
 import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.ChatService;
 import rs.xml.agent.service.PorukaService;
+import rs.xml.agent.util.UtilClass;
 
 @RestController
 public class ChatController {
@@ -35,6 +36,9 @@ public class ChatController {
 	
 	@Autowired
 	TokenUtils tokenUtils;
+	
+	@Autowired
+	private UtilClass utilClass;
 	
 	@Autowired
 	ChatService chatService; 
@@ -102,7 +106,12 @@ public class ChatController {
 //		String username = request.getHeader("username");
 //		String permisije = request.getHeader("permissions");
 		
-		ChatDTO chatDTO = new ChatDTO(chatService.save(chatNewDTO, username));
+		Chat chat = chatService.save(chatNewDTO, username);
+		if(chat != null) {
+			chatService.postChatUMikroservise(chat);
+		}
+		
+		ChatDTO chatDTO = new ChatDTO(chat);
 		
 		return new ResponseEntity<>(chatDTO, HttpStatus.OK);
     }
@@ -122,8 +131,11 @@ public class ChatController {
 		}
 		
 		Poruka poruka = new Poruka(porukaNewDTO, chat, username);
-		porukaService.save(poruka);
-		
+		poruka.setPid(username + "-" + utilClass.randomString());
+		poruka = porukaService.save(poruka);
+		if(poruka != null) {
+			porukaService.postPorukaUMikroservice(poruka);
+		}
 		PorukaDTO porukaDTO = new PorukaDTO(poruka);
 		
 		return new ResponseEntity<>(porukaDTO, HttpStatus.OK);

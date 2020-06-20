@@ -70,6 +70,15 @@ public class SoapConfiguration {
 	}
 	
 	@Bean
+	public ChatClient chatClient(Jaxb2Marshaller marshaller) {
+		ChatClient client = new ChatClient();
+		client.setDefaultUri("http://localhost:8089/ws");
+		client.setMarshaller(marshaller);
+		client.setUnmarshaller(marshaller);
+		return client;
+	}
+	
+	@Bean
 	public EverythingClient everythingClient(Jaxb2Marshaller marshaller) {
 
 		EverythingClient client = new EverythingClient();

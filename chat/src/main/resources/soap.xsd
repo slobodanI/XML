@@ -1,0 +1,246 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://xml.rs/chat/xsd"
+    targetNamespace="http://xml.rs/chat/xsd" elementFormDefault="qualified">
+    
+    <xs:element name="postOglasRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="oglas" type="tns:Oglas"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postOglasResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postZahtevRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="zahtev" type="tns:Zahtev"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postZahtevResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postOcenaRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ocena" type="tns:Ocena"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postOcenaResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="putOcenaRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ocena" type="tns:Ocena"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="putOcenaResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postIzvestajRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="izvestaj" type="tns:Izvestaj"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postIzvestajResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postChatRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="chat" type="tns:Chat"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postChatResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="postPorukaRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="poruka" type="tns:Poruka"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postPorukaResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>    
+    
+    <xs:element name="getEverythingRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="getEverythingResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="oglasi" type="tns:Oglas" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="zahtevi" type="tns:Zahtev" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="chatovi" type="tns:Chat" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="Oglas">
+        <xs:sequence>
+            <xs:element name="oid" type="xs:string"/>
+            <xs:element name="mesto" type="xs:string"/>
+            <xs:element name="marka" type="xs:string"/>
+            <xs:element name="model" type="xs:string"/>
+            <xs:element name="gorivo" type="xs:string"/>
+            <xs:element name="menjac" type="xs:string"/>
+            <xs:element name="klasa" type="xs:string"/>
+            <xs:element name="cena" type="xs:int"/>
+            <xs:element name="kilometraza" type="xs:int"/>
+            <xs:element name="planiranaKilometraza" type="xs:int"/>
+            <xs:element name="sedistaZaDecu" type="xs:int"/>
+            <xs:element name="osiguranje" type="xs:boolean"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="odDate" type="xs:long"/>
+            <xs:element name="doDate" type="xs:long"/>
+            <xs:element name="deleted" type="xs:boolean"/>
+            <xs:element name="slike" type="tns:Slika" maxOccurs="3" minOccurs="3"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Slika">
+        <xs:sequence>
+            <xs:element name="slika" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Zahtev">
+        <xs:sequence>
+            <xs:element name="zid" type="xs:string"/>
+            <xs:element name="status" type="tns:ZahtevStatus"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="podnosilacUsername" type="xs:string"/>
+            <xs:element name="odDate" type="xs:long"/>
+            <xs:element name="doDate" type="xs:long"/>
+            <xs:element name="vremePodnosenja" type="xs:long"/>
+            <xs:element name="ocenjen" type="xs:boolean"/>
+            <xs:element name="izvestaj" type="xs:boolean"/>   
+            <xs:element name="oglasi" type="tns:OglasUZahtevu" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="OglasUZahtevu">
+        <xs:sequence>
+            <xs:element name="oid" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="ZahtevStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PENDING"/>
+            <xs:enumeration value="RESERVED"/>
+            <xs:enumeration value="PAID"/>
+            <xs:enumeration value="CANCELED"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="Ocena">
+        <xs:sequence>
+            <xs:element name="oid" type="xs:string"/>
+            <xs:element name="ocena" type="xs:int"/>
+            <xs:element name="komentar" type="xs:string"/>
+            <xs:element name="approved" type="tns:OcenaApprovedStatus"/>
+            <xs:element name="odgovor" type="xs:string"/>
+            <xs:element name="usernameKo" type="xs:string"/>
+            <xs:element name="usernameKoga" type="xs:string"/>
+            <xs:element name="oglasId" type="xs:string"/>
+            <xs:element name="zahtevId" type="xs:string"/>
+            <xs:element name="deleted" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="OcenaApprovedStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="APPROVED"/>
+            <xs:enumeration value="DENIED"/>
+            <xs:enumeration value="UNKNOWN"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="Chat">
+        <xs:sequence>
+            <xs:element name="cid" type="xs:string"/>
+            <xs:element name="senderUsername" type="xs:string"/>
+            <xs:element name="receiverUsername" type="xs:string"/>
+            <xs:element name="poruke" type="tns:Poruka" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Poruka">
+        <xs:sequence>
+            <xs:element name="cid" type="xs:string"/>
+        	<xs:element name="pid" type="xs:string"/>
+            <xs:element name="body" type="xs:string"/>
+            <xs:element name="timestamp" type="xs:long"/>
+            <xs:element name="senderUsername" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+        <xs:complexType name="Izvestaj">
+        <xs:sequence>
+            <xs:element name="iid" type="xs:string"/>
+            <xs:element name="oglasId" type="xs:string"/>
+            <xs:element name="zahtevId" type="xs:string"/>
+            <xs:element name="predjeniKilometri" type="xs:int"/>
+             <xs:element name="tekst" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    
+    
+</xs:schema>

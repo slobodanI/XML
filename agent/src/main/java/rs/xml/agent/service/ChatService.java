@@ -11,7 +11,10 @@ import rs.xml.agent.dto.ChatNewDTO;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Chat;
 import rs.xml.agent.repository.ChatRepository;
+import rs.xml.agent.soap.ChatClient;
 import rs.xml.agent.util.UtilClass;
+import rs.xml.agent.xsd.PostChatResponse;
+
 
 @Service
 public class ChatService {
@@ -21,6 +24,9 @@ public class ChatService {
 	
 	@Autowired
 	private UtilClass utilClass;
+	
+	@Autowired
+	private ChatClient chatClient;
 	
 	public Chat findOne(Long id) {
 		Chat Chat = chatRepository.findById(id).orElseThrow(() -> new NotFoundException("Chat with id:" +id+ " does not exist!"));
@@ -49,5 +55,20 @@ public class ChatService {
 	public List<Chat> findMyChats(String username) {
 		return chatRepository.findMyChats(username);
 	}
+	
+	public void postChatUMikroservise(Chat chat) {
+		PostChatResponse response = chatClient.postChat(chat);
+		if(response != null) {
+			if(response.isSuccess()) {
+				System.out.println("*** ChatService > saveChat > PostChat u mirkoservise > USPESNO");
+			} else {
+				System.out.println("*** ChatService > saveChat > PostChat u mirkoservise > NEUSPESNO");
+			}
+		} else {
+			System.out.println("*** ChatService > saveChat > PostChat u mirkoservise > NEUSPESNO");
+		}
+	}
+	
+
 	
 }

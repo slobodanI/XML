@@ -85,7 +85,8 @@ public class ChatController {
 		String permisije = request.getHeader("permissions");
 		
 		Chat chat = new Chat(chatNewDTO);
-		chatService.save(chat);
+		
+		chatService.save(chat,username);
 		
 		ChatDTO chatDTO = new ChatDTO(chat);
 		
@@ -103,7 +104,8 @@ public class ChatController {
 		}
 		
 		Poruka poruka = new Poruka(porukaNewDTO, chat, username);
-		porukaService.save(poruka);
+		
+		porukaService.save(poruka,username);
 		
 		PorukaDTO porukaDTO = new PorukaDTO(poruka);
 		

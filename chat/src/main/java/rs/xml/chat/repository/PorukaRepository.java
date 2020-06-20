@@ -9,10 +9,15 @@ import org.springframework.stereotype.Repository;
 
 import rs.xml.chat.model.Poruka;
 
+
 @Repository
 public interface PorukaRepository extends JpaRepository<Poruka, Long>{
 	
 	@Query("SELECT p FROM Poruka p WHERE CHAT_ID=:chatId ORDER BY TIMESTAMP")
 	List<Poruka> findPoruke(@Param("chatId") Long chatId);
+	
+	
+	@Query("SELECT p FROM Poruka p WHERE p.pid = :pid")
+	Poruka findPorukaByPid(@Param("pid") String pid);
 	
 }
