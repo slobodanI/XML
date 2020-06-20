@@ -84,6 +84,8 @@ public class ChatController {
 		if(!chat.getReceiverUsername().equals(username) && !chat.getSenderUsername().equals(username)) {
 			return new ResponseEntity<String>("Nije_tvoj_chat!", HttpStatus.FORBIDDEN);
 		}
+		// da poruke budu sortirane
+		chat.setPoruke(porukaService.findPorukeFromChat(chat.getId()));
 		ChatPorukeDTO chatPorukeDTO = new ChatPorukeDTO(chat);
 
 		return new ResponseEntity<>(chatPorukeDTO, HttpStatus.OK);

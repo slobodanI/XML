@@ -1,6 +1,7 @@
 package rs.xml.agent.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,10 @@ public class PorukaService {
 
 	public void remove(Long id) {
 		porukaRepository.deleteById(id);
+	}
+	
+	public Set<Poruka> findPorukeFromChat(Long chatId){
+		return porukaRepository.findPoruke(chatId);
 	}
 	
 }
