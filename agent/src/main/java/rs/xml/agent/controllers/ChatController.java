@@ -27,7 +27,9 @@ import rs.xml.agent.model.Poruka;
 import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.ChatService;
 import rs.xml.agent.service.PorukaService;
+import rs.xml.agent.soap.EverythingClient;
 import rs.xml.agent.util.UtilClass;
+import rs.xml.agent.xsd.GetEverythingFromChatResponse;
 
 @RestController
 public class ChatController {
@@ -45,6 +47,9 @@ public class ChatController {
 	
 	@Autowired
 	PorukaService porukaService;
+	
+	@Autowired
+	EverythingClient everythingClient;
 	
 	/**
 	 * 
@@ -140,4 +145,13 @@ public class ChatController {
 		
 		return new ResponseEntity<>(porukaDTO, HttpStatus.OK);
     }
+	
+	@GetMapping("/chat/testSaopEverything")
+	public ResponseEntity<?> testSaopEverything() {
+		
+		GetEverythingFromChatResponse response = everythingClient.getEverythingFromChat("agent");
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
 }

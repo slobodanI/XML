@@ -31,7 +31,6 @@ public class PorukaService {
 		Poruka poruka = porukaRepository.findPorukaByPid(pid);
 		return poruka;
 	}
-
 	public List<Poruka> findAll() {
 		return porukaRepository.findAll();
 	}
