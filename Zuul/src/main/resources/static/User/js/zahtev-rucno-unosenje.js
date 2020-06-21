@@ -40,7 +40,7 @@ function popuniDiv(oglas) {
 	
 		var form = $('<form id="formUnos"> </form>');
 		
-		var labelOglas = $('<label>Zauzece za oglas: '+oglas.marka+' | '+oglas.model+' | '+oglas.menjac+' | '+oglas.gorivo+' | '+oglas.klasa+' </label>');
+		var labelOglas = $('<label>Zauzece za oglas: '+oglas.id+ ' | ' +oglas.marka+' | '+oglas.model+' | '+oglas.menjac+' | '+oglas.gorivo+' | '+oglas.klasa+' </label>');
 		
 		var pocetakRentiranja = $('<label>Pocetak rentiranja: </label>');
 		var inputPocetka = $('<input type="date" name="od" id="input-od" required>')

@@ -117,8 +117,9 @@ function addOglas() {
 		success: function(){
 			alert("Uspešno ste postavili oglas");
 		},
-		error: function(jqXhr, textStatus, errorMessage) {
-            console.log("Error: ", errorMessage);
+		error: function(message) {
+			alert("Već imate postavljena 3 oglasa!");
+            console.log("Error: ", message);
         }
 	});
 }
