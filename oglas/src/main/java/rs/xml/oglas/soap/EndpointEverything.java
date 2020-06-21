@@ -11,6 +11,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.ZahtevStatus;
+import rs.xml.oglas.service.IzvestajService;
+import rs.xml.oglas.service.OcenaService;
 import rs.xml.oglas.service.OglasService;
 import rs.xml.oglas.service.ZahtevService;
 import rs.xml.oglas.xsd.GetEverythingRequest;
@@ -25,7 +27,13 @@ public class EndpointEverything {
 	
 	@Autowired
 	ZahtevService zahtevService;
-		
+	
+	@Autowired
+	IzvestajService izvestajService;
+	
+	@Autowired
+	OcenaService ocenaService;
+	
 	private static final String NAMESPACE_URI = "http://xml.rs/oglas/xsd";
 	
 	@Autowired
@@ -53,6 +61,21 @@ public class EndpointEverything {
 			response.getZahtevi().add(convertModelZahtevToXsdZahtev(zahtev));
 		}
 		System.out.println("###ENDPOINT > getEverything > FOR(findZahteviForMe) > finnish");
+		
+		System.out.println("###ENDPOINT > getEverything > FOR(findMyIzvestaji) > start");
+		for(rs.xml.oglas.model.Izvestaj izvestaj : izvestajService.findMyIzvestaji(request.getUsername())) {
+			System.out.println("--------------->"+izvestaj.getTekst());
+			response.getIzvestaji().add(convertModelIzvestajToXsdIzvestaj(izvestaj));
+		}
+		
+		System.out.println("###ENDPOINT > getEverything > FOR(findMyIzvestaji) > finnish");
+
+		System.out.println("###ENDPOINT > getEverything > FOR(findMyOcene) > start");
+		for(rs.xml.oglas.model.Ocena ocena : ocenaService.findOceneForMe(request.getUsername())) {
+			response.getOcene().add(convertModelOcenaToXsdOcena(ocena));
+		}
+		System.out.println("###ENDPOINT > getEverything > FOR(findMyOcene) > finnish");
+		
 //		
 		System.out.println("###ENDPOINT > getEverything > " + response.toString());
 		return response;
@@ -139,5 +162,51 @@ public class EndpointEverything {
 		
 		return zahtevXSD;
 	}
+	
+	private rs.xml.oglas.xsd.Izvestaj convertModelIzvestajToXsdIzvestaj (rs.xml.oglas.model.Izvestaj izvestaj){
+		rs.xml.oglas.xsd.Izvestaj izvestajXSD =  new rs.xml.oglas.xsd.Izvestaj();
+		System.out.println("### CONVERTOVANJE IZVESTAJ 1 > zahtevXSD: " + izvestajXSD);
+		izvestajXSD.setIid(izvestaj.getIid());
+		String oglasId = oglasService.findOne(izvestaj.getOglasId()).getOid();
+		izvestajXSD.setOglasId(oglasId);
+		System.out.println("### CONVERTOVANJE IZVESTAJ 2 > zahtevXSD: " + izvestajXSD);
+		String zahtevId = zahtevService.findOne(izvestaj.getZahtevId()).getZid();
+		izvestajXSD.setZahtevId(zahtevId);
+		System.out.println("### CONVERTOVANJE IZVESTAJ 3 > zahtevXSD: " + izvestajXSD);
+		izvestajXSD.setPredjeniKilometri(izvestaj.getPredjeniKilometri());
+		izvestajXSD.setTekst(izvestaj.getTekst());
+		System.out.println("### uspesno konvertovanje izvestaja!");
+		
+		return izvestajXSD;
+	}
+	
+	private rs.xml.oglas.xsd.Ocena convertModelOcenaToXsdOcena(rs.xml.oglas.model.Ocena ocena){
+		rs.xml.oglas.xsd.Ocena ocenaXSD = new rs.xml.oglas.xsd.Ocena();
+		System.out.println("### CONVERTOVANJE OCENA 1 > ocenaXSD: " + ocenaXSD);
+		if(ocena.getApproved().equals(rs.xml.oglas.model.OcenaApprovedStatus.APPROVED)) {
+			ocenaXSD.setApproved(rs.xml.oglas.xsd.OcenaApprovedStatus.APPROVED);
+		} else if(ocena.getApproved().equals(rs.xml.oglas.model.OcenaApprovedStatus.DENIED)) {
+			ocenaXSD.setApproved(rs.xml.oglas.xsd.OcenaApprovedStatus.DENIED);
+		} else if(ocena.getApproved().equals(rs.xml.oglas.model.OcenaApprovedStatus.UNKNOWN)) {
+			ocenaXSD.setApproved(rs.xml.oglas.xsd.OcenaApprovedStatus.UNKNOWN);
+		}
+		System.out.println("### CONVERTOVANJE OCENA 2 > ocenaXSD: " + ocenaXSD);
+		ocenaXSD.setDeleted(ocena.isDeleted());
+		ocenaXSD.setKomentar(ocena.getKomentar());
+		ocenaXSD.setOcena(ocena.getOcena());
+		ocenaXSD.setOdgovor(ocena.getOdgovor());
+		Oglas oglas = oglasService.findOne(ocenaService.findOglasFromOcena(ocena.getId()));
+		ocenaXSD.setOglasId(oglas.getOid());
+		ocenaXSD.setOid(oglas.getOid());
+		ocenaXSD.setUsernameKo(ocena.getUsernameKo());
+		ocenaXSD.setUsernameKoga(ocena.getUsernameKoga());
+		rs.xml.oglas.model.Zahtev zahtev = zahtevService.findOne(ocena.getZahtevId());
+		ocenaXSD.setZahtevId(zahtev.getZid());
+		System.out.println("### uspesno konvertovanje ocene!");
+		
+		return ocenaXSD;
+	}
+	
+	
 	
 }

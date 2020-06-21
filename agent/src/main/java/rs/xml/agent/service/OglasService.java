@@ -82,6 +82,11 @@ public class OglasService {
 		return oglas;
 	}
 	
+	public Oglas findOneByOid(String oid) {
+		Oglas oglas = oglasRepository.findOglasByOid(oid);
+		return oglas;
+	}
+	
 	//vraca prednje kilometre datog oglasa
 	public int getKilometri(Long id) {
 		return(izvestajRepository.findPredjeniKilometri(id));

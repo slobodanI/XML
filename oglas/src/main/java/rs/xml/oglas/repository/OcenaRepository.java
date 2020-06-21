@@ -37,4 +37,8 @@ public interface OcenaRepository extends JpaRepository<Ocena, Long>{
 	@Query("SELECT o FROM Ocena o WHERE o.oid = :OID")
 	Ocena findOcenaByOID(@Param("OID") String OID);
 	
+	@Query(value = "SELECT OGLAS_ID from OCENA  where ID= :id", nativeQuery = true)
+	Long findOglasFromOcena(@Param("id") Long id);
+	
+	
 }

@@ -41,9 +41,17 @@ public class IzvestajService {
 		
 		return izvestajRepository.findAll();
 	}
+	public List<Izvestaj> findAll(){
+		
+		return izvestajRepository.findAll();
+	}
 	
 	public Page<Izvestaj> findAll(Pageable page){
 		return izvestajRepository.findAll(page);
+	}
+		
+	public Izvestaj save(Izvestaj izvestaj) {
+		return izvestajRepository.save(izvestaj);
 	}
 	
 	public Izvestaj save(NewIzvestajDTO izvestajDTO,String username) {

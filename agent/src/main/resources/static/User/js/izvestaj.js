@@ -112,12 +112,14 @@ function popuniDiv(izvestaji,zahtev) {
 //			oceniOglas(count, oglas.id);
 //		});
 		
-		
+
 		count++;
+	
 		if(count == count2){
 			alert("Uneli ste sve izvestaje!");
 			window.location = "./zahtevi-za-mene.html";
 		}
+		
 	}
 	
 //	console.log(count- 1);

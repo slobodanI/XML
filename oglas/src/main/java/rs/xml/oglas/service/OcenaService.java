@@ -56,6 +56,9 @@ public class OcenaService {
 	public List<Ocena> findOceneForMe(String username) {
 		return ocenaRepository.findOceneForMe(username);
 	}
+	public Long findOglasFromOcena(Long id) {
+		return ocenaRepository.findOglasFromOcena(id);
+	}
 	
 	public Ocena findOcenaIfExists(Long zahtevId, Long oglasId) {
 		return ocenaRepository.findOcenaIfExists(zahtevId, oglasId);

@@ -126,7 +126,25 @@
             <xs:sequence>
                 <xs:element name="oglasi" type="tns:Oglas" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="zahtevi" type="tns:Zahtev" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="izvestaji" type="tns:Izvestaj" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="ocene" type="tns:Ocena" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="getEverythingFromChatRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="getEverythingFromChatResponse">
+        <xs:complexType>
+            <xs:sequence>
                 <xs:element name="chatovi" type="tns:Chat" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="poruke" type="tns:Poruka" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

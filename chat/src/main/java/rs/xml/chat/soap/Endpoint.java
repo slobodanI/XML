@@ -7,6 +7,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import rs.xml.chat.service.ChatService;
 import rs.xml.chat.service.PorukaService;
+import rs.xml.chat.xsd.GetEverythingFromChatRequest;
+import rs.xml.chat.xsd.GetEverythingFromChatResponse;
 import rs.xml.chat.xsd.PostChatRequest;
 import rs.xml.chat.xsd.PostChatResponse;
 import rs.xml.chat.xsd.PostPorukaRequest;
@@ -92,4 +94,48 @@ public class Endpoint {
 		return response;
 	}
 
+	
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getEverythingFromChatRequest")
+	@ResponsePayload
+	public GetEverythingFromChatResponse getEverythingFromChat(@RequestPayload GetEverythingFromChatRequest request) {
+		GetEverythingFromChatResponse response = new GetEverythingFromChatResponse();
+		
+		System.out.println("###ENDPOINT > getEverythingFromChat > start");
+		
+		
+		System.out.println("###ENDPOINT > getEverythingFromChat > FOR(findMyChat) > start");
+		for(rs.xml.chat.model.Chat chat : chatService.findMyChats(request.getUsername())) {
+			response.getChatovi().add(convertModelChatToXSDChat(chat));
+		}
+		System.out.println("###ENDPOINT > getEverythingFromChat > FOR(findMyChat) > finish");
+		
+		System.out.println("###ENDPOINT > getEverythingFromChat >"+response.toString());
+		
+		return response;
+	}
+	
+	
+	private rs.xml.chat.xsd.Chat convertModelChatToXSDChat(rs.xml.chat.model.Chat chat){
+		rs.xml.chat.xsd.Chat chatXSD = new rs.xml.chat.xsd.Chat();
+		
+		System.out.println("### CONVERTOVANJE CHAT 1 > chatXSD: " + chatXSD);
+		chatXSD.setCid(chat.getCid());
+		chatXSD.setReceiverUsername(chat.getReceiverUsername());
+		chatXSD.setSenderUsername(chat.getSenderUsername());
+		System.out.println("### CONVERTOVANJE CHAT 2 > chatXSD: " + chatXSD);
+		
+		for(rs.xml.chat.model.Poruka poruka : porukaService.findPorukeFromChat(chat.getId())) {
+			rs.xml.chat.xsd.Poruka p = new rs.xml.chat.xsd.Poruka();
+			p.setBody(poruka.getBody());
+			p.setPid(poruka.getPid());
+			p.setCid(chat.getCid());
+			p.setSenderUsername(poruka.getSenderUsername());
+			p.setTimestamp(poruka.getTimestamp().getTime());
+			chatXSD.getPoruke().add(p);
+		}
+		
+		System.out.println("### uspesno konvertovanje chata!");
+		return chatXSD;
+	}
+	
 }

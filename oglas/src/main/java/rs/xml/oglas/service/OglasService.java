@@ -87,6 +87,8 @@ public class OglasService {
 	}
 	
 	
+	
+	
 	//vraca prednje kilometre datog oglasa
 		public int getKilometri(Long id) {
 			return(izvestajRepository.findPredjeniKilometri(id));
