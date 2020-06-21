@@ -1,11 +1,9 @@
 package rs.xml.oglas.model;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -95,7 +93,7 @@ public class Oglas {
     @JoinTable(name = "OGLAS_ZAHTEV",
             joinColumns = @JoinColumn(name = "oglas_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "zahtev_id", referencedColumnName = "id"))
-	private List<Zahtev> zahtevi = new ArrayList<Zahtev>();
+	private Set<Zahtev> zahtevi = new HashSet<Zahtev>();
 	
 	public Oglas() {
 		// TODO Auto-generated constructor stub
@@ -103,7 +101,7 @@ public class Oglas {
 
 	public Oglas(String mesto, String marka, String model, String gorivo, String menjac, String klasa, int cena, Cenovnik cenovnik,
 			int kilometraza, int planiranaKilometraza, int sedistaZaDecu, HashSet<Slika> slike, boolean osiguranje,
-			String username, Date od, Date do1, List<Zahtev> zahtevi) {
+			String username, Date od, Date do1, HashSet<Zahtev> zahtevi) {
 		super();
 		this.mesto = mesto; 
 		this.marka = marka;
@@ -309,11 +307,11 @@ public class Oglas {
 		this.deleted = deleted;
 	}
 
-	public List<Zahtev> getZahtevi() {
+	public Set<Zahtev> getZahtevi() {
 		return zahtevi;
 	}
 
-	public void setZahtevi(List<Zahtev> zahtevi) {
+	public void setZahtevi(Set<Zahtev> zahtevi) {
 		this.zahtevi = zahtevi;
 	}
 
