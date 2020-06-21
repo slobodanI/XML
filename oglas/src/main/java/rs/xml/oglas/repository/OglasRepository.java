@@ -3,6 +3,7 @@ package rs.xml.oglas.repository;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,6 +32,8 @@ public interface OglasRepository extends JpaRepository<Oglas, Long> {
 	
 	@Query("SELECT o FROM Oglas o WHERE o.oid = :oid")
 	Oglas findOglasByOid(@Param("oid") String oid);
-	
+
+	@Query(value = "SELECT OGLAS_ID FROM OGLAS_ZAHTEV WHERE ZAHTEV_ID = :zahtevId", nativeQuery = true)
+	Set<Long> findOglasiIDFromZahtev(@Param("zahtevId") Long zahtevId);
 
 }

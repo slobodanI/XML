@@ -6,6 +6,7 @@ import java.util.Base64.Encoder;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -358,5 +359,9 @@ public class OglasService {
 		this.save(ogl);
 		
 		return ogl;
+	}
+	
+	public Set<Long> getOglasiFromZahtev(Long zahtevId) {
+		return oglasRepository.findOglasiIDFromZahtev(zahtevId);
 	}
 }
