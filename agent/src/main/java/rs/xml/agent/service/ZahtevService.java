@@ -63,6 +63,10 @@ public class ZahtevService {
 	public Page<Zahtev> findAll(Pageable page) {
 		return zahtevRepository.findAll(page);
 	}
+	
+	public Zahtev save(Zahtev zahtev) {
+		return zahtevRepository.save(zahtev);
+	}
 
 	// paziti i na reserved,kad rucno unese upozoriti ga ako vec ima reserved
 	public String save(KorpaDTO korpaDTO, String username) {

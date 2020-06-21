@@ -32,6 +32,7 @@ public class ChatService {
 		Chat Chat = chatRepository.findById(id).orElseThrow(() -> new NotFoundException("Chat with id:" +id+ " does not exist!"));
 		return Chat;
 	}
+	
 
 	public List<Chat> findAll() {
 		return chatRepository.findAll();
@@ -41,6 +42,10 @@ public class ChatService {
 		return chatRepository.findAll(page);
 	}
 
+	public Chat save(Chat chat) {
+		return chatRepository.save(chat);
+	}
+	
 	public Chat save(ChatNewDTO chatDTO, String username) {
 		
 		Chat chat = new Chat(chatDTO);

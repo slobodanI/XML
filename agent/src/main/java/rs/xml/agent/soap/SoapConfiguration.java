@@ -36,7 +36,7 @@ public class SoapConfiguration {
 	@Bean
 	public OglasClient oglasClient(Jaxb2Marshaller marshaller) {
 		OglasClient client = new OglasClient();
-		client.setDefaultUri("http://localhost:8085/ws");
+		client.setDefaultUri("http://localhost:8080/oglasi/ws");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);
 		return client;
@@ -45,7 +45,7 @@ public class SoapConfiguration {
 	@Bean
 	public ZahtevClient zahtevClient(Jaxb2Marshaller marshaller) {
 		ZahtevClient client = new ZahtevClient();
-		client.setDefaultUri("http://localhost:8085/ws");
+		client.setDefaultUri("http://localhost:8080/oglasi/ws");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);
 		return client;
@@ -54,7 +54,7 @@ public class SoapConfiguration {
 	@Bean
 	public OcenaClient ocenaClient(Jaxb2Marshaller marshaller) {
 		OcenaClient client = new OcenaClient();
-		client.setDefaultUri("http://localhost:8085/ws");
+		client.setDefaultUri("http://localhost:8080/oglasi/ws");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);
 		return client;
@@ -63,7 +63,7 @@ public class SoapConfiguration {
 	@Bean
 	public IzvestajClient izvestajClient(Jaxb2Marshaller marshaller) {
 		IzvestajClient client = new IzvestajClient();
-		client.setDefaultUri("http://localhost:8085/ws");
+		client.setDefaultUri("http://localhost:8080/oglasi/ws");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);
 		return client;
@@ -72,7 +72,7 @@ public class SoapConfiguration {
 	@Bean
 	public ChatClient chatClient(Jaxb2Marshaller marshaller) {
 		ChatClient client = new ChatClient();
-		client.setDefaultUri("http://localhost:8089/ws");
+		client.setDefaultUri("http://localhost:8080/chat/ws");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);
 		return client;
@@ -82,7 +82,7 @@ public class SoapConfiguration {
 	public EverythingClient everythingClient(Jaxb2Marshaller marshaller) {
 
 		EverythingClient client = new EverythingClient();
-		client.setDefaultUri("http://localhost:8085/ws");
+		client.setDefaultUri("http://localhost:8080/oglasi/ws");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);
 		return client;
