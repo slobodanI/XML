@@ -45,7 +45,11 @@ public class ChatService {
 	}
 	
 	public Chat save(Chat chat,String username) {
-		chat.setCid(username + "-" + utilClass.randomString());
+		if(username == null) {
+			chat.setCid("username" + "-" + utilClass.randomString());
+		} else {
+			chat.setCid(username + "-" + utilClass.randomString());
+		}
 		return chatRepository.save(chat);
 	}
 

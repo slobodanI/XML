@@ -115,7 +115,7 @@ function oceniOglas(count, oglasId) {
 				location.reload();
 			},
 			error: function(message) {
-	            alert("Dolo je do greske... "+ message);	   
+	            alert("Dolo je do greske... Već ste dali ocenu!");	   
 	            location.reload();
 	        }
 		});

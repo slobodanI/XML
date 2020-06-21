@@ -52,7 +52,7 @@ function popuniDiv(zahtev) {
 	for(oglas of zahtev.oglasi){
 		var form = $('<form id="form-'+count+'"> </form>');
 		
-		var labelOglas = $('<label>Ocenite oglas: '+oglas.marka+' | '+oglas.model+' | '+oglas.menjac+' | '+oglas.gorivo+' | '+oglas.klasa+' </label>');
+		var labelOglas = $('<label>Ocenite oglas: ID:'+oglas.id+' | '+oglas.marka+' | '+oglas.model+' | '+oglas.menjac+' | '+oglas.gorivo+' | '+oglas.klasa+' </label>');
 		
 		var labelOcena = $('<label>Ocena: </label>');
 		
@@ -93,7 +93,8 @@ function popuniDiv(zahtev) {
 function oceniOglas(count, oglasId) {
 //	alert("Oceni oglas sa id:"+oglasId+ ", count:"+count+ ", zahtevId:"+zahtevId);
 		
-	return function() {
+	return function(event) {
+		event.preventDefault();
 		var ocena = $('#select-ocena-'+count+' :selected').val();
 		var komentar = $('#input-komentar-'+count+'').val();
 //		if(komentar == "") {
@@ -114,7 +115,7 @@ function oceniOglas(count, oglasId) {
 				location.reload();
 			},
 			error: function(message) {
-	            alert("Dolo je do greske... "+ message);	   
+	            alert("Dolo je do greske... Već ste dali ocenu!");	   
 	            location.reload();
 	        }
 		});
