@@ -49,7 +49,7 @@ function popuniTabelu(zahtevi) {
 		var pTagOglasi = $("<p> </p>");
 		
 		for(oglas of zahtev.oglasi) {
-			pTagOglasi.append(oglas.marka+"-"+oglas.model+"<br>");
+			pTagOglasi.append(oglas.id+"-"+oglas.marka+"-"+oglas.model+"<br>");
 		}
 		tdOglasi.append(pTagOglasi);
 		
