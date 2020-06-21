@@ -99,7 +99,7 @@ function izlistajOglase(oglasi){
 		var tableUDivu = $("<table id='tabelaOglasa' class='display'> </table>");
 		
 		var thead = $("<thead> </thead>");
-		thead.append("<tr><th>ID</th><th>Slika</th><th>Mesto</th><th>Ocena</th><th>Kilometraža</th><th>Marka</th><th>Model</th><th>Menjac</th><th>Gorivo</th><th>Klasa</th><th>Dodaj</th></tr>")
+		thead.append("<tr><th>ID</th><th>Slika</th><th>Mesto</th><th>Ocena</th><th>Kilometraža</th><th>Marka</th><th>Model</th><th>Menjac</th><th>Gorivo</th><th>Klasa</th><th>Dečijih sedišta</th><th>Planirani Km</th><th>Osiguranje</th><th>Dodaj</th></tr>")
 		
 		var tbody = $("<tbody id='teloTabele'> </tbody>");
 		
@@ -128,12 +128,20 @@ function izlistajOglase(oglasi){
 			var tdKlasa = $("<td> </td>");
 			tdKlasa.append(o.klasa);
 			
+			var tdDecijihSedista = $("<td> </td>");
+			tdDecijihSedista.append(o.brSedZaDecuInt);
+			var tdPlaniraniKm = $("<td> </td>");
+			tdPlaniraniKm.append(o.planiranaInt);
+			var tdOsiguranje = $("<td> </td>");
+			tdOsiguranje.append(o.osiguranjeBool);
+			
 			var tdDodaj = $("<td> </td>");
 			var btn = $('<button>Dodaj u korpu</button>');
 			btn.click(dodajUKorpu(o.id, Od, Do));
 			tdDodaj.append(btn);
-			console.log("alooo");
-			tr.append(tdId).append(tdSlika).append(tdMesto).append(tdOcena).append(tdKilometraza).append(tdMarka).append(tdModel).append(tdMenjac).append(tdGorivo).append(tdKlasa).append(tdDodaj);
+
+			tr.append(tdId).append(tdSlika).append(tdMesto).append(tdOcena).append(tdKilometraza).append(tdMarka).append(tdModel).append(tdMenjac).append(tdGorivo).append(tdKlasa)
+			tr.append(tdDecijihSedista).append(tdPlaniraniKm).append(tdOsiguranje).append(tdDodaj);
 			tbody.append(tr);
 		}
 		
