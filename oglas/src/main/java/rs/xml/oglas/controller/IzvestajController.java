@@ -26,6 +26,7 @@ import rs.xml.oglas.repository.ZahtevRepository;
 import rs.xml.oglas.service.IzvestajService;
 import rs.xml.oglas.service.OglasService;
 import rs.xml.oglas.service.ZahtevService;
+import rs.xml.oglas.util.UtilClass;
 
 @RestController
 public class IzvestajController {
@@ -42,6 +43,9 @@ public class IzvestajController {
 	@Autowired
 	ZahtevRepository zahtevRepository;
 	
+	@Autowired 
+	UtilClass utilClass;
+	
 		
 	@GetMapping("/izvestaj")
 	public ResponseEntity<?> getIzvestaji(@RequestParam(required = false, defaultValue = "0") Long zahtevId, HttpServletRequest request){
@@ -54,6 +58,7 @@ public class IzvestajController {
 		
 		for(Izvestaj iz : izvestaji) {
 			IzvestajDTO izDTO = new IzvestajDTO(iz);
+//			izDTO.setTekst(utilClass.escape(izDTO.getTekst()));
 			izvestajiDTO.add(izDTO);
 		}
 		return new ResponseEntity<>(izvestajiDTO,HttpStatus.OK);
@@ -70,6 +75,7 @@ public class IzvestajController {
 		}
 		
 		IzvestajDTO izvestajDTO = new IzvestajDTO(izvestaj);
+//		izvestajDTO.setTekst(utilClass.escape(izvestajDTO.getTekst()));
 		
 		return new ResponseEntity<>(izvestajDTO,HttpStatus.OK);
 		
