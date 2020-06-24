@@ -5,14 +5,15 @@ $(document).ready(function(){
 		
 	if(sessionStorage.getItem("token")) {
 		token = JSON.parse(sessionStorage.token);
+		whoami();
 	} else {
 		console.log("No token in session memory...");
-		return;
+		window.location = "../login.html";
 	}
 	
 	
 	if(zahtevId == undefined) {
-//		window.location = "../login.html"; // kasnije otkomentarisi
+		window.location = "../login.html";
 	}
 	
 	getZahtev();
@@ -70,13 +71,10 @@ function popuniDiv(izvestaji,zahtev) {
 	var count2 = 0;
 
 	for(oglas of zahtev.oglasi){
-		
-		
-
-		
+	
 		var form = $('<form id="form-'+count+'"> </form>');
 		
-		var labelOglas = $('<label>Izvestaj za oglas: '+oglas.marka+' | '+oglas.model+' | '+oglas.menjac+' | '+oglas.gorivo+' | '+oglas.klasa+' </label>');
+		var labelOglas = $('<label>Izvestaj za oglas: '+oglas.id+' | '+oglas.marka+' | '+oglas.model+' | '+oglas.menjac+' | '+oglas.gorivo+' | '+oglas.klasa+' </label>');
 		
 		var labelKilometri = $('<label>Predjeno kilometara: </label>');
 		var inputKilometri = $('<input type="number" class="form-control" id="input-kilometraza-'+count+'" placeholder="Predjena Kilometraza">');
@@ -85,7 +83,7 @@ function popuniDiv(izvestaji,zahtev) {
 		var labelKomentar = $('<label>Komentar(50 karaktera): </label>');
 		var inputKomentar = $('<input type="text" class="form-control" id="input-komentar-'+count+'" placeholder="Komentar">');
 		
-		var btnSubmit = $('<button value="Oceni">Oceni </button>');
+		var btnSubmit = $('<button value="Pošalji">Pošalji </button>');
 		btnSubmit.click(podnesiIzvestaj(count, oglas.id,zahtevId));
 		
 		form.append(labelOglas).append('<br>').append(labelKilometri).append(inputKilometri).append(labelKomentar).append(inputKomentar).append('<br>').append(btnSubmit).append('<hr><hr><hr>');
@@ -103,16 +101,7 @@ function popuniDiv(izvestaji,zahtev) {
 		if(pom == 0){
 		$("#div-za-forme").append(form);
 		}
-//		var ocena = $('#select-ocena-'+count+' :selected').val();
-//		alert("OCENA JE: " + ocena);
-//		$('#form-'+count+'').submit(function(event) {
-//			event.preventDefault(event);
-////			var idOcene = select.attr('id');
-////			var idKomentara = inputKomentar.attr('id');
-//			oceniOglas(count, oglas.id);
-//		});
-		
-		
+				
 		count++;
 		if(count == count2){
 			alert("Uneli ste sve izvestaje!");
@@ -120,7 +109,6 @@ function popuniDiv(izvestaji,zahtev) {
 		}
 	}
 	
-//	console.log(count- 1);
 }
 
 function podnesiIzvestaj(count, oglasId,zahtevId) {
@@ -157,4 +145,35 @@ function podnesiIzvestaj(count, oglasId,zahtevId) {
 		
 	}
 	
+}
+
+function whoami() {
+	if(sessionStorage.getItem("token")) {
+		token = JSON.parse(sessionStorage.token);
+	} else {
+		console.log("No token in session memory...");
+		return;
+	}
+	
+	$.get({
+		url: '/auth/whoami',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(user) {
+			var ROLES = "";
+			for(var role of user.authorities){					
+				ROLES += role.authority+","
+			}
+			if(ROLES.includes("ROLE_USER") || ROLES.includes("ROLE_USER_LIMITED") || ROLES.includes("ROLE_AGENT") ) {
+				// 
+			} else {
+				window.location = "../login.html";
+			}
+			
+		},
+		error: function() {
+			alert("Neuspešno ste se prijavili");
+		}
+	});
 }
