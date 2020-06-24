@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ public class ZahtevController {
 	 * filter= - vraca sve zahteve
 	 */
 	@GetMapping("/zahtev")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getZahtevi(@RequestParam(required = false, defaultValue = "nema") String filter, HttpServletRequest request){
 		String username = request.getHeader("username");
 				
@@ -64,6 +66,7 @@ public class ZahtevController {
 	}
 	
 	@GetMapping("/zahtev/pending")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getPending(HttpServletRequest request){
 		String username = request.getHeader("username");
 		Collection<Zahtev> zahteviList = zahtevService.findPending();
@@ -78,6 +81,7 @@ public class ZahtevController {
 	}
 	
 	@GetMapping("/zahtev/{zid}")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getZahtev(@PathVariable Long zid){
 		
 		Zahtev zahtev = zahtevService.findOne(zid);
@@ -93,6 +97,7 @@ public class ZahtevController {
 	}
 	
 	@GetMapping("/zahtev/{zid}/oglasi")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getOglaseZahteva(@PathVariable Long zid){
 		
 		Zahtev zahtev = zahtevService.findOne(zid);
@@ -113,6 +118,7 @@ public class ZahtevController {
 	
 	
 	@PostMapping("/zahtev")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> postZahtev(@RequestBody KorpaDTO korpa, HttpServletRequest request){
 		
 		String username = request.getHeader("username");
@@ -130,23 +136,26 @@ public class ZahtevController {
 	}
 	
 	@PutMapping("/zahtev/{zId}/accept")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> acceptZahtev(@PathVariable(name="zId") Long zId, HttpServletRequest request){
 		
 		String username = request.getHeader("username");
-
+		String permisije = request.getHeader("permissions");
+		
 		Zahtev zah = zahtevService.findOne(zId);
 		
 		if(!zah.getUsername().equals(username)) {
 			return new ResponseEntity<String>("Nije_tvoj_zahtev!", HttpStatus.FORBIDDEN);
 		}
 		
-		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.acceptZahtev(zId, username));
+		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.acceptZahtev(zId, username, permisije));
 		
 		return new ResponseEntity<>(zDTO, HttpStatus.OK);
 		
 	}
 	
 	@PutMapping("/zahtev/{zId}/decline")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> declineZahtev(@PathVariable(name="zId") Long zId, HttpServletRequest request){
 		String username = request.getHeader("username");
 

@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class CenovnikController {
 	 * Ako je korisnik admin return sve cenovnike u sistemu.
 	 */
 	@GetMapping("/cenovnik")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> getAllCenovnik(HttpServletRequest request) {
 		
 		String username = request.getHeader("username");
@@ -53,6 +55,7 @@ public class CenovnikController {
 	}
 	
 	@GetMapping("/cenovnik/{cid}")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> getCenovnikById(@PathVariable Long cid, HttpServletRequest request) {
 		
 		String username = request.getHeader("username");
@@ -75,6 +78,7 @@ public class CenovnikController {
 	}
 	
 	@PostMapping("/cenovnik")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> postCenovnik(@RequestBody @Valid NewCenovnikDTO cenovnikDTO, HttpServletRequest request) {
 		
 		String username = request.getHeader("username");
@@ -99,6 +103,7 @@ public class CenovnikController {
 	}
 	
 	@DeleteMapping("/cenovnik/{cid}")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> deleteCenovnikById(@PathVariable Long cid, HttpServletRequest request) {
 		
 		String username = request.getHeader("username");

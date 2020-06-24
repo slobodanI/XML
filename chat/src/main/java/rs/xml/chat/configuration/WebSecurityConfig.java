@@ -1,4 +1,4 @@
-package rs.xml.oglas.configuration;
+package rs.xml.chat.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +14,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
-import rs.xml.oglas.security.AuthenticationTokenFilter;
-import rs.xml.oglas.security.RestAuthenticationEntryPoint;
+import rs.xml.chat.security.AuthenticationTokenFilter;
+import rs.xml.chat.security.RestAuthenticationEntryPoint;
+
 
 @Configuration
 @EnableWebSecurity
@@ -73,9 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         		.antMatchers("/ws").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/h2-console/**", "/hello").permitAll()
-                .antMatchers("/search").permitAll()
-                .antMatchers(HttpMethod.GET, "/oglas", "/oglas/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/ocena", "/ocena/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/oglas", "/oglas/**").permitAll()
                 .anyRequest().authenticated();
         
         http.csrf().disable(); //  zbog /h2-console je disabled

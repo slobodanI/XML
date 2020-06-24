@@ -14,21 +14,50 @@ INSERT INTO USERS (username, password, first_name, last_name, email, accepted, b
 INSERT INTO ROLE (name) VALUES ('ROLE_USER');
 INSERT INTO ROLE (name) VALUES ('ROLE_AGENT');
 INSERT INTO ROLE (name) VALUES ('ROLE_ADMIN');
+INSERT INTO ROLE (name) VALUES ('ROLE_USER_LIMITED');
 
 INSERT INTO USER_ROLE (user_id, role_id) VALUES (1, 1);
-INSERT INTO USER_ROLE (user_id, role_id) VALUES (2, 1);
-INSERT INTO USER_ROLE (user_id, role_id) VALUES (2, 2);
 INSERT INTO USER_ROLE (user_id, role_id) VALUES (2, 3);
-INSERT INTO USER_ROLE (user_id, role_id) VALUES (3, 1);
 INSERT INTO USER_ROLE (user_id, role_id) VALUES (3, 2);
 
 INSERT INTO PERMISSION (name) VALUES ('PERMISSION_TEST');
 INSERT INTO PERMISSION (name) VALUES ('CREATE_OGLAS');
 INSERT INTO PERMISSION (name) VALUES ('MANAGE_USERS');
+INSERT INTO PERMISSION (name) VALUES ('MANAGE_CHAT');
+INSERT INTO PERMISSION (name) VALUES ('MANAGE_SIFRARNIK');
+INSERT INTO PERMISSION (name) VALUES ('MANAGE_CENOVNIK');
+INSERT INTO PERMISSION (name) VALUES ('MANAGE_OCENA');
+INSERT INTO PERMISSION (name) VALUES ('MANAGE_OGLAS');
+INSERT INTO PERMISSION (name) VALUES ('MANAGE_ZAHTEV');
+INSERT INTO PERMISSION (name) VALUES ('MANAGE_IZVESTAJ');
+INSERT INTO PERMISSION (name) VALUES ('MANAGE_OCENA_ADMIN');
+-- USER
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 2); -- CREATE_OGLAS
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 4); -- MANAGE_CHAT
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 6); -- MANAGE_CENOVNIK
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 7); -- MANAGE_OCENA
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 8); -- MANAGE_OGLAS
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 9); -- MANAGE_ZAHTEV
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 10); -- MANAGE_IZVESTAJ
 
-INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 2);
-INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (2, 2);
-INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (3, 1);
-INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (3, 2);
-INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (3, 3);
+-- USER_LIMITED
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 4); -- MANAGE_CHAT
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 6); -- MANAGE_CENOVNIK
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 7); -- MANAGE_OCENA
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (1, 9); -- MANAGE_ZAHTEV
+
+-- AGENT
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (2, 2); -- CREATE_OGLAS
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (2, 4); -- MANAGE_CHAT
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (2, 6); -- MANAGE_CENOVNIK
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (2, 7); -- MANAGE_OCENA
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (2, 8); -- MANAGE_OGLAS
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (2, 9); -- MANAGE_ZAHTEV
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (2, 10); -- MANAGE_IZVESTAJ
+
+-- ADMIN
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (3, 1); -- PERMISSION_TEST
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (3, 3); -- MANAGE_USERS
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (3, 5); -- MANAGE_SIFRARNIK
+INSERT INTO ROLE_PERMISSION (role_id, permission_id) values (3, 11); -- MANAGE_OCENA_ADMIN
 

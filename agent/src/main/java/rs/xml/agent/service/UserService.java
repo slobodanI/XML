@@ -2,6 +2,7 @@ package rs.xml.agent.service;
 
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -23,7 +24,10 @@ import rs.xml.agent.repository.UserRepository;
 
 @Service
 public class UserService {
-
+	
+	// password mora imati minimalno 10 karaktera
+	private List<String> badPasswords = Arrays.asList("passwordpassword", "1234567890");
+		
 	@Autowired
 	private UserRepository userRepository;
 
@@ -51,6 +55,11 @@ public class UserService {
 	
 	public User save(UserRegisterRequestDTO userRequest) {
 		User u = new User();
+		for(String pas: badPasswords) {
+			if(userRequest.getPassword().equals(pas)) {
+				return null;
+			}
+		}
 		u.setUsername(userRequest.getUsername());
 		u.setSalt(getNextSalt());
 		u.setPassword(passwordEncoder.encode(userRequest.getPassword() + u.getSalt()));

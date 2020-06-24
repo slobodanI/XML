@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,7 @@ public class ModelController
 	}
 	
 	@PutMapping(value = "/model/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateModel(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Model m = modelService.updateModel(Id, info);
@@ -60,6 +62,7 @@ public class ModelController
 	}
 	
 	@PostMapping(value = "/model", produces = "application/json")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Model> newModel(@RequestBody String info) 
 	{	
 		Model mod = modelService.createModel(info);
@@ -75,6 +78,7 @@ public class ModelController
 	}
 	
 	@DeleteMapping(value = "/model/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteModel(@PathVariable Long Id) 
 	{	
 		modelService.deleteModel(Id);

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,7 @@ public class MestoController
 	}
 	
 	@PutMapping(value = "/mesto/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateMesto(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		Mesto m = mestoService.updateMesto(Id, info);
@@ -60,6 +62,7 @@ public class MestoController
 	}
 	
 	@PostMapping(value = "/mesto", produces = "application/json")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Mesto> newMesto(@RequestBody String info) 
 	{	
 		Mesto m = mestoService.createMesto(info);
@@ -75,6 +78,7 @@ public class MestoController
 	}
 	
 	@DeleteMapping(value = "/mesto/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteMesto(@PathVariable Long Id) 
 	{	
 		mestoService.deleteMesto(Id);

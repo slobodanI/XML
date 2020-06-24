@@ -167,6 +167,7 @@ public class OglasController {
     }
 	
 	@PutMapping("/oglas/{oid}")
+	@PreAuthorize("hasAuthority('MANAGE_OGLAS')")
 	public ResponseEntity<?> updateOglas(@PathVariable Long oid, @RequestBody @Valid NewOglasDTO oglasDTO, HttpServletRequest request) {
 		
 		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
@@ -185,6 +186,7 @@ public class OglasController {
 	}
 	
 	@DeleteMapping("oglas/{oid}")
+	@PreAuthorize("hasAuthority('MANAGE_OGLAS')")
 	public ResponseEntity<?> deleteOglas(@PathVariable Long oid, HttpServletRequest request) {
 		
 		String username = request.getHeader("username");

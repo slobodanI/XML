@@ -104,10 +104,13 @@ public class AuthenticationController {
 
 		User existUser = this.userService.findByUsername(userRequest.getUsername());
 		if (existUser != null) {
-			return new ResponseEntity<String>("User with that name already exists", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("User_with_that_name_already_exists", HttpStatus.BAD_REQUEST);
 		}
 
 		User user = this.userService.save(userRequest);
+		if(user == null) {
+			return new ResponseEntity<String>("This_password_is_on_the_common_password_list,_please_chose_another_password.", HttpStatus.BAD_REQUEST);
+		}
 //		HttpHeaders headers = new HttpHeaders();
 //		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<User>(user, HttpStatus.CREATED);

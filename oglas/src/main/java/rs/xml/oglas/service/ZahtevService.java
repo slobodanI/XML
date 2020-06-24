@@ -217,7 +217,7 @@ public class ZahtevService {
 
 	}
 
-	public Zahtev acceptZahtev(Long id, String username) {
+	public Zahtev acceptZahtev(Long id, String username, String permisije) {
 		Zahtev zahtev = this.findOne(id);
 
 
@@ -255,7 +255,7 @@ public class ZahtevService {
 		chatNewDTO.setSendereUsername(zahtev.getPodnosilacUsername());
 		
 		try {
-			ChatDTO chatDTO = chatClient.postChat(chatNewDTO);
+			ChatDTO chatDTO = chatClient.postChat(chatNewDTO, username, permisije);
 		} catch (Exception e) {
 			System.out.println("***ERROR: zahtevService > acceptZahtev > chatClient ");
 			throw new ServiceNotAvailable("Chat service is not available");
