@@ -39,6 +39,7 @@ import rs.xml.oglas.model.Slika;
 import rs.xml.oglas.service.CenovnikService;
 import rs.xml.oglas.service.OglasService;
 import rs.xml.oglas.service.SlikaService;
+import rs.xml.oglas.util.UtilClass;
 
 @RestController
 public class OglasController {
@@ -60,6 +61,9 @@ public class OglasController {
 
 	@Autowired
 	SlikaService slikaService;
+	
+	@Autowired
+	UtilClass utilClass;
 
 	@GetMapping("/oglas")
 	public ResponseEntity<?> getOglasi(@RequestParam(required = false, defaultValue = "nema") String filter, HttpServletRequest request) {
@@ -99,6 +103,7 @@ public class OglasController {
 				oDTO.setOcena2(d);
 				oDTO.setPredjenaInt(km);
 				oDTO.setBrojOcena(broj);
+//				oDTO = utilClass.escapeOglasDTOsearch(oDTO);
 				oglasListDTO.add(oDTO);
 			}
 			logger.info("get all oglasi {}", "test");;
@@ -109,6 +114,7 @@ public class OglasController {
 			List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
 			for(Oglas og: oglasList) {
 				OglasDTO oDTO = new OglasDTO(og);
+//				oDTO = utilClass.escapeOglasDTO(oDTO);
 				oglasListDTO.add(oDTO);
 			}
 			logger.info("get all oglasi {}", "test");;
@@ -127,7 +133,7 @@ public class OglasController {
 		}
 				
 		OglasDTO oglasDTO = new OglasDTO(oglas);
-
+//		oglasDTO = utilClass.escapeOglasDTO(oglasDTO);
 		return new ResponseEntity<>(oglasDTO, HttpStatus.OK);
 	}
 

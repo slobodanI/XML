@@ -24,6 +24,7 @@ import rs.xml.agent.model.Oglas;
 import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.ZahtevService;
+import rs.xml.agent.util.UtilClass;
 
 @RestController
 public class ZahtevController {
@@ -33,6 +34,9 @@ public class ZahtevController {
 	
 	@Autowired
 	TokenUtils tokenUtils;
+	
+	@Autowired
+	UtilClass utilClass;	
 	
 	/**
 	 * @param filter
@@ -66,6 +70,7 @@ public class ZahtevController {
 		List<ZahtevDTO> zahteviListDTO = new ArrayList<ZahtevDTO>();
 		for(Zahtev zah: zahteviList) {
 			ZahtevDTO zDTO = new ZahtevDTO(zah);
+//			zDTO = utilClass.escapeZahtevDTO(zDTO);
 			zahteviListDTO.add(zDTO);
 		}
 		return new ResponseEntity<>(zahteviListDTO, HttpStatus.OK);
@@ -85,6 +90,7 @@ public class ZahtevController {
 		for(Zahtev zah: zahteviList) {
 			ZahtevDTO zDTO = new ZahtevDTO(zah);
 			if(zDTO.getUsername().equals(username)) {
+//			zDTO = utilClass.escapeZahtevDTO(zDTO);
 			zahteviListDTO.add(zDTO);
 			}
 		}
@@ -101,6 +107,7 @@ public class ZahtevController {
 			
 		}
 		ZahtevDTO zahtevDTO = new ZahtevDTO(zahtev);
+//		zahtevDTO = utilClass.escapeZahtevDTO(zahtevDTO);
 		
 		
 		return new ResponseEntity<>(zahtevDTO,HttpStatus.OK);
@@ -118,7 +125,9 @@ public class ZahtevController {
 		
 		List<OglasDTOsearch> oglasiDTO =  new ArrayList<OglasDTOsearch>();
 		for(Oglas o : zahtev.getOglasi()) {
-			oglasiDTO.add(new OglasDTOsearch(o));
+			OglasDTOsearch og = new OglasDTOsearch(o);
+		//	og=utilClass.escapeOglasDTOsearch(og);
+			oglasiDTO.add(og);
 		}
 		
 		
