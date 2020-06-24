@@ -26,6 +26,7 @@ import rs.xml.chat.model.Chat;
 import rs.xml.chat.model.Poruka;
 import rs.xml.chat.service.ChatService;
 import rs.xml.chat.service.PorukaService;
+import rs.xml.chat.util.UtilClass;
 
 @RestController
 public class ChatController {
@@ -34,6 +35,9 @@ public class ChatController {
 	
 	@Autowired
 	ChatService chatService; 
+	
+	@Autowired
+	UtilClass utilClass;
 	
 	@Autowired
 	PorukaService porukaService;
@@ -51,6 +55,7 @@ public class ChatController {
 		List<ChatDTO> chatListDTO = new ArrayList<ChatDTO>();
 		for(Chat chat: chatList) {
 			ChatDTO cDTO = new ChatDTO(chat);
+			cDTO = utilClass.escapeChatDTO(cDTO);
 			chatListDTO.add(cDTO);
 		}
 		
@@ -73,7 +78,12 @@ public class ChatController {
 		
 		// da poruke budu sortirane
 		chat.setPoruke(porukaService.findPorukeFromChat(chat.getId()));
-		ChatPorukeDTO chatPorukeDTO = new ChatPorukeDTO(chat);
+		ChatPorukeDTO chatPorukeDTO = new ChatPorukeDTO();
+		for(Poruka p : chat.getPoruke()) {
+			PorukaDTO porukaDTO = new PorukaDTO(p);
+			porukaDTO = utilClass.escapePorukaDTO(porukaDTO);
+			chatPorukeDTO.getPoruke().add(porukaDTO);
+		}
 
 		return new ResponseEntity<>(chatPorukeDTO, HttpStatus.OK);
 	}

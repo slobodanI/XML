@@ -27,6 +27,7 @@ import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.IzvestajService;
 import rs.xml.agent.service.OglasService;
 import rs.xml.agent.service.ZahtevService;
+import rs.xml.agent.util.UtilClass;
 
 @RestController
 public class IzvestajController {
@@ -45,6 +46,9 @@ public class IzvestajController {
 	
 	@Autowired
 	TokenUtils tokenUtils;
+	
+	@Autowired 
+	UtilClass utilClass;
 		
 	@GetMapping("/izvestaj")
 	public ResponseEntity<?> getIzvestaji(@RequestParam(required = false, defaultValue = "0") Long zahtevId, HttpServletRequest request){
@@ -57,6 +61,7 @@ public class IzvestajController {
 		
 		for(Izvestaj iz : izvestaji) {
 			IzvestajDTO izDTO = new IzvestajDTO(iz);
+//			izDTO.setTekst(utilClass.escape(izDTO.getTekst()));
 			izvestajiDTO.add(izDTO);
 		}
 		return new ResponseEntity<>(izvestajiDTO,HttpStatus.OK);
@@ -73,6 +78,7 @@ public class IzvestajController {
 		}
 		
 		IzvestajDTO izvestajDTO = new IzvestajDTO(izvestaj);
+//		izDTO.setTekst(utilClass.escape(izDTO.getTekst()));
 		
 		return new ResponseEntity<>(izvestajDTO,HttpStatus.OK);
 		

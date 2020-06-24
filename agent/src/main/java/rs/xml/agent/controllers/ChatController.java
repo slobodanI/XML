@@ -69,6 +69,7 @@ public class ChatController {
 		List<ChatDTO> chatListDTO = new ArrayList<ChatDTO>();
 		for(Chat chat: chatList) {
 			ChatDTO cDTO = new ChatDTO(chat);
+			cDTO = utilClass.escapeChatDTO(cDTO);
 			chatListDTO.add(cDTO);
 		}
 		
@@ -95,7 +96,12 @@ public class ChatController {
 		}
 		// da poruke budu sortirane
 		chat.setPoruke(porukaService.findPorukeFromChat(chat.getId()));
-		ChatPorukeDTO chatPorukeDTO = new ChatPorukeDTO(chat);
+		ChatPorukeDTO chatPorukeDTO = new ChatPorukeDTO();
+		for(Poruka p : chat.getPoruke()) {
+			PorukaDTO porukaDTO = new PorukaDTO(p);
+			porukaDTO = utilClass.escapePorukaDTO(porukaDTO);
+			chatPorukeDTO.getPoruke().add(porukaDTO);
+		}
 
 		return new ResponseEntity<>(chatPorukeDTO, HttpStatus.OK);
 	}
