@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -48,7 +50,9 @@ import rs.xml.agent.service.UserService;
 @RestController
 @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+	
 	@Autowired
 	TokenUtils tokenUtils;
 
@@ -73,7 +77,13 @@ public class AuthenticationController {
 
 		// Ubaci username + password u kontext
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
+		
+//		logger.debug("DEBUG TEST");
+//		logger.error("ERROR TEST");
+//		logger.info("INFO TEST");
+//		logger.warn("WARN TEST");
+//		System.out.println("test system out println");
+		
 		// Kreiraj token
 		User user = (User) authentication.getPrincipal();
 //		System.out.println("*********USER: ");
@@ -90,6 +100,10 @@ public class AuthenticationController {
 			}
 			
 		}
+		
+//		if(user.getUsername().equals("admin")) {
+//			throw new RuntimeException("opa desila se greska");
+//		}
 //		System.out.println(">>>Permisije:" + permisije);
 		String jwt = tokenUtils.generateToken(user.getUsername(), permisije);
 		int expiresIn = tokenUtils.getExpiredIn();

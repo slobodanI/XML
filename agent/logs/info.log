@@ -1,0 +1,26 @@
+2020-06-24 18:15:43 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on slobodan-MS-7599 with PID 24230 (/home/slobodan/XML-projekat/XML/agent/target/classes started by slobodan in /home/slobodan/XML-projekat/XML/agent)
+2020-06-24 18:15:43 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-24 18:15:49 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 5.957 seconds (JVM running for 6.546)
+2020-06-24 18:16:58 [http-nio-8081-exec-8] ERROR r.x.a.c.AuthenticationController - ERROR TEST
+2020-06-24 18:16:58 [http-nio-8081-exec-8] INFO  r.x.a.c.AuthenticationController - INFO TEST
+2020-06-24 18:16:58 [http-nio-8081-exec-8] WARN  r.x.a.c.AuthenticationController - WARN TEST
+2020-06-24 18:19:46 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on slobodan-MS-7599 with PID 24408 (/home/slobodan/XML-projekat/XML/agent/target/classes started by slobodan in /home/slobodan/XML-projekat/XML/agent)
+2020-06-24 18:19:46 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-24 18:19:46 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-24 18:19:51 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 5.952 seconds (JVM running for 6.526)
+2020-06-24 18:22:27 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on slobodan-MS-7599 with PID 24735 (/home/slobodan/XML-projekat/XML/agent/target/classes started by slobodan in /home/slobodan/XML-projekat/XML/agent)
+2020-06-24 18:22:27 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-24 18:22:27 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-24 18:22:32 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 5.932 seconds (JVM running for 6.499)
+2020-06-24 18:23:07 [http-nio-8081-exec-5] DEBUG r.x.a.c.AuthenticationController - DEBUG TEST
+2020-06-24 18:23:07 [http-nio-8081-exec-5] ERROR r.x.a.c.AuthenticationController - ERROR TEST
+2020-06-24 18:23:07 [http-nio-8081-exec-5] INFO  r.x.a.c.AuthenticationController - INFO TEST
+2020-06-24 18:23:07 [http-nio-8081-exec-5] WARN  r.x.a.c.AuthenticationController - WARN TEST
+2020-06-24 18:23:36 [http-nio-8081-exec-3] DEBUG r.x.a.c.AuthenticationController - DEBUG TEST
+2020-06-24 18:23:36 [http-nio-8081-exec-3] ERROR r.x.a.c.AuthenticationController - ERROR TEST
+2020-06-24 18:23:36 [http-nio-8081-exec-3] INFO  r.x.a.c.AuthenticationController - INFO TEST
+2020-06-24 18:23:36 [http-nio-8081-exec-3] WARN  r.x.a.c.AuthenticationController - WARN TEST
+2020-06-24 18:24:02 [http-nio-8081-exec-4] DEBUG r.x.a.c.AuthenticationController - DEBUG TEST
+2020-06-24 18:24:02 [http-nio-8081-exec-4] ERROR r.x.a.c.AuthenticationController - ERROR TEST
+2020-06-24 18:24:02 [http-nio-8081-exec-4] INFO  r.x.a.c.AuthenticationController - INFO TEST
+2020-06-24 18:24:02 [http-nio-8081-exec-4] WARN  r.x.a.c.AuthenticationController - WARN TEST
