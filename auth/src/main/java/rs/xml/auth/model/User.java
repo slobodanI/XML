@@ -58,6 +58,9 @@ public class User implements UserDetails {
     @Column(name = "accepted")
     private boolean accepted; // za registraciju
     
+    @Column(name = "activated")
+    private boolean activated; // da li je potvrdio mailom registraciju
+    
     @Column(name = "blocked")
     private boolean blocked; // od strane admina
     
@@ -76,7 +79,7 @@ public class User implements UserDetails {
     @Column(name = "deleted")
     private boolean deleted;
     
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -226,7 +229,17 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return accepted && !deleted && !blocked; //
     }
+	
+	
     
+	public boolean isActivated() {
+		return activated;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
 	/**
 	 * Vraca listu 'GrantedAuthority'.
 	 * U listi se nalaze role koje korisnik ima, i sve

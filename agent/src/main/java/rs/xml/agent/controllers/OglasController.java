@@ -112,6 +112,7 @@ public class OglasController {
 				oDTO.setOcena2(d);
 				oDTO.setPredjenaInt(km);
 				oDTO.setBrojOcena(broj);
+//				oDTO = utilClass.escapeOglasDTOsearch(oDTO);
 				oglasListDTO.add(oDTO);
 			}
 			logger.info("get all oglasi {}", "test");;
@@ -122,6 +123,7 @@ public class OglasController {
 			List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
 			for(Oglas og: oglasList) {
 				OglasDTO oDTO = new OglasDTO(og);
+//				oDTO = utilClass.escapeOglasDTO(oDTO);
 				oglasListDTO.add(oDTO);
 			}
 			logger.info("get all oglasi {}", "test");;
@@ -140,6 +142,7 @@ public class OglasController {
 		}
 				
 		OglasDTO oglasDTO = new OglasDTO(oglas);
+//		oglasDTO = utilClass.escapeOglasDTO(oglasDTO);
 
 		return new ResponseEntity<>(oglasDTO, HttpStatus.OK);
 	}

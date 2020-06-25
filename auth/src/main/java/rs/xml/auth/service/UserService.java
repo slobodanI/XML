@@ -4,18 +4,17 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
 
 import rs.xml.auth.exceptions.NotFoundException;
 import rs.xml.auth.model.Role;
@@ -71,6 +70,7 @@ public class UserService {
 		u.setBlocked(false);
 		u.setDeleted(false);
 		u.setCanceled(0);
+		u.setActivated(false);
 //		u.setAds(0);
 		u.setOwes(0);
 		
@@ -100,6 +100,20 @@ public class UserService {
 		return u;
 	}
 	
+	public User activateUserMail(Long uid) {
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		long millis=System.currentTimeMillis();
+		Timestamp now=new Timestamp(millis);
+		u.setLastPasswordResetDate(now);
+		u.setActivated(true);		
+		userRepository.save(u);
+		
+		return u;
+	}
+	
+	
 	public User blockUser(Long uid) {		
 		User u = userRepository.findById(uid).orElseThrow(
 				() -> new NotFoundException("User with id " + uid + " does not exist"));
@@ -128,6 +142,29 @@ public class UserService {
 		userRepository.save(u);
 		
 		return u;
+	}
+	
+	@Scheduled(cron = "0 0 * ? * *")
+	public void cancelAfter24h() {
+		System.out.println("CRON radi");
+		List<User> users = userRepository.findPendingMailUsers();
+		if(users.isEmpty()) return;
+		
+		
+		long millis=System.currentTimeMillis()-(24 * 60 * 60 * 1000);
+		Timestamp oneDayAgo=new Timestamp(millis);
+		List<Long> pomocna = new ArrayList<Long>();
+		for(User u : users) {
+			if(u.getLastPasswordResetDate().before(oneDayAgo)) {
+				pomocna.add(u.getId());
+			}
+		}
+		for(Long uid : pomocna) {
+			userRepository.deleteById(uid);
+		}
+		
+		System.out.println(oneDayAgo);
+		
 	}
 	
 }

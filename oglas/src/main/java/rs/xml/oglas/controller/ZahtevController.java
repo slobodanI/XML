@@ -19,18 +19,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.xml.oglas.dto.KorpaDTO;
-import rs.xml.oglas.dto.OglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
 import rs.xml.oglas.dto.ZahtevDTO;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.service.ZahtevService;
+import rs.xml.oglas.util.UtilClass;
 
 @RestController
 public class ZahtevController {
 	
 	@Autowired
 	ZahtevService zahtevService;
+	
+	@Autowired
+	UtilClass utilClass;
 	
 	/**
 	 * @param filter
@@ -60,6 +63,7 @@ public class ZahtevController {
 		List<ZahtevDTO> zahteviListDTO = new ArrayList<ZahtevDTO>();
 		for(Zahtev zah: zahteviList) {
 			ZahtevDTO zDTO = new ZahtevDTO(zah);
+//			zDTO = utilClass.escapeZahtevDTO(zDTO);
 			zahteviListDTO.add(zDTO);
 		}
 		return new ResponseEntity<>(zahteviListDTO, HttpStatus.OK);
@@ -74,6 +78,7 @@ public class ZahtevController {
 		for(Zahtev zah: zahteviList) {
 			ZahtevDTO zDTO = new ZahtevDTO(zah);
 			if(zDTO.getUsername().equals(username)) {
+//			zDTO = utilClass.escapeZahtevDTO(zDTO);
 			zahteviListDTO.add(zDTO);
 			}
 		}
@@ -91,6 +96,7 @@ public class ZahtevController {
 			
 		}
 		ZahtevDTO zahtevDTO = new ZahtevDTO(zahtev);
+	//	zahtevDTO = utilClass.escapeZahtevDTO(zahtevDTO);
 		
 		
 		return new ResponseEntity<>(zahtevDTO,HttpStatus.OK);
@@ -109,7 +115,9 @@ public class ZahtevController {
 		
 		List<OglasDTOsearch> oglasiDTO =  new ArrayList<OglasDTOsearch>();
 		for(Oglas o : zahtev.getOglasi()) {
-			oglasiDTO.add(new OglasDTOsearch(o));
+			OglasDTOsearch og = new OglasDTOsearch(o);
+		//	og=utilClass.escapeOglasDTOsearch(og);
+			oglasiDTO.add(og);
 		}
 		
 		

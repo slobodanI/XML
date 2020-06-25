@@ -76,6 +76,7 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		List<OcenaDTO> ocenaListDTO = new ArrayList<OcenaDTO>();
 		for(Ocena ocena: ocenaList) {
 			OcenaDTO cDTO = new OcenaDTO(ocena);
+			cDTO  = utilClass.escapeOcenaDTO(cDTO);
 			ocenaListDTO.add(cDTO);
 		}
 		
@@ -87,6 +88,7 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		
 		Ocena ocena = ocenaService.findOne(oid);
 		OcenaDTO cDTO = new OcenaDTO(ocena);
+		cDTO  = utilClass.escapeOcenaDTO(cDTO);
 		
 		return new ResponseEntity<>(cDTO, HttpStatus.OK);
 	}
