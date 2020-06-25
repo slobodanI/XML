@@ -2,6 +2,10 @@ package rs.xml.sifrarnik.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +27,10 @@ import rs.xml.sifrarnik.services.MarkaService;
 public class MarkaController 
 {
 
+	final static Logger logger = LoggerFactory.getLogger(MarkaController.class);
+	
+	@Autowired
+	HttpServletRequest request;
 	
 	@Autowired
 	MarkaService markaService;
@@ -48,7 +56,10 @@ public class MarkaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateMarka(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		String username = request.getHeader("username");
+		
 		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST PUT Marka, Marka payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -56,10 +67,12 @@ public class MarkaController
 
 		if(m==null)
 		{
+			logger.warn("BAD_REQUEST PUT Marka, Marka payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Postoji_marka_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
+			logger.info("Updated Marka with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(m, HttpStatus.OK);
 		}
 	}
@@ -68,8 +81,10 @@ public class MarkaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Marka> newMarka(@RequestBody String info) 
 	{	
+		String username = request.getHeader("username");
 		
 		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST POST Marka, Marka payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -77,10 +92,12 @@ public class MarkaController
 		
 		if(mar!=null)
 		{
+			logger.info("Created Marka with id:" +mar.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<Marka>(mar, HttpStatus.OK);
 		}
 		else
 		{
+			logger.warn("BAD_REQUEST POST Marka, Marka payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 	}
@@ -89,8 +106,9 @@ public class MarkaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteMarka(@PathVariable Long Id) 
 	{	
+		String username = request.getHeader("username");
 		markaService.deleteMarka(Id);
-		
+		logger.info("DELETED Marka with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

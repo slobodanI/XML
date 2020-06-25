@@ -68,6 +68,9 @@ public class AuthenticationController {
 	@Autowired
 	private EmailService emailService;
 	
+	@Autowired
+	HttpServletRequest request;
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtAuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws AuthenticationException, IOException {
@@ -87,6 +90,9 @@ public class AuthenticationController {
 //		logger.warn("WARN TEST");
 //		System.out.println("test system out println");
 		
+//		String ipAddress = request.getRemoteAddr();
+//		logger.info(ipAddress);
+//		logger.info(request.getContextPath());
 		// Kreiraj token
 		User user = (User) authentication.getPrincipal();
 //		System.out.println("*********USER: ");
@@ -104,9 +110,6 @@ public class AuthenticationController {
 			
 		}
 		
-//		if(user.getUsername().equals("admin")) {
-//			throw new RuntimeException("opa desila se greska");
-//		}
 //		System.out.println(">>>Permisije:" + permisije);
 		String jwt = tokenUtils.generateToken(user.getUsername(), permisije);
 		int expiresIn = tokenUtils.getExpiredIn();

@@ -92,7 +92,7 @@ public class UserService {
 	
 	public User activateUser(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		u.setAccepted(true);		
 		userRepository.save(u);
@@ -102,7 +102,7 @@ public class UserService {
 	
 	public User activateUserMail(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		long millis=System.currentTimeMillis();
 		Timestamp now=new Timestamp(millis);
@@ -116,7 +116,7 @@ public class UserService {
 	
 	public User blockUser(Long uid) {		
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		u.setBlocked(true);	
 		userRepository.save(u);
@@ -126,7 +126,7 @@ public class UserService {
 	
 	public User unblockUser(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		u.setBlocked(false);	
 		userRepository.save(u);
@@ -136,7 +136,7 @@ public class UserService {
 	
 	public User deleteUser(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		u.setDeleted(true);
 		userRepository.save(u);

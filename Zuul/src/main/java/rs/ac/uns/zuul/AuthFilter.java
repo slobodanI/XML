@@ -5,6 +5,8 @@ import com.netflix.zuul.context.RequestContext;
 import feign.FeignException;
 import rs.ac.uns.zuul.client.AuthClient;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class AuthFilter extends ZuulFilter {
 
+	final static Logger logger = LoggerFactory.getLogger(AuthFilter.class);
+	
 	@Autowired
 	AuthClient authClient;
 	
@@ -62,6 +66,7 @@ public class AuthFilter extends ZuulFilter {
             System.out.println("GATEWAY->PERMISIJE: " + permissions);
             System.out.println("GATEWAY->USERNAME: " + username);
         } catch (FeignException.NotFound e) {
+        	logger.warn("SR,Bad token, IP:" + request.getRemoteAddr());
             setFailedRequest("Consumer does not exist!", 403);
         }
 

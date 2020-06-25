@@ -35,7 +35,7 @@
 	</appender>
 
 	<!-- Send logs to both console and files -->
-	<logger name="rs.xml.auth" level="debug" additivity="false">
+	<logger name="rs.xml.oglas" level="debug" additivity="false">
 		<appender-ref ref="FILE-INFO" />
 		<appender-ref ref="STDOUT" />
 	</logger>

@@ -2,6 +2,10 @@ package rs.xml.sifrarnik.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +27,10 @@ import rs.xml.sifrarnik.services.MenjacService;
 public class MenjacController 
 {
 
+	final static Logger logger = LoggerFactory.getLogger(MenjacController.class);
+	
+	@Autowired
+	HttpServletRequest request;
 	
 	@Autowired
 	MenjacService menjacService;
@@ -47,8 +55,11 @@ public class MenjacController
 	@PutMapping(value = "/menjac/{Id}")
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateMenjac(@PathVariable Long Id , @RequestBody String info) 
-	{	
+	{			
+		String username = request.getHeader("username");
+	
 		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST PUT Menjac, Menjac payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -57,10 +68,12 @@ public class MenjacController
 		
 		if(m==null)
 		{
+			logger.warn("BAD_REQUEST PUT Menjac, Menjac payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Postoji_menjac_sa_tim_imenom", HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
+			logger.info("Updated Menjac with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(m, HttpStatus.OK);
 		}
 	}
@@ -69,8 +82,10 @@ public class MenjacController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Menjac> newMenjac(@RequestBody String info) 
 	{	
+		String username = request.getHeader("username");
 		
 		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST POST Menjac, Menjac payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -78,10 +93,12 @@ public class MenjacController
 		
 		if(menj!=null)
 		{
+			logger.info("Created Menjac with id:" +menj.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<Menjac>(menj, HttpStatus.OK);
 		}
 		else
 		{
+			logger.warn("BAD_REQUEST POST Menjac, Menjac payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 	}
@@ -90,8 +107,9 @@ public class MenjacController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteMenjac(@PathVariable Long Id) 
 	{	
+		String username = request.getHeader("username");
 		menjacService.deleteMenjac(Id);
-		
+		logger.info("DELETED Menjac with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

@@ -52,7 +52,6 @@ public class ChatController {
 	public ResponseEntity<?> getChats(HttpServletRequest request) {
 		String username = request.getHeader("username");
 		List<Chat> chatList = chatService.findMyChats(username);
-		logger.info("get all my chats {}", "test");
 		List<ChatDTO> chatListDTO = new ArrayList<ChatDTO>();
 		for(Chat chat: chatList) {
 			ChatDTO cDTO = new ChatDTO(chat);
@@ -74,6 +73,7 @@ public class ChatController {
 		
 		Chat chat = chatService.findOne(cid);
 		if(!chat.getReceiverUsername().equals(username) && !chat.getSenderUsername().equals(username)) {
+			logger.warn("SR, Unauthorized chat access attempt, Chat id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_chat!", HttpStatus.FORBIDDEN);
 		}
 		
@@ -98,8 +98,8 @@ public class ChatController {
 		
 		Chat chat = new Chat(chatNewDTO);
 		
-		chatService.save(chat,username);
-		
+		chat = chatService.save(chat,username);
+		logger.info("Created chat with id:" +chat.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		ChatDTO chatDTO = new ChatDTO(chat);
 		
 		return new ResponseEntity<>(chatDTO, HttpStatus.OK);
@@ -112,6 +112,7 @@ public class ChatController {
 		
 		Chat chat = chatService.findOne(cid);
 		if(!chat.getReceiverUsername().equals(username) && !chat.getSenderUsername().equals(username)) {
+			logger.warn("SR, Unauthorized chat access attempt, Chat id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_chat!", HttpStatus.FORBIDDEN);
 		}
 		

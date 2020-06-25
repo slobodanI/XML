@@ -34,12 +34,10 @@ import rs.xml.oglas.service.OglasService;
 import rs.xml.oglas.service.ZahtevService;
 import rs.xml.oglas.util.UtilClass;
 
-
 @RestController
 public class OcenaController {
 	
-	
-final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
+	final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	
 	@Autowired
 	OcenaService ocenaService; 
@@ -53,8 +51,11 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	@Autowired
 	private UtilClass utilClass;
 	
+	@Autowired
+	HttpServletRequest request;
+	
 	@GetMapping("/ocena")
-	public ResponseEntity<?> getOcenas(@RequestParam(required = false, defaultValue = "nema") String filter, HttpServletRequest request) {
+	public ResponseEntity<?> getOcenas(@RequestParam(required = false, defaultValue = "nema") String filter) {
 		String username = request.getHeader("username");
 		
 		List<Ocena> ocenaList = new ArrayList<Ocena>();
@@ -72,7 +73,7 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 			ocenaList = ocenaService.findAll();
 		}
 		
-		logger.info("get all ocene, filter: {}, ukupno ocena:{}", filter, ocenaList.size());
+//		logger.info("get all ocene, filter: {}, ukupno ocena:{}", filter, ocenaList.size());
 		List<OcenaDTO> ocenaListDTO = new ArrayList<OcenaDTO>();
 		for(Ocena ocena: ocenaList) {
 			OcenaDTO cDTO = new OcenaDTO(ocena);
@@ -85,8 +86,9 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	
 	@GetMapping("/ocena/{oid}")
 	public ResponseEntity<?> getOcena(@PathVariable Long oid) {
-		
+				
 		Ocena ocena = ocenaService.findOne(oid);
+		
 		OcenaDTO cDTO = new OcenaDTO(ocena);
 		cDTO  = utilClass.escapeOcenaDTO(cDTO);
 		
@@ -95,7 +97,7 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	
 	@PostMapping("/ocena")
 	@PreAuthorize("hasAuthority('MANAGE_OCENA')")
-    public ResponseEntity<?> postOcena(@RequestBody @Valid OcenaNewDTO ocenaNewDTO, HttpServletRequest request) {        		
+    public ResponseEntity<?> postOcena(@RequestBody @Valid OcenaNewDTO ocenaNewDTO) {        		
 		
 		String username = request.getHeader("username");
 		
@@ -104,18 +106,21 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		// provere...
 		// da li je zahtev placen
 		if(zahtev.getStatus() != ZahtevStatus.PAID) {
+			logger.warn("SR, FORBIDDEN Post Ocena, Zahtev with id:" +zahtev.getId()+ " is not paid, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Zahtev_nije_PAID!", HttpStatus.FORBIDDEN);
 		}
 		
 		// da li je koriscenje vozila proslo
 		Date sada = new Date(System.currentTimeMillis());
 		if(zahtev.getDo().after(sada)) {
+			logger.warn("SR, FORBIDDEN Post Ocena, Zahtev with id:" +zahtev.getId()+ " is not finished, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Još_nije_istekao_zahtev!", HttpStatus.FORBIDDEN);
 		}
 		
 		// da li sam ja taj koji je poslao zahtev na osnovu koga ocenjujem
 		 if(!zahtev.getPodnosilacUsername().equals(username)) {
-			 return new ResponseEntity<String>("Nemaš_pravo_da_ocenjujes_ovaj_oglas!", HttpStatus.FORBIDDEN);
+			logger.warn("SR, FORBIDDEN Post Ocena, Zahtev with id:" +zahtev.getId()+ " is not owned, By username:" + username + ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<String>("Nemaš_pravo_da_ocenjujes_ovaj_oglas!", HttpStatus.FORBIDDEN);
 		 }
 		 
 		 // da li je prosledjeni oglasId dobar, tj. da li se taj oglas nalazi u zahtevu
@@ -127,11 +132,13 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 			 }
 		 }
 		 if(flag == false) {
+			 logger.warn("SR, FORBIDDEN Post Ocena, Zahtev with id:" +zahtev.getId()+ " does not contain sent oglas, By username:" + username + ", IP:" + request.getRemoteAddr());	
 			 return new ResponseEntity<String>("Ovaj_oglas_se_ne_nalazi_u_zahtevu!", HttpStatus.FORBIDDEN);
 		 }
 		
 		 // da li sam vec ocenio oglas...
 		 if(ocenaService.findOcenaIfExists(ocenaNewDTO.getZahtevId(), ocenaNewDTO.getOglasId()) != null) {
+			 logger.warn("SR, FORBIDDEN Post Ocena, Oglas with id:" +ocenaNewDTO.getOglasId()+ " is already rated, By username:" + username + ", IP:" + request.getRemoteAddr());	
 			 return new ResponseEntity<String>("Ovaj_oglas_ste_vec_ocenili!", HttpStatus.BAD_REQUEST);
 		 }
 		 
@@ -141,12 +148,14 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 		Ocena ocena = new Ocena(ocenaNewDTO, username, zahtev.getUsername(), oglas);
 		ocena.setOid(username + "-" + utilClass.randomString());
 		ocenaService.save(ocena);
+		logger.info("Created ocena with id:" +ocena.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		
 		OcenaDTO ocenaDTO = new OcenaDTO(ocena);
 		
 		return new ResponseEntity<>(ocenaDTO, HttpStatus.OK);
     }
 	
+	//da li ovo obrisati?
 	@DeleteMapping("/ocena/{oid}")
 	@PreAuthorize("hasAuthority('MANAGE_OCENA')")
 	public ResponseEntity<?> deleteOcena(@PathVariable Long oid) {
@@ -158,9 +167,11 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	
 	@PutMapping("/ocena/{oid}/approve")
 	@PreAuthorize("hasAuthority('MANAGE_OCENA_ADMIN')")
-	public ResponseEntity<?> approveOcena(@PathVariable Long oid) {
-
+	public ResponseEntity<?> approveOcena(@PathVariable Long oid) {		
+		String username = request.getHeader("username");
+		
 		if(!ocenaService.approveOcena(oid)) {
+			logger.warn("BAD_REQUEST PUT Ocena, ocena with id:" +oid+ " is already approved or denied, By username:" + username + ", IP:" + request.getRemoteAddr());	
 			return new ResponseEntity<String>("Ova_ocena_je_već_APPROVED_ili_DENIED!",HttpStatus.BAD_REQUEST);			
 		}		
 		
@@ -170,8 +181,10 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	@PutMapping("/ocena/{oid}/deny")
 	@PreAuthorize("hasAuthority('MANAGE_OCENA_ADMIN')")
 	public ResponseEntity<?> denyOcena(@PathVariable Long oid) {
+		String username = request.getHeader("username");
 		
 		if(!ocenaService.denyOcena(oid)) {
+			logger.warn("SR, BAD_REQUEST PUT Ocena, ocena with id:" +oid+ " is already approved or denied, By username:" + username + ", IP:" + request.getRemoteAddr());	
 			return new ResponseEntity<String>("Ova_ocena_je_već_APPROVED_ili_DENIED!",HttpStatus.BAD_REQUEST);			
 		}		
 		
@@ -180,15 +193,17 @@ final static Logger logger = LoggerFactory.getLogger(OcenaController.class);
 	
 	@PutMapping("/ocena/{oid}/odgovor")
 	@PreAuthorize("hasAuthority('MANAGE_OCENA')")
-	public ResponseEntity<?> ocenaOdgovor(@PathVariable Long oid, @RequestBody @Valid OcenaOdgovorDTO odgovor, HttpServletRequest request) {
+	public ResponseEntity<?> ocenaOdgovor(@PathVariable Long oid, @RequestBody @Valid OcenaOdgovorDTO odgovor) {
 		String username = request.getHeader("username");
 		
 		Ocena ocena = ocenaService.findOne(oid);
 		if(!ocena.getUsernameKoga().equals(username)) {
+			logger.warn("SR, FORBIDDEN PUT Ocena, ocena with id:" +oid+ " is not for this user, By username:" + username + ", IP:" + request.getRemoteAddr());	
 			return new ResponseEntity<String>("Nije_tvoja_ocena,_ne_mozeš_da_odgovoriš_na_nju!",HttpStatus.FORBIDDEN);
 		}
 		
 		if(!ocenaService.giveOdgovor(ocena, odgovor.getOdgovor())) {
+			logger.warn("SR, BAD_REQUEST PUT Ocena, ocena with id:" +oid+ " alredy has an answer, By username:" + username + ", IP:" + request.getRemoteAddr());	
 			return new ResponseEntity<String>("Već_ste_dali_odgovor_na_ovu_ocenu!",HttpStatus.BAD_REQUEST);			
 		}
 		

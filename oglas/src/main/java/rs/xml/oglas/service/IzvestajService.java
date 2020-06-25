@@ -29,7 +29,7 @@ public class IzvestajService {
 
 	public Izvestaj findOne(Long id) {
 		Izvestaj izvestaj = izvestajRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException("Ocena with id:" + id + " does not exist!"));
+				.orElseThrow(() -> new NotFoundException("Izvestaj with id:" + id + " does not exist!"));
 		return izvestaj;
 	}
 
@@ -44,30 +44,16 @@ public class IzvestajService {
 
 	//u izvestaju nemam username,pa prolazim na starinski nacin
 	public List<Izvestaj> findMyIzvestaji(String username) {
-		System.out.println("USERNAME===" + username);
 		List<Zahtev> zahtevi = zahtevService.findZahteviForMe(username);
-		System.out.println("aaaaaaaa"+ zahtevi.toString());
 		List<Izvestaj> izvestaji = new ArrayList<Izvestaj>();
 		
 		for(Zahtev z : zahtevi) {
-			System.out.println("//////////"+z.getId());
 			List<Izvestaj> pom = new ArrayList<Izvestaj>();
 			pom=izvestajRepository.findIzvestajZahteva(z.getId());
-			System.out.println("//////////"+pom.toString());
 			if(pom != null) {
 			izvestaji.addAll(pom);
 			}
 		}
-		
-//		List<Izvestaj> izvestaji = izvestajRepository.findAll();
-//
-//		for (Izvestaj iz : izvestaji) {
-//			for (Zahtev z : zahtevi) {
-//				if (iz.getZahtevId() == z.getId()) {
-//					pom.add(iz);
-//				}
-//			}
-//		}
 
 		return izvestaji;
 	}
