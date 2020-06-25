@@ -49,6 +49,10 @@ public class GorivoController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateGorivo(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Gorivo gor = sifrarnikService.updateGorivo(Id, info);
 		
 		if(gor==null)
@@ -65,6 +69,11 @@ public class GorivoController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Gorivo> newGorivo(@RequestBody String info) 
 	{	
+		
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Gorivo gor = sifrarnikService.createGorivo(info);
 		
 		if(gor!=null)

@@ -48,6 +48,10 @@ public class MarkaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateMarka(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Marka m = markaService.updateMarka(Id, info);
 
 		if(m==null)
@@ -64,6 +68,11 @@ public class MarkaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Marka> newMarka(@RequestBody String info) 
 	{	
+		
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Marka mar = markaService.createMarka(info);
 		
 		if(mar!=null)

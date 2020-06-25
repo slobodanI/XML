@@ -45,6 +45,10 @@ public class KlasaController
 	@PutMapping(value = "/klasa/{Id}")
 	public ResponseEntity<?> updateKlasa(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Klasa kls = klasaService.updateKlasa(Id, info);
 		
 		if(kls==null)
@@ -61,6 +65,10 @@ public class KlasaController
 	@PostMapping(value = "/klasa", produces = "application/json")
 	public ResponseEntity<Klasa> newKlasa(@RequestBody String info) 
 	{	
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Klasa kls = klasaService.createKlasa(info);
 		
 		if(kls!=null)

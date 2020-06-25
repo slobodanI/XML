@@ -47,6 +47,10 @@ public class KlasaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateKlasa(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Klasa kls = klasaService.updateKlasa(Id, info);
 		
 		if(kls==null)
@@ -64,6 +68,10 @@ public class KlasaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Klasa> newKlasa(@RequestBody String info) 
 	{	
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Klasa kls = klasaService.createKlasa(info);
 		
 		if(kls!=null)

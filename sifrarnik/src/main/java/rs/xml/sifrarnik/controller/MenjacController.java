@@ -48,6 +48,11 @@ public class MenjacController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateMenjac(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		
 		Menjac m = menjacService.updateMenjac(Id, info);
 		
 		if(m==null)
@@ -64,6 +69,11 @@ public class MenjacController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Menjac> newMenjac(@RequestBody String info) 
 	{	
+		
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Menjac menj = menjacService.createMenjac(info);
 		
 		if(menj!=null)

@@ -49,6 +49,11 @@ public class ModelController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateModel(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Model m = modelService.updateModel(Id, info);
 		
 		if(m==null)
@@ -65,6 +70,11 @@ public class ModelController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Model> newModel(@RequestBody String info) 
 	{	
+		
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Model mod = modelService.createModel(info);
 		
 		if(mod!=null)
