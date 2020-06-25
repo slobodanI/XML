@@ -90,6 +90,9 @@ public class ZahtevService {
 					pomLista.add(oglas.getUsername());
 				}
 			}
+			if(datumOd.after(datumDo)) {
+				return "Niste dobro uneli datum!";
+			}
 
 			// id je username korisnika koji je postavio oglas,
 			// iteriram kako bih napravio bundle oglasa istog korisnika
@@ -131,6 +134,10 @@ public class ZahtevService {
 				datumDo = new Date(og1.getDo().getTime()); 
 				listaOglasa.add(oglas);
 			}
+			if(datumOd.after(datumDo)) {
+				return "Niste dobro uneli datum!";
+			}
+
 			for (Oglas og1 : listaOglasa) {
 				if (og1.getUsername().equals(username)) {
 					Zahtev zahtev = new Zahtev();

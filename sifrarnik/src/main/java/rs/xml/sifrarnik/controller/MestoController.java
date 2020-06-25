@@ -47,6 +47,12 @@ public class MestoController
 	@PutMapping(value = "/mesto/{Id}")
 	public ResponseEntity<?> updateMesto(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		
 		Mesto m = mestoService.updateMesto(Id, info);
 		
 		if(m==null)
@@ -62,6 +68,11 @@ public class MestoController
 	@PostMapping(value = "/mesto", produces = "application/json")
 	public ResponseEntity<Mesto> newMesto(@RequestBody String info) 
 	{	
+		
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Mesto m = mestoService.createMesto(info);
 		
 		if(m!=null)

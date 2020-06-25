@@ -46,6 +46,10 @@ public class MarkaController
 	@PutMapping(value = "/marka/{Id}")
 	public ResponseEntity<?> updateMarka(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Marka m = markaService.updateMarka(Id, info);
 
 		if(m==null)
@@ -61,6 +65,11 @@ public class MarkaController
 	@PostMapping(value = "/marka", produces = "application/json")
 	public ResponseEntity<Marka> newMarka(@RequestBody String info) 
 	{	
+		
+		if(info == null || info.length()<1) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Marka mar = markaService.createMarka(info);
 		
 		if(mar!=null)
