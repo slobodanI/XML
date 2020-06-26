@@ -1,6 +1,9 @@
 package rs.xml.auth.service;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,10 @@ import rs.xml.auth.repository.UserRepository;
 public class CustomUserDetailsService implements UserDetailsService {
 
 	protected final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
-
+	
+	// password mora imati minimalno 10 karaktera
+	private List<String> badPasswords = Arrays.asList("passwordpassword", "1234567890");
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -45,8 +51,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 
 	// Funkcija pomocu koje korisnik menja svoju lozinku
-	public void changePassword(String oldPassword, String newPassword) {
-
+	public String changePassword(String oldPassword, String newPassword) {
+		for(String pas: badPasswords) {
+			if(newPassword.equals(pas)) {
+				return "unsuccessful";
+			}
+		}
+		
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
 
@@ -57,7 +68,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		} else {
 			LOGGER.debug("SR, No authentication manager set. can't change Password!");
 
-			return;
+			return "unsuccessful";
 		}
 
 		LOGGER.debug("SR, Changing password for user '" + username + "'");
@@ -68,6 +79,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		// ne zelimo da u bazi cuvamo lozinke u plain text formatu
 		user.setPassword(passwordEncoder.encode(newPassword + user.getSalt()));
 		userRepository.save(user);
-
+		
+		return "successful";
 	}
 }

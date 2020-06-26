@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -100,6 +101,7 @@ public class OcenaController {
 	}
 
 	@PostMapping("/ocena")
+	@PreAuthorize("hasAuthority('MANAGE_OCENA')")
 	public ResponseEntity<?> postOcena(@RequestBody @Valid OcenaNewDTO ocenaNewDTO) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -167,6 +169,7 @@ public class OcenaController {
 	}
 
 	@DeleteMapping("/ocena/{oid}")
+	@PreAuthorize("hasAuthority('MANAGE_OCENA')")
 	public ResponseEntity<?> deleteOcena(@PathVariable Long oid) {
 
 		ocenaService.remove(oid);
@@ -175,6 +178,7 @@ public class OcenaController {
 	}
 
 	@PutMapping("/ocena/{oid}/approve")
+	@PreAuthorize("hasAuthority('MANAGE_OCENA_ADMIN')")
 	public ResponseEntity<?> approveOcena(@PathVariable Long oid) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -195,6 +199,7 @@ public class OcenaController {
 	}
 
 	@PutMapping("/ocena/{oid}/deny")
+	@PreAuthorize("hasAuthority('MANAGE_OCENA_ADMIN')")
 	public ResponseEntity<?> denyOcena(@PathVariable Long oid) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -215,6 +220,7 @@ public class OcenaController {
 	}
 
 	@PutMapping("/ocena/{oid}/odgovor")
+	@PreAuthorize("hasAuthority('MANAGE_OCENA')")
 	public ResponseEntity<?> ocenaOdgovor(@PathVariable Long oid, @RequestBody @Valid OcenaOdgovorDTO odgovor,
 			HttpServletRequest request) {
 

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public class MestoController
 	}
 	
 	@PutMapping(value = "/mesto/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateMesto(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
@@ -81,6 +83,7 @@ public class MestoController
 	}
 	
 	@PostMapping(value = "/mesto", produces = "application/json")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Mesto> newMesto(@RequestBody String info) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
@@ -106,6 +109,7 @@ public class MestoController
 	}
 	
 	@DeleteMapping(value = "/mesto/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteMesto(@PathVariable Long Id) 
 	{	
 		String token = request.getHeader("Auth").substring(7);

@@ -161,11 +161,11 @@ public class AuthenticationController {
 	@RequestMapping(value = "/change-password", method = RequestMethod.POST)
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
-		userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+		String ret = userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
 
 		Map<String, String> result = new HashMap<>();
-		result.put("result", "success");
-		return ResponseEntity.accepted().body(result);
+		result.put("result", ret);
+		return ResponseEntity.ok().body(result);
 	}
 	
 	//--------------------------------------------------------------------
@@ -251,7 +251,7 @@ public class AuthenticationController {
     	EmailDTO emailDTO =  new EmailDTO(
     			"Accept registration trough email",
     			"Potvrdite registraciju pritiskom na ovaj link: "
-    			+ "<br> http://localhost:8081/Admin/PotvrdaRegistracije.html?userID="+uid+"<br>",""
+    			+ "<br> https://localhost:8081/Admin/PotvrdaRegistracije.html?userID="+uid+"<br>",""
     			);
 		try 
 		{		

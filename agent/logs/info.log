@@ -89,3 +89,34 @@
 2020-06-26 14:16:42 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
 2020-06-26 14:16:42 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
 2020-06-26 14:16:48 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 6.638 seconds (JVM running for 7.246)
+2020-06-26 16:45:21 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 6304 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 16:45:21 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 16:45:21 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 16:46:31 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 3540 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 16:46:31 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 16:46:31 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 16:46:50 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 19.041 seconds (JVM running for 20.201)
+2020-06-26 16:53:51 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 6156 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 16:53:51 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 16:53:51 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 17:12:59 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 1756 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 17:12:59 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 17:12:59 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 17:13:07 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 8.851 seconds (JVM running for 10.178)
+2020-06-26 17:16:08 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 6320 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 17:16:08 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 17:16:08 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 17:16:16 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 8.563 seconds (JVM running for 9.641)
+2020-06-26 17:30:00 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 1460 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 17:30:00 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 17:30:00 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 17:30:24 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 24.635 seconds (JVM running for 29.922)
+2020-06-26 17:57:48 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 5300 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 17:57:48 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 17:57:48 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 17:58:43 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 59.18 seconds (JVM running for 65.35)
+2020-06-26 18:00:12 [https-jsse-nio-8081-exec-4] DEBUG r.x.a.s.CustomUserDetailsService - Re-authenticating user 'userA' for password change request.
+2020-06-26 18:00:24 [https-jsse-nio-8081-exec-3] DEBUG r.x.a.s.CustomUserDetailsService - Re-authenticating user 'userA' for password change request.
+2020-06-26 18:02:26 [https-jsse-nio-8081-exec-7] DEBUG r.x.a.s.CustomUserDetailsService - Re-authenticating user 'userA' for password change request.
+2020-06-26 18:03:00 [https-jsse-nio-8081-exec-1] DEBUG r.x.a.s.CustomUserDetailsService - Re-authenticating user 'userA' for password change request.
+2020-06-26 18:03:56 [https-jsse-nio-8081-exec-3] DEBUG r.x.a.s.CustomUserDetailsService - Re-authenticating user 'userA' for password change request.

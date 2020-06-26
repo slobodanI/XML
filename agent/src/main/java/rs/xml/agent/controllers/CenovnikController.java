@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ public class CenovnikController {
 	 *         cenovnike u sistemu.
 	 */
 	@GetMapping("/cenovnik")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> getAllCenovnik(HttpServletRequest request) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -63,6 +65,7 @@ public class CenovnikController {
 	}
 
 	@GetMapping("/cenovnik/{cid}")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> getCenovnikById(@PathVariable Long cid, HttpServletRequest request) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -91,6 +94,7 @@ public class CenovnikController {
 	}
 
 	@PostMapping("/cenovnik")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> postCenovnik(@RequestBody @Valid NewCenovnikDTO cenovnikDTO, HttpServletRequest request) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -108,6 +112,7 @@ public class CenovnikController {
 	}
 
 	@PutMapping("/cenovnik/{cid}")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> putCenovnik(@PathVariable Long cid, @RequestBody @Valid NewCenovnikDTO cenovnikDTO,
 			HttpServletRequest request) {
 
@@ -128,6 +133,7 @@ public class CenovnikController {
 	}
 
 	@DeleteMapping("/cenovnik/{cid}")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> deleteCenovnikById(@PathVariable Long cid, HttpServletRequest request) {
 
 		String token = request.getHeader("Auth").substring(7);

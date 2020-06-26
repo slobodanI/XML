@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,7 @@ public class KlasaController
 	}
 	
 	@PutMapping(value = "/klasa/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateKlasa(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
@@ -79,6 +81,7 @@ public class KlasaController
 	}
 	
 	@PostMapping(value = "/klasa", produces = "application/json")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Klasa> newKlasa(@RequestBody String info) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
@@ -105,6 +108,7 @@ public class KlasaController
 	}
 	
 	@DeleteMapping(value = "/klasa/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteKlasa(@PathVariable Long Id) 
 	{	
 		String token = request.getHeader("Auth").substring(7);

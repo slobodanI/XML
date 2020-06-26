@@ -97,6 +97,7 @@ public class CenovnikController {
 	}
 
 	@PutMapping("/cenovnik/{cid}")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> putCenovnik(@PathVariable Long cid, @RequestBody @Valid NewCenovnikDTO cenovnikDTO,
 			HttpServletRequest request) {
 

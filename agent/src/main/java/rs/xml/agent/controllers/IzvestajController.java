@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,7 @@ public class IzvestajController {
 	UtilClass utilClass;
 		
 	@GetMapping("/izvestaj")
+	@PreAuthorize("hasAuthority('MANAGE_IZVESTAJ')")
 	public ResponseEntity<?> getIzvestaji(@RequestParam(required = false, defaultValue = "0") Long zahtevId, HttpServletRequest request){
 		
 		
@@ -73,6 +75,7 @@ public class IzvestajController {
 	}
 	
 	@GetMapping("/izvestaj/{iid}")
+	@PreAuthorize("hasAuthority('MANAGE_IZVESTAJ')")
 	public ResponseEntity<?> getIzvestaj(@PathVariable Long iid){
 		
 		Izvestaj izvestaj = izvestajService.findOne(iid);
@@ -90,6 +93,7 @@ public class IzvestajController {
 	
 	
 	@PostMapping("/izvestaj")
+	@PreAuthorize("hasAuthority('MANAGE_IZVESTAJ')")
 	public ResponseEntity<?> postIzvestaj(@RequestBody @Valid NewIzvestajDTO izvestajDTO, HttpServletRequest request){
 		
 		String token = request.getHeader("Auth").substring(7);

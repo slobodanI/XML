@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,7 @@ public class ZahtevController {
 	 *         vraca sve zahteve koje sam ja poslao, filter= - vraca sve zahteve
 	 */
 	@GetMapping("/zahtev")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getZahtevi(@RequestParam(required = false, defaultValue = "nema") String filter) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -82,6 +84,7 @@ public class ZahtevController {
 	}
 
 	@GetMapping("/zahtev/pending")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getPending(HttpServletRequest request) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -100,6 +103,7 @@ public class ZahtevController {
 	}
 
 	@GetMapping("/zahtev/{zid}")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getZahtev(@PathVariable Long zid) {
 
 		Zahtev zahtev = zahtevService.findOne(zid);
@@ -120,6 +124,7 @@ public class ZahtevController {
 	}
 
 	@GetMapping("/zahtev/{zid}/oglasi")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getOglaseZahteva(@PathVariable Long zid) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -144,6 +149,7 @@ public class ZahtevController {
 	}
 
 	@PostMapping("/zahtev")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> postZahtev(@RequestBody KorpaDTO korpa) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -165,6 +171,7 @@ public class ZahtevController {
 	}
 
 	@PutMapping("/zahtev/{zId}/accept")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> acceptZahtev(@PathVariable(name = "zId") Long zId) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -185,6 +192,7 @@ public class ZahtevController {
 	}
 
 	@PutMapping("/zahtev/{zId}/decline")
+	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> declineZahtev(@PathVariable(name = "zId") Long zId) {
 
 		String token = request.getHeader("Auth").substring(7);

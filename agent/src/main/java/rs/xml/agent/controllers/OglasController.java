@@ -182,6 +182,7 @@ public class OglasController {
 	}
 
 	@PutMapping("/oglas/{oid}")
+	@PreAuthorize("hasAuthority('MANAGE_OGLAS')")
 	public ResponseEntity<?> updateOglas(@PathVariable Long oid, @RequestBody @Valid NewOglasDTO oglasDTO) {
 
 		String token = request.getHeader("Auth").substring(7);
@@ -205,6 +206,7 @@ public class OglasController {
 	}
 
 	@DeleteMapping("oglas/{oid}")
+	@PreAuthorize("hasAuthority('MANAGE_OGLAS')")
 	public ResponseEntity<?> deleteOglas(@PathVariable Long oid) {
 
 		String token = request.getHeader("Auth").substring(7);

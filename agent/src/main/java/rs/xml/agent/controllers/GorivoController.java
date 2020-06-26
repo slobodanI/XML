@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +58,7 @@ public class GorivoController
 	}
 	
 	@PutMapping(value = "/gorivo/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateGorivo(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
@@ -82,6 +84,7 @@ public class GorivoController
 	}
 	
 	@PostMapping(value = "/gorivo", produces = "application/json")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Gorivo> newGorivo(@RequestBody String info) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
@@ -108,6 +111,7 @@ public class GorivoController
 	}
 	
 	@DeleteMapping(value = "/gorivo/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteGorivo(@PathVariable Long Id) 
 	{	
 		String token = request.getHeader("Auth").substring(7);

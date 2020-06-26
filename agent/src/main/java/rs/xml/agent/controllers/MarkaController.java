@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,7 @@ public class MarkaController
 	}
 	
 	@PutMapping(value = "/marka/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateMarka(@PathVariable Long Id , @RequestBody String info) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
@@ -81,6 +83,7 @@ public class MarkaController
 	}
 	
 	@PostMapping(value = "/marka", produces = "application/json")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Marka> newMarka(@RequestBody String info) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
@@ -106,6 +109,7 @@ public class MarkaController
 	}
 	
 	@DeleteMapping(value = "/marka/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteMarka(@PathVariable Long Id) 
 	{	
 		String token = request.getHeader("Auth").substring(7);
