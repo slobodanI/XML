@@ -98,6 +98,9 @@ public class ZahtevService {
 					pomLista.add(oglas.getUsername());
 				}
 			}
+			if(datumOd.after(datumDo)) {
+				return "Niste dobro uneli datum!";
+			}
 
 			// id je username korisnika koji je postavio oglas,
 			// iteriram kako bih napravio bundle oglasa istog korisnika
@@ -138,6 +141,9 @@ public class ZahtevService {
 				datumOd = new Date(og1.getOd().getTime());
 				datumDo = new Date(og1.getDo().getTime()); 
 				listaOglasa.add(oglas);
+			}
+			if(datumOd.after(datumDo)) {
+				return "Niste dobro uneli datum!";
 			}
 			for (Oglas og1 : listaOglasa) {
 				if (og1.getUsername().equals(username)) {

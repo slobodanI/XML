@@ -2,6 +2,10 @@ package rs.xml.sifrarnik.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +26,13 @@ import rs.xml.sifrarnik.services.KlasaService;
 @RequestMapping(value = "")
 public class KlasaController 
 {
-
+	final static Logger logger = LoggerFactory.getLogger(KlasaController.class);
+	
 	@Autowired
 	KlasaService klasaService;
-
+	
+	@Autowired
+	HttpServletRequest request;
 //KLASA
 //------------------------------------------------------------------------------------------------------------------------	
 	
@@ -47,14 +54,23 @@ public class KlasaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateKlasa(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		String username = request.getHeader("username");
+		
+		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST PUT Klasa, Klasa payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Klasa kls = klasaService.updateKlasa(Id, info);
 		
 		if(kls==null)
 		{
+			logger.warn("BAD_REQUEST PUT Klasa, Klasa payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Postoji_klasa_sa_tim_imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
+			logger.info("Updated Klasa with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(kls, HttpStatus.OK);
 		}
 
@@ -64,14 +80,23 @@ public class KlasaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Klasa> newKlasa(@RequestBody String info) 
 	{	
+		String username = request.getHeader("username");
+		
+		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST POST Klasa, Klasa payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Klasa kls = klasaService.createKlasa(info);
 		
 		if(kls!=null)
 		{
+			logger.info("Created Klasa with id:" +kls.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<Klasa>(kls, HttpStatus.OK);
 		}
 		else
 		{
+			logger.warn("BAD_REQUEST POST Klasa, Klasa payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 
@@ -81,8 +106,9 @@ public class KlasaController
 	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteKlasa(@PathVariable Long Id) 
 	{	
+		String username = request.getHeader("username");
 		klasaService.deleteKlasa(Id);
-		
+		logger.info("DELETED Klasa with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

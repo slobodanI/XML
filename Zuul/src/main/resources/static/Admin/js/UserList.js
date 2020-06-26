@@ -197,8 +197,8 @@ function RenderHtmlOnSuccess() {
 		    	 
 		    	 $.ajax({
 		    			
-		    			url:'/auth/user/' + uid + '/delete',
-		    			type:"PUT",
+		    			url:'/auth/user/' + uid,
+		    			type:"DELETE",
 		    			headers: {
 		    		        'Auth': 'Bearer ' + token
 		    		    },

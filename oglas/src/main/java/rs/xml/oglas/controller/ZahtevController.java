@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +31,17 @@ import rs.xml.oglas.util.UtilClass;
 @RestController
 public class ZahtevController {
 	
+	
+	final static Logger logger = LoggerFactory.getLogger(ZahtevController.class);
+	
 	@Autowired
 	ZahtevService zahtevService;
 	
 	@Autowired
 	UtilClass utilClass;
+	
+	@Autowired
+	HttpServletRequest request;
 	
 	/**
 	 * @param filter
@@ -89,9 +97,11 @@ public class ZahtevController {
 	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getZahtev(@PathVariable Long zid){
 		
+		String username = request.getHeader("username");
 		Zahtev zahtev = zahtevService.findOne(zid);
 		
 		if(zahtev==null) {
+			logger.warn("NOT_FOUND GET Zahtev with id: "+zid+",  By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			
 		}
@@ -105,10 +115,11 @@ public class ZahtevController {
 	@GetMapping("/zahtev/{zid}/oglasi")
 	@PreAuthorize("hasAuthority('MANAGE_ZAHTEV')")
 	public ResponseEntity<?> getOglaseZahteva(@PathVariable Long zid){
-		
+		String username = request.getHeader("username");
 		Zahtev zahtev = zahtevService.findOne(zid);
 		
 		if(zahtev==null) {
+			logger.warn("NOT_FOUND GET Zahtev with id: "+zid+",  By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			
 		}
@@ -133,10 +144,13 @@ public class ZahtevController {
 		
 		String odgovor = zahtevService.save(korpa,username);
 		if(odgovor.equals("Kreirani zahtevi sa vise oglasa")) {
-		return new ResponseEntity<>(odgovor,HttpStatus.OK);
+			logger.info("Created Zahtev by username: " +username+ ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<>(odgovor,HttpStatus.OK);
 		}else if(odgovor.equals("Kreirano je vise zahteva")) {
+			logger.info("Created Zahtev by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(odgovor,HttpStatus.OK);
 		}else {
+			logger.warn("BAD_REQUEST POST Zahtev, Zahtev payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(odgovor,HttpStatus.BAD_REQUEST);
 		}
 		
@@ -153,10 +167,12 @@ public class ZahtevController {
 		Zahtev zah = zahtevService.findOne(zId);
 		
 		if(!zah.getUsername().equals(username)) {
+			logger.warn("FORBIDDEN PUT Zahtev, Zahtev with id: "+zId+" is not yours, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_zahtev!", HttpStatus.FORBIDDEN);
 		}
 		
 		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.acceptZahtev(zId, username, permisije));
+		logger.info("Updated Zahtev with id: "+zId+" by username: " +username+ ", IP:" + request.getRemoteAddr());
 		
 		return new ResponseEntity<>(zDTO, HttpStatus.OK);
 		
@@ -170,11 +186,12 @@ public class ZahtevController {
 		Zahtev zah = zahtevService.findOne(zId);
 		
 		if(!zah.getUsername().equals(username)) {
+			logger.warn("FORBIDDEN PUT Zahtev, Zahtev with id: "+zId+" is not yours, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_zahtev!", HttpStatus.FORBIDDEN);
 		}
 		
 		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.declineZahtev(zId));
-		
+		logger.info("Updated Zahtev with id: "+zId+" by username: " +username+ ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(zDTO, HttpStatus.OK);
 		
 	}

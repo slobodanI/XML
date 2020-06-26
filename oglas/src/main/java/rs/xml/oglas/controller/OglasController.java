@@ -46,7 +46,6 @@ public class OglasController {
 
 	final static Logger logger = LoggerFactory.getLogger(OglasController.class);
 	
-	
 	/*
 	 * TODO: 
 	 * -dodaj cenovnik
@@ -65,8 +64,12 @@ public class OglasController {
 	@Autowired
 	UtilClass utilClass;
 
+	@Autowired
+	HttpServletRequest request;
+	
+	
 	@GetMapping("/oglas")
-	public ResponseEntity<?> getOglasi(@RequestParam(required = false, defaultValue = "nema") String filter, HttpServletRequest request) {
+	public ResponseEntity<?> getOglasi(@RequestParam(required = false, defaultValue = "nema") String filter) {
 		// String ip = InetAddress.getLocalHost().getHostAddress();
 		
 		String username = request.getHeader("username");
@@ -106,7 +109,7 @@ public class OglasController {
 //				oDTO = utilClass.escapeOglasDTOsearch(oDTO);
 				oglasListDTO.add(oDTO);
 			}
-			logger.info("get all oglasi {}", "test");;
+
 			return new ResponseEntity<>(oglasListDTO, HttpStatus.OK);
 			
 		}else {
@@ -117,7 +120,6 @@ public class OglasController {
 //				oDTO = utilClass.escapeOglasDTO(oDTO);
 				oglasListDTO.add(oDTO);
 			}
-			logger.info("get all oglasi {}", "test");;
 			return new ResponseEntity<>(oglasListDTO, HttpStatus.OK);
 		}
 		
@@ -126,10 +128,13 @@ public class OglasController {
 
 	@GetMapping("/oglas/{oid}")
 	public ResponseEntity<?> getOglas(@PathVariable Long oid) {
+		String username = request.getHeader("username");
+		
 		Oglas oglas = oglasService.findOne(oid);
 
 		if (oglas == null || oglas.isDeleted()) {
-			return new ResponseEntity<String>("Oglas with id:" +oid+" does not exist!", HttpStatus.NOT_FOUND);
+			logger.warn("NOT_FOUND GET Oglas, Oglas with id:" +oid+ " is deleted, By username:" + username + ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<String>("Oglas with id:" +oid+ " does not exist!", HttpStatus.NOT_FOUND);
 		}
 				
 		OglasDTO oglasDTO = new OglasDTO(oglas);
@@ -139,15 +144,15 @@ public class OglasController {
 
 	@PostMapping("/oglas")
 	@PreAuthorize("hasAuthority('CREATE_OGLAS')")
-    public ResponseEntity<?> postOglas(@RequestBody @Valid NewOglasDTO oglasDTO, HttpServletRequest request) {
-        
-		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
-			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
-		}
-		
+    public ResponseEntity<?> postOglas(@RequestBody @Valid NewOglasDTO oglasDTO) {
 		String username = request.getHeader("username");
 		String permisije = request.getHeader("permissions");
 		
+		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
+			logger.warn("BAD_REQUEST POST Oglas, Oglas payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
+		}
+			
 		Oglas oglas = new Oglas(oglasDTO);
 		oglasService.createOglasWithFeignClient(oglas, oglasDTO);
 //		if(!oglasService.createOglasWithFeignClient(oglas, oglasDTO)) {
@@ -157,14 +162,17 @@ public class OglasController {
 		//ako je obican user poslao zahtev
 		if(permisije.contains("ROLE_USER") && !permisije.contains("ROLE_AGENT") && !permisije.contains("ROLE_ADMIN")) {			
 			// da li ima 3 aktivna oglasa?
-			oglas = oglasService.saveAsBasicUser(oglas, username);
+			oglas = oglasService.saveAsBasicUser(oglas, username);			
 			if(oglas == null) {
+				logger.warn("FORBIDDEN POST Oglas, User has 3 active oglas, By username:" + username + ", IP:" + request.getRemoteAddr());
 				return new ResponseEntity<String>("Korisnik_ima_3_aktivna_oglasa", HttpStatus.FORBIDDEN);
 			}
+			logger.info("Created Oglas by username: " +username+ ", IP:" + request.getRemoteAddr());
 		} 
 		//ako je agent ili admin
 		else {
-			oglas = oglasService.save(oglas);	        
+			oglas = oglasService.save(oglas);
+			logger.info("Created Oglas by username: " +username+ ", IP:" + request.getRemoteAddr());
 		}
 		
 		oglas.setUsername(username);
@@ -174,32 +182,36 @@ public class OglasController {
 	
 	@PutMapping("/oglas/{oid}")
 	@PreAuthorize("hasAuthority('MANAGE_OGLAS')")
-	public ResponseEntity<?> updateOglas(@PathVariable Long oid, @RequestBody @Valid NewOglasDTO oglasDTO, HttpServletRequest request) {
-		
-		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
-			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
-		}
-		
+	public ResponseEntity<?> updateOglas(@PathVariable Long oid, @RequestBody @Valid NewOglasDTO oglasDTO) {
 		String username = request.getHeader("username");
 		String permisije = request.getHeader("permissions");
 		
+		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
+			logger.warn("BAD_REQUEST PUT Oglas, Oglas payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
+		}
+
 		Oglas oglas = oglasService.updateOglas(oid, oglasDTO, username);
 		if(oglas == null) {
+			logger.warn("FORBIDDEN PUT Oglas, Oglas with id:" +oid +" is not yours, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_oglas!", HttpStatus.FORBIDDEN);
 		}
+		logger.info("Updated Oglas with id:" +oid+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
+		
 		OglasDTO oglasDTOret = new OglasDTO(oglas);
 		return new ResponseEntity<>(oglasDTOret, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("oglas/{oid}")
 	@PreAuthorize("hasAuthority('MANAGE_OGLAS')")
-	public ResponseEntity<?> deleteOglas(@PathVariable Long oid, HttpServletRequest request) {
-		
+	public ResponseEntity<?> deleteOglas(@PathVariable Long oid) {
 		String username = request.getHeader("username");
 			
 		if(oglasService.deleteOglas(oid, username) == null) {
+			logger.warn("FORBIDDEN DELETE Oglas, Oglas with id:" +oid+ " is not yours, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_oglas!", HttpStatus.FORBIDDEN);
 		}
+		logger.info("DELETED Oglas with id:" +oid+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

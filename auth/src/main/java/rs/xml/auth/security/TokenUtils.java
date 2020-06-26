@@ -221,20 +221,20 @@ public class TokenUtils {
 		return claims;
 	}
 	
-	public boolean validateTokenForGateway(String token) {
+	public boolean validateTokenForGateway(String token, String ip) {
         try {
             Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
-            logger.error("Invalid JWT signature -> Message: {} ", e);
+            logger.error("SR, Invalid JWT, SignatureException, IP: " + ip);
         } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token -> Message: {}", e);
+            logger.error("SR, Invalid JWT, MalformedJwtException, IP: " + ip);
         } catch (ExpiredJwtException e) {
-            logger.error("Expired JWT token -> Message: {}", e);
+        	logger.error("SR, Invalid JWT,ExpiredJwtException, IP: " + ip);
         } catch (UnsupportedJwtException e) {
-            logger.error("Unsupported JWT token -> Message: {}", e);
+            logger.error("SR, Invalid JWT,UnsupportedJwtException, IP: " + ip);
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty -> Message: {}", e);
+            logger.error("SR, JWT claims string is empty, IllegalArgumentException, IP: " + ip);
         }
         
         return false;
