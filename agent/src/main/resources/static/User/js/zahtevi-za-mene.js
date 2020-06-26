@@ -166,7 +166,7 @@ function whoami() {
 	}
 	
 	$.get({
-		url: '/auth/whoami',
+		url: '/whoami',
 		headers: {
 	        'Auth': 'Bearer ' + token
 	    },
@@ -183,7 +183,7 @@ function whoami() {
 			
 		},
 		error: function() {
-			alert("Neuspešno ste se prijavili");
+			window.location = "../login.html";
 		}
 	});
 }
