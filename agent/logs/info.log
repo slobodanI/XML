@@ -43,3 +43,7 @@
 2020-06-26 11:38:10 [http-nio-8081-exec-3] INFO  r.x.a.controllers.OglasController - get all oglasi test
 2020-06-26 11:38:10 [http-nio-8081-exec-1] INFO  r.x.a.controllers.OcenaController - get all ocene, filter: zaMene, ukupno ocena:0
 2020-06-26 11:38:10 [http-nio-8081-exec-3] INFO  r.x.a.controllers.OcenaController - get all ocene, filter: moje, ukupno ocena:0
+2020-06-26 14:16:42 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on slobodan-MS-7599 with PID 14650 (/home/slobodan/XML-projekat/XML/agent/target/classes started by slobodan in /home/slobodan/XML-projekat/XML/agent)
+2020-06-26 14:16:42 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 14:16:42 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 14:16:48 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 6.638 seconds (JVM running for 7.246)
