@@ -40,3 +40,52 @@
 2020-06-26 14:43:27 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 4220 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
 2020-06-26 14:43:27 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
 2020-06-26 14:43:27 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-25 12:11:06 [http-nio-8081-exec-5] INFO  r.x.a.c.AuthenticationController - 0:0:0:0:0:0:0:1
+2020-06-25 12:11:41 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 15448 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-25 12:11:41 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-25 12:11:41 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-25 12:11:44 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.039 seconds (JVM running for 3.484)
+2020-06-25 12:11:47 [http-nio-8081-exec-3] DEBUG r.x.a.c.AuthenticationController - DEBUG TEST
+2020-06-25 12:11:47 [http-nio-8081-exec-3] ERROR r.x.a.c.AuthenticationController - ERROR TEST
+2020-06-25 12:11:47 [http-nio-8081-exec-3] INFO  r.x.a.c.AuthenticationController - INFO TEST
+2020-06-25 12:11:47 [http-nio-8081-exec-3] WARN  r.x.a.c.AuthenticationController - WARN TEST
+2020-06-25 12:11:47 [http-nio-8081-exec-3] INFO  r.x.a.c.AuthenticationController - 0:0:0:0:0:0:0:1
+2020-06-25 12:12:07 [http-nio-8081-exec-10] DEBUG r.x.a.c.AuthenticationController - DEBUG TEST
+2020-06-25 12:12:07 [http-nio-8081-exec-10] ERROR r.x.a.c.AuthenticationController - ERROR TEST
+2020-06-25 12:12:07 [http-nio-8081-exec-10] INFO  r.x.a.c.AuthenticationController - INFO TEST
+2020-06-25 12:12:07 [http-nio-8081-exec-10] WARN  r.x.a.c.AuthenticationController - WARN TEST
+2020-06-25 12:12:07 [http-nio-8081-exec-10] INFO  r.x.a.c.AuthenticationController - 0:0:0:0:0:0:0:1
+2020-06-25 12:17:54 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 4668 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-25 12:17:54 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-25 12:17:54 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-25 12:17:57 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.114 seconds (JVM running for 3.555)
+2020-06-25 12:18:01 [http-nio-8081-exec-3] DEBUG r.x.a.c.AuthenticationController - DEBUG TEST
+2020-06-25 12:18:01 [http-nio-8081-exec-3] ERROR r.x.a.c.AuthenticationController - ERROR TEST
+2020-06-25 12:18:01 [http-nio-8081-exec-3] INFO  r.x.a.c.AuthenticationController - INFO TEST
+2020-06-25 12:18:01 [http-nio-8081-exec-3] WARN  r.x.a.c.AuthenticationController - WARN TEST
+2020-06-25 12:18:01 [http-nio-8081-exec-3] INFO  r.x.a.c.AuthenticationController - 0:0:0:0:0:0:0:1
+2020-06-25 12:18:01 [http-nio-8081-exec-3] INFO  r.x.a.c.AuthenticationController - 
+2020-06-25 12:24:35 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 392 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-25 12:24:35 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-25 12:24:35 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-25 12:24:38 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.122 seconds (JVM running for 3.565)
+2020-06-26 11:29:48 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on slobodan-MS-7599 with PID 9214 (/home/slobodan/XML-projekat/XML/agent/target/classes started by slobodan in /home/slobodan/XML-projekat/XML/agent)
+2020-06-26 11:29:48 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 11:29:48 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 11:29:54 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 6.084 seconds (JVM running for 6.73)
+2020-06-26 11:31:03 [http-nio-8081-exec-3] INFO  rs.xml.agent.soap.ZahtevClient - Post zahteva preko web servisa... 
+2020-06-26 11:32:37 [http-nio-8081-exec-4] INFO  rs.xml.agent.soap.ChatClient - Post chat-a preko web servisa... 
+2020-06-26 11:32:43 [http-nio-8081-exec-10] INFO  r.x.a.controllers.OcenaController - get all ocene, filter: moje, ukupno ocena:0
+2020-06-26 11:32:43 [http-nio-8081-exec-2] INFO  r.x.a.controllers.OcenaController - get all ocene, filter: zaMene, ukupno ocena:0
+2020-06-26 11:32:45 [http-nio-8081-exec-10] INFO  r.x.agent.controllers.ChatController - get all my chats test
+2020-06-26 11:37:18 [http-nio-8081-exec-7] INFO  r.x.agent.controllers.ChatController - get all my chats test
+2020-06-26 11:37:36 [http-nio-8081-exec-10] INFO  rs.xml.agent.soap.ChatClient - Post poruke preko web servisa... 
+2020-06-26 11:38:03 [http-nio-8081-exec-1] INFO  r.x.agent.controllers.ChatController - get all my chats test
+2020-06-26 11:38:08 [http-nio-8081-exec-5] INFO  r.x.a.controllers.OglasController - get all oglasi test
+2020-06-26 11:38:10 [http-nio-8081-exec-3] INFO  r.x.a.controllers.OglasController - get all oglasi test
+2020-06-26 11:38:10 [http-nio-8081-exec-1] INFO  r.x.a.controllers.OcenaController - get all ocene, filter: zaMene, ukupno ocena:0
+2020-06-26 11:38:10 [http-nio-8081-exec-3] INFO  r.x.a.controllers.OcenaController - get all ocene, filter: moje, ukupno ocena:0
+2020-06-26 14:16:42 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on slobodan-MS-7599 with PID 14650 (/home/slobodan/XML-projekat/XML/agent/target/classes started by slobodan in /home/slobodan/XML-projekat/XML/agent)
+2020-06-26 14:16:42 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 14:16:42 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 14:16:48 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 6.638 seconds (JVM running for 7.246)

@@ -1,0 +1,68 @@
+
+KT1
+------------------------------------------------------------
+validacija provera digitalnog potpisa
+ - CSR?
+ekstenzije, koje ekstenzije mogu dodeliti endu u odnosu na issuera, dodaj ekstenzije koje imaju smisla
+ - ovo smo zakucali, nema biranja ekstenzija
+validni sertifikati IMAJ LISTU U KOJOJ PRIKAZUJES SVE VALIDNE
+ - GOTOVO
+
+/////////////////////////////////////////////////////////////
+
+KT2
+------------------------------------------------------------
+registracija:
+-dodaj salt, cuvaj ga u bazi, veliki string, i onda sve hashovati, salt je za svakoga razlicit
+ODRADJENO
+-sifra 10 karaktera
+ODRADJENO
+-mail, ako se ne aktivira za npr. 2 sata blokiraj usera
+ODRADJENO
+
+proveri ranjivosti hibernate
+//NIJE ODRADJENO(odradicemo za kt3, spisak svih ranjivosti)
+https://www.cvedetails.com/vulnerability-list/vendor_id-14133/Hibernate.html
+ODRADJENO
+
+proveri https komunikaciju, koristi alate za snifovanje
+ODRADJENO, radi na pki aplikaciji
+
+acl liste, iz sistema odradi to
+-za log fajlove, za properties fajlove
+po defaultu je dobro na linuxu, moj korisnik, glavni, ima read i write permisije nad fajlovima,
+ostali autentifikovani korisnici imaju read permisije, a ne autentifikovani nemaju ni read ni write permisije
+tako da ODRADJENO
+
+
+/////////////////////////////////////////////////////////////
+
+KT3
+------------------------------------------------------------
+Potrebno je implementirati logging mehanizam koji ispunjava sledeće zahteve:
+
+Kompletnost – log zapis mora da sadrži dovoljno informacija da dokaže neporecivost i svaki događaj za koji je neporecivost potrebna treba da bude zabeležen. Dodatno, svaki security-related događaj, interesantan za potrebe monitoring-a, treba da bude zabeležen.
+Pouzdanost – logging mehanizam treba da bude pouzdan, što podrazumeva dostupnost samog mehanizma (gde je neophodno voditi računa o memorijskom zauzeću log datoteka napraviti mehanizam za rotaciju logova), kao i integritet log datoteka.
+Upotrebljivost – podržati efikasnu ekstrakciju događaja za neporecivost, kao i security-related događaja.
+Konciznost – logging mehanizam treba da proizvodi najmanju količinu zapisa koji su potrebni da ispuni svoju svrhu. Dodatno, optimizovati svaki zapis da sadrži sve informacije, a zauzima najmanju količinu memorije.
+ 
+
+Takođe, neophodno je izvršiti bezbednosnu analizu svih third-party komponenti na koje se vaše rešenje oslanja (od operativnog sistema do front-end biblioteka i sve između). Neophodno je:
+
+Isproveravati  komponente i sakupiti listu ranjivosti.
+Analizirati ozbiljnost ranjivosti i mogućnost eksploatacije.
+Definisati i izvršiti strategiju za razrešenje mogućih rizika.
+
+OWASP DEPENDENCY CHECK
+i ovaj sajt:
+https://www.cvedetails.com/vulnerability-list/vendor_id-14133/Hibernate.html
+/////////////////////////////////////////////////////////////
+
+TEHNICKE DORADE:
+- xss dodati u MK - ODRADJENO
+- spring security dodati u svaki MK - ODRADJENO
+- FEIGN CLIENT-e doraditi da salju username i permisije - ODRADJENO
+- dodati hasAuthoriti iznad svih relevantnih funkcija - ODRADJENO
+- FRONT: dodati proveru na svakom html-u, ko je ulogovan, proveriti rolu, onemoguciti obicnom useru statistiku,... - ODRADJENO
+- lista know-passwords, dodati u proveru pri registraciji - ODRADJENO
+- 

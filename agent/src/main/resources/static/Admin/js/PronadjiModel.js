@@ -51,7 +51,7 @@ function whoami() {
 			
 		},
 		error: function() {
-			alert("Neuspešno ste se prijavili");
+			window.location = "../login.html";
 		}
 	});
 }
