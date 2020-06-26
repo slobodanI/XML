@@ -4,3 +4,6 @@
 2020-06-25 17:27:38 [main] DEBUG r.x.c.s.AuthenticationTokenFilter - Filter 'authenticationTokenFilterBean' configured for use
 2020-06-25 17:27:43 [main] INFO  rs.xml.chat.ChatApplication - Started ChatApplication in 8.888 seconds (JVM running for 9.349)
 2020-06-25 17:33:55 [http-nio-8089-exec-1] INFO  r.xml.chat.controller.ChatController - Created chat with id:1 by username: agent, IP:192.168.56.1
+2020-06-26 20:22:59 [main] INFO  rs.xml.chat.ChatApplication - No active profile set, falling back to default profiles: default
+2020-06-26 20:23:03 [main] DEBUG r.x.c.s.AuthenticationTokenFilter - Filter 'authenticationTokenFilterBean' configured for use
+2020-06-26 20:23:08 [main] INFO  rs.xml.chat.ChatApplication - Started ChatApplication in 10.606 seconds (JVM running for 11.875)
