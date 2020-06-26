@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "sifrarnik")
 public interface SifrarnikClient {
-	
+	// ne treba slati username i permisije za get funkcije iz sifrarnika
 	@GetMapping("/marka/{mid}")
     MarkaDTO getMarka(@PathVariable("mid") Long mid);
 	

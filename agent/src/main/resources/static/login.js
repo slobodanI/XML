@@ -1,6 +1,9 @@
 $(document).ready(function() {	
-//	koJeUlogovan();
+	//whoami();
 	
+	// izbrisi token
+	sessionStorage.removeItem('token');
+
 	$('#btn-whoAmI').click(function(event) {
 		
 		if(sessionStorage.getItem("token")) {
@@ -16,9 +19,13 @@ $(document).ready(function() {
 			headers: {
 		        'Auth': 'Bearer ' + token
 		    },
-			success: function(retObject) {
-				console.log(retObject);
-				
+			success: function(user) {
+				console.log(user);
+				var ROLES = "";
+				for(var role of user.authorities){					
+					ROLES += role.authority+","
+				}
+				console.log(ROLES);
 			},
 			error: function() {
 				alert("Neuspešno ste se prijavili");
@@ -42,6 +49,7 @@ $(document).ready(function() {
 				console.log("Token expires in:" + retObject.expiresIn + "miliseconds");
 				
 				sessionStorage.setItem('token', JSON.stringify(retObject.accessToken));
+				redirect();
 			},
 			error: function() {
 				alert("Neuspešno ste se prijavili");
@@ -51,39 +59,38 @@ $(document).ready(function() {
 	
 });
 
-
-function koJeUlogovan() {
+function redirect() {
+	if(sessionStorage.getItem("token")) {
+		token = JSON.parse(sessionStorage.token);
+	} else {
+		console.log("No token in session memory...");
+		return;
+	}
+	
 	$.get({
-		url : 'api/whoIsLoggedIn',
-//		contentType : 'application/json',
-		success : function(user) {
-			if (user != undefined) {
-				if (user.uloga == "Pacijent") {
-					window.location = "./PacijentHome.html";
-				} else if (user.uloga == "AdministratorKlinickogCentra") {
-				//	window.location = "./AdminKlinickogCentraHome.html";
-					proveriAKC(user.id);
-				} else if (user.uloga == "AdministratorKlinike") {
-					proveriAK(user.id);
-			//		window.location = "./AdministratorKlinikeHome.html";
-				} else if (user.uloga == "Lekar") {
-					proveriLekara(user.id);
-				//	window.location = "./profilLekara.html";
-				} else if (user.uloga == "MedicinskaSestra") {
-					proveriMS(user.id)
-				//	window.location = "./MedicinskaSestraHome.html";
-				} else {
-					console.log("NIKO NIJE ULOGOVAN");
-				//	window.location = "./index.html";
-				}
-				
-			} else {
-				console.log("NIKO NIJE ULOGOVAN");
-			//	window.location = "./index.html";
+		url: '/whoami',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(user) {
+			var ROLES = "";
+			for(var role of user.authorities){					
+				ROLES += role.authority+","
 			}
-
+			console.log(ROLES);
+			if(ROLES.includes("ROLE_ADMIN")) {
+				console.log("INCLUDES ROLE_ADMIN");
+				window.location = "/Admin/Index.html"
+			}
+			if(ROLES.includes("ROLE_USER") || ROLES.includes("ROLE_USER_LIMITED") || ROLES.includes("ROLE_AGENT") ) {
+				console.log("INCLUDES ROLE_USER or ROLE_USER_LIMITED or ROLE_AGENT");
+				window.location = "/User/oglas-search.html"
+			}
+			
+		},
+		error: function() {
+			alert("Neuspešno ste se prijavili");
 		}
 	});
 }
-
 

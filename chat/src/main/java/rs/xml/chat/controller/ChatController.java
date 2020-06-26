@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +52,6 @@ public class ChatController {
 	public ResponseEntity<?> getChats(HttpServletRequest request) {
 		String username = request.getHeader("username");
 		List<Chat> chatList = chatService.findMyChats(username);
-		logger.info("get all my chats {}", "test");
 		List<ChatDTO> chatListDTO = new ArrayList<ChatDTO>();
 		for(Chat chat: chatList) {
 			ChatDTO cDTO = new ChatDTO(chat);
@@ -73,6 +73,7 @@ public class ChatController {
 		
 		Chat chat = chatService.findOne(cid);
 		if(!chat.getReceiverUsername().equals(username) && !chat.getSenderUsername().equals(username)) {
+			logger.warn("SR, Unauthorized chat access attempt, Chat id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_chat!", HttpStatus.FORBIDDEN);
 		}
 		
@@ -89,6 +90,7 @@ public class ChatController {
 	}
 
 	@PostMapping("/chat")
+	@PreAuthorize("hasAuthority('MANAGE_CHAT')")
     public ResponseEntity<?> postChat(@RequestBody @Valid ChatNewDTO chatNewDTO, HttpServletRequest request) {
         		
 		String username = request.getHeader("username");
@@ -96,8 +98,8 @@ public class ChatController {
 		
 		Chat chat = new Chat(chatNewDTO);
 		
-		chatService.save(chat,username);
-		
+		chat = chatService.save(chat,username);
+		logger.info("Created chat with id:" +chat.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		ChatDTO chatDTO = new ChatDTO(chat);
 		
 		return new ResponseEntity<>(chatDTO, HttpStatus.OK);
@@ -110,6 +112,7 @@ public class ChatController {
 		
 		Chat chat = chatService.findOne(cid);
 		if(!chat.getReceiverUsername().equals(username) && !chat.getSenderUsername().equals(username)) {
+			logger.warn("SR, Unauthorized chat access attempt, Chat id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_chat!", HttpStatus.FORBIDDEN);
 		}
 		

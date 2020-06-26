@@ -1,0 +1,8 @@
+2020-06-25 17:28:15 [main] INFO  rs.xml.oglas.OglasApplication - No active profile set, falling back to default profiles: default
+2020-06-25 17:28:16 [main] DEBUG r.x.o.s.AuthenticationTokenFilter - Filter 'authenticationTokenFilterBean' configured for use
+2020-06-25 17:28:22 [main] INFO  rs.xml.oglas.OglasApplication - Started OglasApplication in 9.365 seconds (JVM running for 9.837)
+2020-06-25 17:33:44 [http-nio-8085-exec-4] INFO  r.x.o.controller.ZahtevController - Created Zahtev by username: user, IP:192.168.56.1
+2020-06-25 17:33:55 [http-nio-8085-exec-6] INFO  r.x.o.controller.ZahtevController - Updated Zahtev with id: 2 by username: agent, IP:192.168.56.1
+2020-06-25 17:34:00 [http-nio-8085-exec-10] INFO  r.x.o.controller.IzvestajController - Created izvestaj with id:1 by username: agent, IP:192.168.56.1
+2020-06-25 17:34:00 [http-nio-8085-exec-10] INFO  r.x.o.controller.IzvestajController - Updated zahtev with id:2 by username: agent, IP:192.168.56.1
+2020-06-25 17:49:23 [http-nio-8085-exec-10] INFO  r.x.o.s.RestAuthenticationEntryPoint - SR, UNAUTHORIZED attempt, IP: 192.168.56.1

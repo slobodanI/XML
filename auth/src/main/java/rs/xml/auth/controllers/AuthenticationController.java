@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -49,6 +52,8 @@ import rs.xml.auth.service.UserService;
 @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
 
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+	
 	@Autowired
 	TokenUtils tokenUtils;
 
@@ -63,6 +68,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	HttpServletRequest request;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtAuthenticationRequest authenticationRequest,
@@ -107,10 +115,13 @@ public class AuthenticationController {
 
 		User existUser = this.userService.findByUsername(userRequest.getUsername());
 		if (existUser != null) {
-			return new ResponseEntity<String>("User with that name already exists", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("User_with_that_name_already_exists", HttpStatus.BAD_REQUEST);
 		}
 
 		User user = this.userService.save(userRequest);
+		if(user == null) {
+			return new ResponseEntity<String>("This_password_is_on_the_common_password_list,_please_chose_another_password.", HttpStatus.BAD_REQUEST);
+		}
 //		HttpHeaders headers = new HttpHeaders();
 //		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<User>(user, HttpStatus.CREATED);
@@ -186,7 +197,7 @@ public class AuthenticationController {
 	@GetMapping("/check/{token}") 
     public ResponseEntity<?> getPermissions(@PathVariable String token){ 	/*dodaj exception*/
 		String permissije = "";
-		if(tokenUtils.validateTokenForGateway(token)) {			
+		if(tokenUtils.validateTokenForGateway(token, request.getRemoteAddr())) {			
 			permissije = this.tokenUtils.getPermissionFromToken(token);
 			if(permissije == null) {
 				return new ResponseEntity<String>("NE POSTOJE PERMISIJE U TOKENU", HttpStatus.NOT_FOUND);
@@ -206,7 +217,7 @@ public class AuthenticationController {
 	 */
     @GetMapping("/check/{token}/username")
     public ResponseEntity<?> getUsername(@PathVariable String token) {   	/*dodaj exception*/
-    	if(tokenUtils.validateTokenForGateway(token)) {
+    	if(tokenUtils.validateTokenForGateway(token, request.getRemoteAddr())) {
     		String username = this.tokenUtils.getUsernameFromToken(token);
     		if(username == null) {
     			return new ResponseEntity<String>("NE POSTOJI USERNAME U TOKENU", HttpStatus.NOT_FOUND);
@@ -247,6 +258,7 @@ public class AuthenticationController {
     	
     	User user = userService.activateUserMail(uid);
     	
+    	
     	return new ResponseEntity<User>(user, HttpStatus.OK);
     }
     
@@ -268,7 +280,7 @@ public class AuthenticationController {
     	return new ResponseEntity<User>(user, HttpStatus.OK);
     }
     
-    @PutMapping("/user/{uid}/delete")
+    @DeleteMapping("/user/{uid}")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public ResponseEntity<?> deleteUser(@PathVariable(name = "uid") Long uid) {
     	

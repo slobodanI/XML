@@ -1,7 +1,8 @@
 package rs.xml.auth.service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,7 @@ import rs.xml.auth.repository.UserRepository;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-	protected final Log LOGGER = LogFactory.getLog(getClass());
+	protected final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
 	@Autowired
 	private UserRepository userRepository;
@@ -36,6 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
 		if (user == null) {
+			LOGGER.warn("SR, Unsuccessful login attempt, with username: " + username);
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
 		} else {
 			return user;
@@ -49,16 +51,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 		String username = currentUser.getName();
 
 		if (authenticationManager != null) {
-			LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
+			LOGGER.debug("SR, Re-authenticating user '" + username + "' for password change request.");
 
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
 		} else {
-			LOGGER.debug("No authentication manager set. can't change Password!");
+			LOGGER.debug("SR, No authentication manager set. can't change Password!");
 
 			return;
 		}
 
-		LOGGER.debug("Changing password for user '" + username + "'");
+		LOGGER.debug("SR, Changing password for user '" + username + "'");
 
 		User user = (User) loadUserByUsername(username);
 

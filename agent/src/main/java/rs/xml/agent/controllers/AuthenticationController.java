@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,7 +50,9 @@ import rs.xml.agent.service.UserService;
 @RestController
 @RequestMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+	
 	@Autowired
 	TokenUtils tokenUtils;
 
@@ -64,6 +68,9 @@ public class AuthenticationController {
 	@Autowired
 	private EmailService emailService;
 	
+	@Autowired
+	HttpServletRequest request;
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtAuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws AuthenticationException, IOException {
@@ -76,7 +83,16 @@ public class AuthenticationController {
 
 		// Ubaci username + password u kontext
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
+		
+//		logger.debug("DEBUG TEST");
+//		logger.error("ERROR TEST");
+//		logger.info("INFO TEST");
+//		logger.warn("WARN TEST");
+//		System.out.println("test system out println");
+		
+//		String ipAddress = request.getRemoteAddr();
+//		logger.info(ipAddress);
+//		logger.info(request.getContextPath());
 		// Kreiraj token
 		User user = (User) authentication.getPrincipal();
 //		System.out.println("*********USER: ");
@@ -93,6 +109,7 @@ public class AuthenticationController {
 			}
 			
 		}
+		
 //		System.out.println(">>>Permisije:" + permisije);
 		String jwt = tokenUtils.generateToken(user.getUsername(), permisije);
 		int expiresIn = tokenUtils.getExpiredIn();
@@ -107,10 +124,13 @@ public class AuthenticationController {
 
 		User existUser = this.userService.findByUsername(userRequest.getUsername());
 		if (existUser != null) {
-			return new ResponseEntity<String>("User with that name already exists", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("User_with_that_name_already_exists", HttpStatus.BAD_REQUEST);
 		}
 
 		User user = this.userService.save(userRequest);
+		if(user == null) {
+			return new ResponseEntity<String>("This_password_is_on_the_common_password_list,_please_chose_another_password.", HttpStatus.BAD_REQUEST);
+		}
 //		HttpHeaders headers = new HttpHeaders();
 //		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<User>(user, HttpStatus.CREATED);

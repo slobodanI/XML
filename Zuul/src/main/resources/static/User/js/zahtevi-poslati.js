@@ -2,9 +2,10 @@ $(document).ready(function(){
 	
 	if(sessionStorage.getItem("token")) {
 		token = JSON.parse(sessionStorage.token);
+		whoami();
 	} else {
 		console.log("No token in session memory...");
-		return; // treba ga vratiti na login.html
+		window.location = "../login.html";
 	}
 	
 	getMyZahtevi();
@@ -93,5 +94,36 @@ function oceniOglaseUZahtevu(zahtevId) {
 	return function() {		
 		window.location = "./ocenjivanje.html?zahtevId=" + zahtevId;
 	}	
+}
+
+function whoami() {
+	if(sessionStorage.getItem("token")) {
+		token = JSON.parse(sessionStorage.token);
+	} else {
+		console.log("No token in session memory...");
+		return;
+	}
+	
+	$.get({
+		url: '/auth/whoami',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(user) {
+			var ROLES = "";
+			for(var role of user.authorities){					
+				ROLES += role.authority+","
+			}
+			if(ROLES.includes("ROLE_USER") || ROLES.includes("ROLE_USER_LIMITED") || ROLES.includes("ROLE_AGENT") ) {
+				// 
+			} else {
+				window.location = "../login.html";
+			}
+			
+		},
+		error: function() {
+			window.location = "../login.html";
+		}
+	});
 }
 

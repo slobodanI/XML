@@ -1,0 +1,23 @@
+2020-06-25 13:00:54 [main] INFO  rs.xml.auth.AuthApplication - No active profile set, falling back to default profiles: default
+2020-06-25 13:01:00 [main] INFO  rs.xml.auth.AuthApplication - Started AuthApplication in 9.091 seconds (JVM running for 9.558)
+2020-06-25 13:01:31 [http-nio-8084-exec-1] INFO  rs.xml.auth.security.TokenUtils - Invalid JWT signature -> Message: test1, test2, test3
+2020-06-25 13:01:31 [http-nio-8084-exec-1] ERROR rs.xml.auth.security.TokenUtils - Invalid JWT signature -> Message: test1, test2, test3
+2020-06-25 13:01:36 [http-nio-8084-exec-3] INFO  r.x.a.s.RestAuthenticationEntryPoint - UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-25 13:01:38 [http-nio-8084-exec-2] INFO  r.x.a.s.RestAuthenticationEntryPoint - UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-25 13:07:50 [main] INFO  rs.xml.auth.AuthApplication - No active profile set, falling back to default profiles: default
+2020-06-25 13:07:57 [main] INFO  rs.xml.auth.AuthApplication - Started AuthApplication in 9.042 seconds (JVM running for 9.508)
+2020-06-25 13:08:22 [http-nio-8084-exec-1] INFO  r.x.a.s.RestAuthenticationEntryPoint - UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-25 13:08:24 [http-nio-8084-exec-2] ERROR rs.xml.auth.security.TokenUtils - Invalid JWT ExpiredJwtException, IP: 192.168.56.1
+2020-06-25 13:09:16 [http-nio-8084-exec-3] ERROR rs.xml.auth.security.TokenUtils - Invalid JWT ExpiredJwtException, IP: 192.168.56.1
+2020-06-25 13:09:18 [http-nio-8084-exec-4] INFO  r.x.a.s.RestAuthenticationEntryPoint - UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-25 13:09:24 [http-nio-8084-exec-5] INFO  r.x.a.s.RestAuthenticationEntryPoint - UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-25 13:09:26 [http-nio-8084-exec-6] ERROR rs.xml.auth.security.TokenUtils - Invalid JWT ExpiredJwtException, IP: 192.168.56.1
+2020-06-25 13:17:22 [http-nio-8084-exec-8] INFO  r.x.a.s.RestAuthenticationEntryPoint - UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-25 13:17:36 [http-nio-8084-exec-9] INFO  r.x.a.s.RestAuthenticationEntryPoint - UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-25 17:26:43 [main] INFO  rs.xml.auth.AuthApplicationTests - No active profile set, falling back to default profiles: default
+2020-06-25 17:26:49 [main] INFO  rs.xml.auth.AuthApplicationTests - Started AuthApplicationTests in 8.632 seconds (JVM running for 9.337)
+2020-06-25 17:26:55 [main] INFO  rs.xml.auth.AuthApplication - No active profile set, falling back to default profiles: default
+2020-06-25 17:27:01 [main] INFO  rs.xml.auth.AuthApplication - Started AuthApplication in 9.048 seconds (JVM running for 9.516)
+2020-06-25 17:38:25 [http-nio-8084-exec-7] ERROR rs.xml.auth.security.TokenUtils - SR, Invalid JWT,ExpiredJwtException, IP: 192.168.56.1
+2020-06-25 17:38:28 [http-nio-8084-exec-9] INFO  r.x.a.s.RestAuthenticationEntryPoint - SR, UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-25 17:49:18 [http-nio-8084-exec-3] ERROR rs.xml.auth.security.TokenUtils - SR, Invalid JWT,ExpiredJwtException, IP: 192.168.56.1

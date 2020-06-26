@@ -75,6 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**", "/hello").permitAll()
                 .antMatchers("/search").permitAll()
                 .antMatchers(HttpMethod.GET, "/oglas", "/oglas/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/ocena", "/ocena/**").permitAll()
                 .anyRequest().authenticated();
         
         http.csrf().disable(); //  zbog /h2-console je disabled

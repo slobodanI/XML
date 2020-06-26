@@ -6,9 +6,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +29,8 @@ import rs.xml.oglas.service.CenovnikService;
 @RestController
 public class CenovnikController {
 	
+	final static Logger logger = LoggerFactory.getLogger(CenovnikController.class);
+	
 	@Autowired
 	CenovnikService cenovnikService;
 	
@@ -36,6 +41,7 @@ public class CenovnikController {
 	 * Ako je korisnik admin return sve cenovnike u sistemu.
 	 */
 	@GetMapping("/cenovnik")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> getAllCenovnik(HttpServletRequest request) {
 		
 		String username = request.getHeader("username");
@@ -53,6 +59,7 @@ public class CenovnikController {
 	}
 	
 	@GetMapping("/cenovnik/{cid}")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> getCenovnikById(@PathVariable Long cid, HttpServletRequest request) {
 		
 		String username = request.getHeader("username");
@@ -67,6 +74,7 @@ public class CenovnikController {
 				return new ResponseEntity<>(cenovnik, HttpStatus.OK);
 			}
 			else {
+				logger.warn("SR, Unauthorized cenovnik access attempt, Cenovnik id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 				return new ResponseEntity<String>("Nije_tvoj_cenovnik!", HttpStatus.FORBIDDEN);
 			}
 		}
@@ -75,6 +83,7 @@ public class CenovnikController {
 	}
 	
 	@PostMapping("/cenovnik")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> postCenovnik(@RequestBody @Valid NewCenovnikDTO cenovnikDTO, HttpServletRequest request) {
 		
 		String username = request.getHeader("username");
@@ -83,6 +92,7 @@ public class CenovnikController {
 		
 		cen = cenovnikService.save(cen);
 		
+		logger.info("Created cenovnik with id:" +cen.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(cen, HttpStatus.OK);
 	}
 	
@@ -92,6 +102,7 @@ public class CenovnikController {
 		String username = request.getHeader("username");
 		Cenovnik cenovnik = cenovnikService.updateMyCenovnik(cid, cenovnikDTO, username);
 		if(cenovnik == null) {
+			logger.warn("SR, Unauthorized cenovnik access attempt, Cenovnik id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_cenovnik!", HttpStatus.FORBIDDEN);
 		} 
 
@@ -99,10 +110,12 @@ public class CenovnikController {
 	}
 	
 	@DeleteMapping("/cenovnik/{cid}")
+	@PreAuthorize("hasAuthority('MANAGE_CENOVNIK')")
 	public ResponseEntity<?> deleteCenovnikById(@PathVariable Long cid, HttpServletRequest request) {
 		
 		String username = request.getHeader("username");
 		if(!cenovnikService.deleteMyCenovnik(cid, username)) {
+			logger.warn("SR, Unauthorized cenovnik access attempt, Cenovnik id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_cenovnik!", HttpStatus.FORBIDDEN);
 		}
 		

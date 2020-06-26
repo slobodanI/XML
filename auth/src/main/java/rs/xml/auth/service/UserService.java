@@ -3,6 +3,8 @@ package rs.xml.auth.service;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -23,6 +25,9 @@ import rs.xml.auth.repository.UserRepository;
 @Service
 public class UserService {
 
+	// password mora imati minimalno 10 karaktera
+	private List<String> badPasswords = Arrays.asList("passwordpassword", "1234567890");
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -50,6 +55,11 @@ public class UserService {
 	
 	public User save(UserRegisterRequestDTO userRequest) {
 		User u = new User();
+		for(String pas: badPasswords) {
+			if(userRequest.getPassword().equals(pas)) {
+				return null;
+			}
+		}
 		u.setUsername(userRequest.getUsername());
 		u.setSalt(getNextSalt());
 		u.setPassword(passwordEncoder.encode(userRequest.getPassword() + u.getSalt()));
@@ -82,7 +92,7 @@ public class UserService {
 	
 	public User activateUser(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		u.setAccepted(true);		
 		userRepository.save(u);
@@ -92,7 +102,7 @@ public class UserService {
 	
 	public User activateUserMail(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		long millis=System.currentTimeMillis();
 		Timestamp now=new Timestamp(millis);
@@ -106,7 +116,7 @@ public class UserService {
 	
 	public User blockUser(Long uid) {		
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		u.setBlocked(true);	
 		userRepository.save(u);
@@ -116,7 +126,7 @@ public class UserService {
 	
 	public User unblockUser(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		u.setBlocked(false);	
 		userRepository.save(u);
@@ -126,7 +136,7 @@ public class UserService {
 	
 	public User deleteUser(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+				() -> new NotFoundException("SR, User with id " + uid + " does not exist"));
 		
 		u.setDeleted(true);
 		userRepository.save(u);

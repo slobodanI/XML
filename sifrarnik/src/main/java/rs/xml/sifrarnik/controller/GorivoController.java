@@ -2,9 +2,14 @@ package rs.xml.sifrarnik.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import rs.xml.sifrarnik.model.Gorivo;
 import rs.xml.sifrarnik.services.GorivoServices;
 
@@ -21,9 +27,14 @@ import rs.xml.sifrarnik.services.GorivoServices;
 @RequestMapping(value = "")
 public class GorivoController 
 {
+	
+	final static Logger logger = LoggerFactory.getLogger(GorivoController.class);
 
 	@Autowired
 	GorivoServices sifrarnikService;
+	
+	@Autowired
+	HttpServletRequest request;
 
 //GORIVO
 //------------------------------------------------------------------------------------------------------------------------	
@@ -43,42 +54,65 @@ public class GorivoController
 		return new ResponseEntity<>(gor, HttpStatus.OK);
 	}
 	
+	
 	@PutMapping(value = "/gorivo/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> updateGorivo(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		String username = request.getHeader("username");
+		
+		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST PUT Gorivo, Gorivo payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Gorivo gor = sifrarnikService.updateGorivo(Id, info);
 		
 		if(gor==null)
 		{
+			logger.warn("BAD_REQUEST PUT Gorivo, Gorivo payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Postoji_gorivo_sa_tim_imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
+			logger.info("Updated Gorivo with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(gor, HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping(value = "/gorivo", produces = "application/json")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<Gorivo> newGorivo(@RequestBody String info) 
 	{	
+		String username = request.getHeader("username");
+		
+		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST POST Gorivo, Gorivo payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Gorivo gor = sifrarnikService.createGorivo(info);
 		
 		if(gor!=null)
 		{
+			logger.info("Created Gorivo with id:" +gor.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<Gorivo>(gor, HttpStatus.OK);
 		}
 		else
 		{
+			logger.warn("BAD_REQUEST POST Gorivo, Gorivo payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		
 	}
 	
 	@DeleteMapping(value = "/gorivo/{Id}")
+	@PreAuthorize("hasAuthority('MANAGE_SIFRARNIK')")
 	public ResponseEntity<?> deleteGorivo(@PathVariable Long Id) 
 	{	
+		String username = request.getHeader("username");
 		sifrarnikService.deleteGorivo(Id);
-		
+		logger.info("DELETED Gorivo with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
