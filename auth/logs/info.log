@@ -21,3 +21,11 @@
 2020-06-25 17:38:25 [http-nio-8084-exec-7] ERROR rs.xml.auth.security.TokenUtils - SR, Invalid JWT,ExpiredJwtException, IP: 192.168.56.1
 2020-06-25 17:38:28 [http-nio-8084-exec-9] INFO  r.x.a.s.RestAuthenticationEntryPoint - SR, UNAUTHORIZED attempt, IP: 192.168.56.1
 2020-06-25 17:49:18 [http-nio-8084-exec-3] ERROR rs.xml.auth.security.TokenUtils - SR, Invalid JWT,ExpiredJwtException, IP: 192.168.56.1
+2020-06-26 20:17:39 [main] INFO  rs.xml.auth.AuthApplication - No active profile set, falling back to default profiles: default
+2020-06-26 20:17:45 [main] INFO  rs.xml.auth.AuthApplication - Started AuthApplication in 9.111 seconds (JVM running for 9.592)
+2020-06-26 20:23:39 [http-nio-8084-exec-2] INFO  r.x.a.s.RestAuthenticationEntryPoint - SR, UNAUTHORIZED attempt, IP: 192.168.56.1
+2020-06-26 20:27:28 [http-nio-8084-exec-2] INFO  r.x.a.s.RestAuthenticationEntryPoint - SR, UNAUTHORIZED attempt, IP: 0:0:0:0:0:0:0:1
+2020-06-26 20:27:29 [http-nio-8084-exec-7] INFO  r.x.a.s.RestAuthenticationEntryPoint - SR, UNAUTHORIZED attempt, IP: 0:0:0:0:0:0:0:1
+2020-06-26 20:31:15 [http-nio-8084-exec-6] DEBUG r.x.a.s.CustomUserDetailsService - SR, Re-authenticating user 'miki' for password change request.
+2020-06-26 20:31:15 [http-nio-8084-exec-6] DEBUG r.x.a.s.CustomUserDetailsService - SR, Changing password for user 'miki'
+2020-06-26 20:31:25 [http-nio-8084-exec-7] INFO  r.x.a.s.RestAuthenticationEntryPoint - SR, UNAUTHORIZED attempt, IP: 192.168.56.1

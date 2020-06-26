@@ -144,3 +144,43 @@
 2020-06-26 20:08:57 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
 2020-06-26 20:08:57 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
 2020-06-26 20:09:06 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 8.753 seconds (JVM running for 9.846)
+2020-06-26 19:23:08 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 11912 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-26 19:23:08 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 19:23:08 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 19:23:13 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 4.278 seconds (JVM running for 4.865)
+2020-06-26 19:25:51 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 3372 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-26 19:25:51 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 19:25:51 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 19:25:54 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.377 seconds (JVM running for 3.812)
+2020-06-26 19:33:42 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 3520 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-26 19:33:42 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 19:33:42 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 19:33:46 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.492 seconds (JVM running for 3.93)
+2020-06-26 19:42:43 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 32 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-26 19:42:43 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 19:42:43 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 19:42:47 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.423 seconds (JVM running for 3.863)
+2020-06-26 19:46:35 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 6908 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-26 19:46:35 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 19:46:35 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 19:46:38 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.378 seconds (JVM running for 3.809)
+2020-06-26 19:51:29 [https-jsse-nio-8081-exec-8] INFO  rs.xml.agent.soap.ZahtevClient - Post zahteva preko web servisa... 
+2020-06-26 19:51:33 [https-jsse-nio-8081-exec-8] INFO  r.x.a.controllers.ZahtevController - Created Zahtev by username: boba, IP:0:0:0:0:0:0:0:1
+2020-06-26 19:52:01 [https-jsse-nio-8081-exec-4] INFO  rs.xml.agent.soap.ChatClient - Post chat-a preko web servisa... 
+2020-06-26 19:52:05 [https-jsse-nio-8081-exec-4] INFO  r.x.a.controllers.ZahtevController - Updated Zahtev with id: 1 by username: agent, IP:0:0:0:0:0:0:0:1
+2020-06-26 19:52:26 [https-jsse-nio-8081-exec-9] INFO  r.x.a.controllers.OcenaController - Created ocena with id:1 by username: boba, IP:0:0:0:0:0:0:0:1
+2020-06-26 19:52:26 [https-jsse-nio-8081-exec-9] INFO  rs.xml.agent.soap.OcenaClient - Post ocena preko web servisa... 
+2020-06-26 19:52:49 [https-jsse-nio-8081-exec-10] INFO  r.x.a.controllers.OcenaController - Updated ocena with id:1 by username: admin, IP:0:0:0:0:0:0:0:1
+2020-06-26 19:52:49 [https-jsse-nio-8081-exec-10] INFO  rs.xml.agent.soap.OcenaClient - Post ocena preko web servisa... 
+2020-06-26 19:53:09 [https-jsse-nio-8081-exec-4] INFO  r.x.a.controllers.OcenaController - Updated ocena with id:1 by username: agent, IP:0:0:0:0:0:0:0:1
+2020-06-26 19:53:09 [https-jsse-nio-8081-exec-4] INFO  rs.xml.agent.soap.OcenaClient - Post ocena preko web servisa... 
+2020-06-26 20:06:59 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 7396 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-26 20:06:59 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 20:06:59 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 20:07:02 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.397 seconds (JVM running for 3.833)
+2020-06-26 20:11:32 [https-jsse-nio-8081-exec-4] DEBUG r.x.a.s.CustomUserDetailsService - SR, Re-authenticating user 'userA' for password change request.
+2020-06-26 20:11:32 [https-jsse-nio-8081-exec-4] DEBUG r.x.a.s.CustomUserDetailsService - SR, Changing password for user 'userA'
+2020-06-26 20:35:47 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 9700 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
+2020-06-26 20:35:47 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 20:35:47 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 20:35:50 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 3.404 seconds (JVM running for 3.836)
