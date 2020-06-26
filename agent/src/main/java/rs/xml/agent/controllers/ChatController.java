@@ -60,12 +60,9 @@ public class ChatController {
 	public ResponseEntity<?> getChats(HttpServletRequest request) {
 		
 		String token = request.getHeader("Auth").substring(7);
-		String permisije = tokenUtils.getPermissionFromToken(token);
 		String username = tokenUtils.getUsernameFromToken(token);
 		
-//		String username = request.getHeader("username");
 		List<Chat> chatList = chatService.findMyChats(username);
-		logger.info("get all my chats {}", "test");
 		List<ChatDTO> chatListDTO = new ArrayList<ChatDTO>();
 		for(Chat chat: chatList) {
 			ChatDTO cDTO = new ChatDTO(chat);
@@ -85,13 +82,11 @@ public class ChatController {
 	public ResponseEntity<?> getChat(@PathVariable Long cid, HttpServletRequest request) {
 		
 		String token = request.getHeader("Auth").substring(7);
-//		String permisije = tokenUtils.getPermissionFromToken(token);
 		String username = tokenUtils.getUsernameFromToken(token);
-		
-//		String username = request.getHeader("username");
 		
 		Chat chat = chatService.findOne(cid);
 		if(!chat.getReceiverUsername().equals(username) && !chat.getSenderUsername().equals(username)) {
+			logger.warn("SR, Unauthorized chat access attempt, Chat id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_chat!", HttpStatus.FORBIDDEN);
 		}
 		// da poruke budu sortirane
@@ -110,15 +105,11 @@ public class ChatController {
     public ResponseEntity<?> postChat(@RequestBody @Valid ChatNewDTO chatNewDTO, HttpServletRequest request) {
         
 		String token = request.getHeader("Auth").substring(7);
-		String permisije = tokenUtils.getPermissionFromToken(token);
 		String username = tokenUtils.getUsernameFromToken(token);
-		
-		
-//		String username = request.getHeader("username");
-//		String permisije = request.getHeader("permissions");
-		
+
 		Chat chat = chatService.save(chatNewDTO, username);
 		if(chat != null) {
+			logger.info("Created chat with id:" +chat.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			chatService.postChatUMikroservise(chat);
 		}
 		
@@ -131,13 +122,11 @@ public class ChatController {
     public ResponseEntity<?> postPoruka(@PathVariable Long cid, @RequestBody @Valid PorukaNewDTO porukaNewDTO, HttpServletRequest request) {
         		
 		String token = request.getHeader("Auth").substring(7);
-//		String permisije = tokenUtils.getPermissionFromToken(token);
 		String username = tokenUtils.getUsernameFromToken(token);
-		
-//		String username = request.getHeader("username");
 		
 		Chat chat = chatService.findOne(cid);
 		if(!chat.getReceiverUsername().equals(username) && !chat.getSenderUsername().equals(username)) {
+			logger.warn("SR, Unauthorized chat access attempt, Chat id:" +cid+ ", By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_chat!", HttpStatus.FORBIDDEN);
 		}
 		
@@ -145,6 +134,7 @@ public class ChatController {
 		poruka.setPid(username + "-" + utilClass.randomString());
 		poruka = porukaService.save(poruka);
 		if(poruka != null) {
+			
 			porukaService.postPorukaUMikroservice(poruka);
 		}
 		PorukaDTO porukaDTO = new PorukaDTO(poruka);

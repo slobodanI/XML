@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/check/**").permitAll()
 				.antMatchers("/user/*/mailActivate").permitAll()
 //				.antMatchers("/api/certificates/**").permitAll()
-//				.antMatchers("/favicon.ico").permitAll()
+				.antMatchers("/favicon.ico").permitAll()
 				.antMatchers("/images/**").permitAll()
 //				.antMatchers("/**").permitAll()
 				// svaki zahtev mora biti autorizovan
