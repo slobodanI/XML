@@ -166,7 +166,7 @@ function whoami() {
 	}
 	
 	$.get({
-		url: '/auth/whoami',
+		url: '/whoami',
 		headers: {
 	        'Auth': 'Bearer ' + token
 	    },
