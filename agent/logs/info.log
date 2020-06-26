@@ -136,6 +136,14 @@
 2020-06-26 18:23:01 [https-jsse-nio-8081-exec-3] DEBUG r.x.a.s.CustomUserDetailsService - Changing password for user 'userA'
 2020-06-26 18:23:59 [https-jsse-nio-8081-exec-8] DEBUG r.x.a.s.CustomUserDetailsService - Re-authenticating user 'userA' for password change request.
 2020-06-26 18:24:00 [https-jsse-nio-8081-exec-8] DEBUG r.x.a.s.CustomUserDetailsService - Changing password for user 'userA'
+2020-06-26 20:05:40 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 4684 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 20:05:40 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 20:05:40 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 20:05:48 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 8.841 seconds (JVM running for 10.136)
+2020-06-26 20:08:57 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 4832 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 20:08:57 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 20:08:57 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 20:09:06 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 8.753 seconds (JVM running for 9.846)
 2020-06-26 19:23:08 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on DESKTOP-37N3FFQ with PID 11912 (D:\Fakultet osmi semestar\XML-projekat2\XML\agent\target\classes started by Miki in D:\Fakultet osmi semestar\XML-projekat2\XML\agent)
 2020-06-26 19:23:08 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
 2020-06-26 19:23:08 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
