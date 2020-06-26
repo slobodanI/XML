@@ -2,6 +2,10 @@ package rs.xml.agent.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +19,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.xml.agent.model.Klasa;
+import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.KlasaService;
 
 @RestController
 @RequestMapping(value = "")
 public class KlasaController 
 {
-
+	final static Logger logger = LoggerFactory.getLogger(KlasaController.class);
+	@Autowired
+	HttpServletRequest request;
+	
 	@Autowired
 	KlasaService klasaService;
+	
+	@Autowired
+	private TokenUtils tokenUtils;
 
 //KLASA
 //------------------------------------------------------------------------------------------------------------------------	
@@ -45,7 +56,11 @@ public class KlasaController
 	@PutMapping(value = "/klasa/{Id}")
 	public ResponseEntity<?> updateKlasa(@PathVariable Long Id , @RequestBody String info) 
 	{	
+		String token = request.getHeader("Auth").substring(7);
+		String username = tokenUtils.getUsernameFromToken(token);
+		
 		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST PUT Klasa, Klasa payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -53,19 +68,24 @@ public class KlasaController
 		
 		if(kls==null)
 		{
+			logger.warn("BAD_REQUEST PUT Klasa, Klasa payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Postoji_klasa_sa_tim_imenom",HttpStatus.BAD_REQUEST);
 		}
 		else
 		{
+			logger.info("Updated Klasa with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(kls, HttpStatus.OK);
 		}
-
 	}
 	
 	@PostMapping(value = "/klasa", produces = "application/json")
 	public ResponseEntity<Klasa> newKlasa(@RequestBody String info) 
 	{	
+		String token = request.getHeader("Auth").substring(7);
+		String username = tokenUtils.getUsernameFromToken(token);
+		
 		if(info == null || info.length()<1) {
+			logger.warn("BAD_REQUEST POST Klasa, Klasa payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -73,10 +93,12 @@ public class KlasaController
 		
 		if(kls!=null)
 		{
+			logger.info("Created Klasa with id:" +kls.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<Klasa>(kls, HttpStatus.OK);
 		}
 		else
 		{
+			logger.warn("BAD_REQUEST POST Klasa, Klasa payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 
@@ -85,8 +107,10 @@ public class KlasaController
 	@DeleteMapping(value = "/klasa/{Id}")
 	public ResponseEntity<?> deleteKlasa(@PathVariable Long Id) 
 	{	
+		String token = request.getHeader("Auth").substring(7);
+		String username = tokenUtils.getUsernameFromToken(token);
 		klasaService.deleteKlasa(Id);
-		
+		logger.info("DELETED Klasa with id:" +Id+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

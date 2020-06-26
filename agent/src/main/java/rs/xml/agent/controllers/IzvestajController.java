@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ import rs.xml.agent.util.UtilClass;
 
 @RestController
 public class IzvestajController {
+	
+	final static Logger logger = LoggerFactory.getLogger(IzvestajController.class);
 	
 	@Autowired
 	IzvestajService izvestajService;
@@ -94,11 +98,9 @@ public class IzvestajController {
 		
 //		String username = request.getHeader("username");
 		Zahtev zahtev = zahtevService.findOne(izvestajDTO.getZahtevId());
-		if(zahtev == null) {
-			return new ResponseEntity<>("Greska!Ne postoji zadati zahtev",HttpStatus.NOT_FOUND);
-		}
 		
 		if(!zahtev.getUsername().equals(username)){
+			logger.warn("SR, Unauthorized izvestaj access attempt, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>("Ne mozes uneti izvestaj,nije tvoj Zahtev!",HttpStatus.BAD_REQUEST);
 		}
 		boolean flag=false;
@@ -108,6 +110,7 @@ public class IzvestajController {
 			}
 		}
 		if(flag==false) {
+			logger.warn("POST izvestaj BAD_REQUEST, bad payload, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>("Greska!Oglas ne pripada datom zahtevu",HttpStatus.BAD_REQUEST);
 		}
 		long millis=System.currentTimeMillis();  
@@ -115,6 +118,7 @@ public class IzvestajController {
 	    System.out.println("ZAHTEV_DO----->"+zahtev.getDo());
 	    System.out.println("SADASNJE VREME----->"+dateNow);
 		if(!zahtev.getDo().before(dateNow)) {
+			logger.warn("POST izvestaj BAD_REQUEST, zahtev with id:" +zahtev.getId()+ " is not finished, By username:" + username + ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<>("Greska!Zahtev jos nije zavrsen",HttpStatus.BAD_REQUEST);
 		}
 //		if(zahtev.isIzvestaj()) {
@@ -123,11 +127,13 @@ public class IzvestajController {
 		List<Izvestaj> izvestaji = izvestajService.findAll(zahtev.getId());
 		for(Izvestaj i : izvestaji) {
 			if(i.getOglasId().equals(izvestajDTO.getOglasId())) {
+				logger.warn("POST izvestaj BAD_REQUEST, izvestaj is already created, By username:" + username + ", IP:" + request.getRemoteAddr());
 				return new ResponseEntity<>("Greska!Vec je unet izvestaj za ovaj oglas!",HttpStatus.BAD_REQUEST);
 			}
 		}
 		
 		Izvestaj izvestaj = izvestajService.save(izvestajDTO, username);
+		logger.info("Created izvestaj with id:" +izvestaj.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		if(izvestaj != null) {
 			izvestajService.postIzvestajUMikroservice(izvestaj);
 		}
@@ -136,6 +142,7 @@ public class IzvestajController {
 		if(izvestaji.size()+1 == zahtev.getOglasi().size()) {
 			zahtev.setIzvestaj(true);
 			zahtevRepository.save(zahtev);
+			logger.info("Updated zahtev with id:" +zahtev.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		}
 
 		
