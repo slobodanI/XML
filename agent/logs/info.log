@@ -47,3 +47,9 @@
 2020-06-26 14:16:42 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
 2020-06-26 14:16:42 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
 2020-06-26 14:16:48 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 6.638 seconds (JVM running for 7.246)
+2020-06-26 13:47:42 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 6824 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 13:47:42 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 13:47:42 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 13:47:49 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 7.433 seconds (JVM running for 8.515)
+2020-06-26 13:52:46 [http-nio-8081-exec-10] INFO  rs.xml.agent.soap.ZahtevClient - Post zahteva preko web servisa... 
+2020-06-26 13:53:03 [http-nio-8081-exec-7] INFO  r.x.a.controllers.OcenaController - get all ocene, filter: moje, ukupno ocena:0
