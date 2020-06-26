@@ -71,7 +71,10 @@ function RenderHtmlOnSuccess() {
 				  }
 				  
 				  html+='<td>';
-				  html+='<input type="button" class="prihvatiButton" value="Prihvati">';
+				  if(item.accepted == false)
+				  {
+					  html+='<input type="button" class="prihvatiButton" value="Prihvati">';
+				  }	  
 				  html+='</td>';
 				  
 				  html+='<td>';
