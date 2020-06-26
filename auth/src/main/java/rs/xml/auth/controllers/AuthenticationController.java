@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,10 +151,15 @@ public class AuthenticationController {
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
 		String ret = userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
-
+		
+		if(ret == "unsuccessful") {
+			return new ResponseEntity<>("Unsuccessful!",HttpStatus.BAD_REQUEST);
+		}
+		else {
 		Map<String, String> result = new HashMap<>();
 		result.put("result", ret);
 		return ResponseEntity.ok().body(result);
+		}
 	}
 	
 	//--------------------------------------------------------------------
@@ -290,7 +297,11 @@ public class AuthenticationController {
     }
     
 	static class PasswordChanger {
+		
 		public String oldPassword;
+		
+		@NotNull
+		@Size(min = 10, message = "Password must contain atleast 10 characters")
 		public String newPassword;
 	}
 }
