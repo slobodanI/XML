@@ -56,23 +56,22 @@ public class CustomUserDetailsService implements UserDetailsService {
 				return "unsuccessful";
 			}
 		}
+		User user = null;
 		
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-		String username = currentUser.getName();
-
+		String username = currentUser.getName();		
+		
 		if (authenticationManager != null) {
-			LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
-
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
+			LOGGER.debug("SR, Re-authenticating user '" + username + "' for password change request.");
+			user = (User) loadUserByUsername(username);
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword + user.getSalt()));
 		} else {
-			LOGGER.debug("No authentication manager set. can't change Password!");
+			LOGGER.debug("SR, No authentication manager set. can't change Password!");
 
 			return "unsuccessful";
 		}
 
-		LOGGER.debug("Changing password for user '" + username + "'");
-
-		User user = (User) loadUserByUsername(username);
+		LOGGER.debug("SR, Changing password for user '" + username + "'");
 		
 		// pre nego sto u bazu upisemo novu lozinku, potrebno ju je hesirati
 		// ne zelimo da u bazi cuvamo lozinke u plain text formatu

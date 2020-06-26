@@ -71,6 +71,7 @@ public class AuthenticationController {
 	@Autowired
 	HttpServletRequest request;
 	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtAuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws AuthenticationException, IOException {
