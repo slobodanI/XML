@@ -244,7 +244,7 @@ public class AuthenticationController {
     	EmailDTO emailDTO =  new EmailDTO(
     			"Accept registration trough email",
     			"Potvrdite registraciju pritiskom na ovaj link: "
-    			+ "<br> http://localhost:8080/Admin/PotvrdaRegistracije.html?userID="+uid+"<br>",""
+    			+ "<br> https://localhost:8080/Admin/PotvrdaRegistracije.html?userID="+uid+"<br>",""
     			);
 		try 
 		{		
