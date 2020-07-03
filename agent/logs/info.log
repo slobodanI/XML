@@ -193,3 +193,22 @@
 2020-06-26 21:13:39 [https-jsse-nio-8081-exec-8] DEBUG r.x.a.s.CustomUserDetailsService - SR, Changing password for user 'userA'
 2020-06-26 21:15:26 [https-jsse-nio-8081-exec-1] DEBUG r.x.a.s.CustomUserDetailsService - SR, Re-authenticating user 'userA' for password change request.
 2020-06-26 21:15:26 [https-jsse-nio-8081-exec-1] DEBUG r.x.a.s.CustomUserDetailsService - SR, Changing password for user 'userA'
+2020-06-26 20:56:05 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 4408 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 20:56:05 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 20:56:05 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 20:56:22 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 17.776 seconds (JVM running for 19.52)
+2020-06-26 21:00:31 [https-jsse-nio-8081-exec-5] DEBUG r.x.a.s.CustomUserDetailsService - SR, Re-authenticating user 'user' for password change request.
+2020-06-26 21:00:41 [https-jsse-nio-8081-exec-8] DEBUG r.x.a.s.CustomUserDetailsService - SR, Re-authenticating user 'user' for password change request.
+2020-06-26 21:00:41 [https-jsse-nio-8081-exec-8] DEBUG r.x.a.s.CustomUserDetailsService - SR, Changing password for user 'user'
+2020-06-26 21:01:49 [https-jsse-nio-8081-exec-5] DEBUG r.x.a.s.CustomUserDetailsService - SR, Re-authenticating user 'user' for password change request.
+2020-06-26 21:01:49 [https-jsse-nio-8081-exec-5] DEBUG r.x.a.s.CustomUserDetailsService - SR, Changing password for user 'user'
+2020-06-26 21:06:51 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 4244 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 21:06:51 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 21:06:51 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 21:07:00 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 8.861 seconds (JVM running for 9.957)
+2020-06-26 21:20:28 [main] INFO  rs.xml.agent.AgentApplication - Starting AgentApplication on Joki-PC with PID 5636 (A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent\target\classes started by Ja in A:\_Fakultet\8.sem - XML-i-Web-servisi\Projekat\XML\agent)
+2020-06-26 21:20:28 [main] DEBUG rs.xml.agent.AgentApplication - Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2020-06-26 21:20:28 [main] INFO  rs.xml.agent.AgentApplication - No active profile set, falling back to default profiles: default
+2020-06-26 21:20:36 [main] INFO  rs.xml.agent.AgentApplication - Started AgentApplication in 8.398 seconds (JVM running for 9.43)
+2020-06-26 21:23:41 [https-jsse-nio-8081-exec-9] DEBUG r.x.a.s.CustomUserDetailsService - SR, Re-authenticating user 'userA' for password change request.
+2020-06-26 21:23:50 [https-jsse-nio-8081-exec-10] DEBUG r.x.a.s.CustomUserDetailsService - SR, Re-authenticating user 'userA' for password change request.
