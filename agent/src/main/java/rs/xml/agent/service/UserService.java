@@ -134,6 +134,45 @@ public class UserService {
 		return u;
 	}
 	
+	public User blockOglaseUser(Long uid) {		
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		u.setBlockedPostavljanjeOglasa(true);	
+		userRepository.save(u);
+		
+		return u;
+	}
+	public User unblockOglaseUser(Long uid) {		
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		u.setBlockedPostavljanjeOglasa(false);	
+		userRepository.save(u);
+		
+		return u;
+	}
+	
+	public User blockZahteveUser(Long uid) {		
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		u.setBlockedSlanjeZahteva(true);	
+		userRepository.save(u);
+		
+		return u;
+	}
+	public User unblockZahteveUser(Long uid) {		
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		
+		u.setBlockedSlanjeZahteva(false);	
+		userRepository.save(u);
+		
+		return u;
+	}
+	
+	
 	public User deleteUser(Long uid) {
 		User u = userRepository.findById(uid).orElseThrow(
 				() -> new NotFoundException("User with id " + uid + " does not exist"));
@@ -142,6 +181,15 @@ public class UserService {
 		userRepository.save(u);
 		
 		return u;
+	}
+	
+	public User payDebt(Long uid) {
+		User u = userRepository.findById(uid).orElseThrow(
+				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		u.setOwes(0);
+		userRepository.save(u);
+		return u;
+		
 	}
 	
 	@Scheduled(cron = "0 0 * ? * *")

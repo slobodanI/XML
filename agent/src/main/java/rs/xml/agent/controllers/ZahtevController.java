@@ -24,8 +24,10 @@ import rs.xml.agent.dto.KorpaDTO;
 import rs.xml.agent.dto.OglasDTOsearch;
 import rs.xml.agent.dto.ZahtevDTO;
 import rs.xml.agent.model.Oglas;
+import rs.xml.agent.model.User;
 import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.security.TokenUtils;
+import rs.xml.agent.service.UserService;
 import rs.xml.agent.service.ZahtevService;
 import rs.xml.agent.util.UtilClass;
 
@@ -36,6 +38,9 @@ public class ZahtevController {
 
 	@Autowired
 	ZahtevService zahtevService;
+	
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	TokenUtils tokenUtils;
@@ -154,6 +159,15 @@ public class ZahtevController {
 
 		String token = request.getHeader("Auth").substring(7);
 		String username = tokenUtils.getUsernameFromToken(token);
+		
+		User user = userService.findByUsername(username);
+		if(user.isBlockedSlanjeZahteva()) {
+			return new ResponseEntity<>("Korisniku je zabranjeno slanje zahteva!", HttpStatus.FORBIDDEN);
+		}
+		if(user.getOwes()>0 ) {
+			return new ResponseEntity<>("Ne mozete podneti zahtev dok ne isplatite prethodna zaduzenja!", HttpStatus.BAD_REQUEST);
+		}
+		
 
 		String odgovor = zahtevService.save(korpa, username);
 		if (odgovor.equals("Kreirani zahtevi sa vise oglasa")) {
@@ -207,6 +221,30 @@ public class ZahtevController {
 		}
 
 		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.declineZahtev(zId));
+		logger.info("Updated Zahtev with id: " + zId + " by username: " + username + ", IP:" + request.getRemoteAddr());
+		return new ResponseEntity<>(zDTO, HttpStatus.OK);
+
+	}
+	
+	
+	@PutMapping("/zahtev/{zId}/cancel")
+	public ResponseEntity<?> cancelZahtev(@PathVariable(name = "zId") Long zId) {
+
+		String token = request.getHeader("Auth").substring(7);
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User user = userService.findByUsername(username);
+		
+		Zahtev zah = zahtevService.findOne(zId);
+
+		if (!zah.getPodnosilacUsername().equals(username)) {
+			logger.warn("FORBIDDEN PUT Zahtev, Zahtev with id: " + zId + " is not yours, By username:" + username
+					+ ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<String>("Nije_tvoj_zahtev!", HttpStatus.FORBIDDEN);
+		}
+
+		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.cancelZahtev(zId));
+		user.setCanceled(user.getCanceled()+1);
 		logger.info("Updated Zahtev with id: " + zId + " by username: " + username + ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(zDTO, HttpStatus.OK);
 

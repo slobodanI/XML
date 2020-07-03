@@ -47,6 +47,8 @@ public class OglasDTO {
 	
 	private List<SlikaDTO> slike = new ArrayList<SlikaDTO>();
 	
+	private List<String> slikeString = new ArrayList<String>();
+	
 	private boolean deleted;
 	
 	public OglasDTO() {
@@ -78,6 +80,18 @@ public class OglasDTO {
 			SlikaDTO slikaDTO = new SlikaDTO();
 			slikaDTO.setSlika("data:image/jpeg;base64," + imageString);
 			this.getSlike().add(slikaDTO);
+		}
+		if(o.getSlike().isEmpty()) {
+			slikeString=null;
+		} else {
+			Encoder encoder = Base64.getEncoder();
+			String imageString = "";
+			for(Slika slika : o.getSlike()) {
+				imageString = encoder.encodeToString(slika.getSlika());
+				this.slikeString.add("data:image/jpeg;base64," + imageString);
+			}
+//			imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
+		
 		}
 	}
 	
@@ -223,6 +237,14 @@ public class OglasDTO {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public List<String> getSlikeString() {
+		return slikeString;
+	}
+
+	public void setSlikeString(List<String> slikeString) {
+		this.slikeString = slikeString;
 	}
 	
 	

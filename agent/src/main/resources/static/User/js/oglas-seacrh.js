@@ -39,12 +39,15 @@ function searchOglas() {
 	var gorivo = $('#select-gorivo :selected').val();
 	var klasa = $('#select-klasa :selected').val();
 	
-	var cena = $('#input-cena').val();
+	var cenaOd = $('#input-cenaOd').val();
+	var cenaDo = $('#input-cenaDo').val();
 	var kilometraza = $('#input-kilometraza').val();
 	var planiranaKilometraza = $('#input-planirana-kilometraza').val();
 	var osiguranje = $('#select-osiguranje :selected').val();
 	var brSedistaZaDecu = $('#select-brSedistaZaDecu').val();
 	
+	cenaOd = cenaOd.toString();
+	cenaDo = cenaDo.toString();
 	
 	if(osiguranje == "1") {
 		osiguranje = true;
@@ -57,7 +60,7 @@ function searchOglas() {
 	Do = $('#input-do').val();
 	
 	console.log("mesto:"+mesto+ "\nmarka:" + marka + "\nmodel:"+model+ "\nmenjac:"+menjac+ "\ngorivo:"+gorivo+ "\nklasa:"+klasa);
-	console.log("cena:"+cena+ "\nkilometraza:" + kilometraza + "\nplaniranaKilometraza:"+planiranaKilometraza+ "\nosiguranje:"+osiguranje+ "\nbrSedistaZaDecu:"+brSedistaZaDecu);
+	console.log("cenaOd:"+cenaOd+"\cenaDo"+cenaDo+ "\nkilometraza:" + kilometraza + "\nplaniranaKilometraza:"+planiranaKilometraza+ "\nosiguranje:"+osiguranje+ "\nbrSedistaZaDecu:"+brSedistaZaDecu);
 	console.log("Od:"+Od+ "\nDo:" + Do);
 	
 	var split1 = Od.split("-");
@@ -77,7 +80,7 @@ function searchOglas() {
 	}
 	
 	var searchParams = "mesto="+mesto+ "&Od="+Od+ "&Do="+Do+ "&marka="+marka+ "&model="+model+ "&menjac"+menjac+ "&gorivo="+gorivo;
-	searchParams += "&klasa="+klasa+ "&predjena="+kilometraza+ "&planirana="+planiranaKilometraza+ "&osiguranje="+osiguranje+ "&brSedZaDecu="+brSedistaZaDecu;
+	searchParams += "&klasa="+klasa+ "&predjena="+kilometraza+ "&planirana="+planiranaKilometraza+ "&osiguranje="+osiguranje+ "&brSedZaDecu="+brSedistaZaDecu+ "&cenaOd="+cenaOd+"&cenaDo="+cenaDo;
 	
 	$.get({
 		url: '/search?' + searchParams,
@@ -100,7 +103,7 @@ function izlistajOglase(oglasi){
 		var tableUDivu = $("<table id='tabelaOglasa' class='display'> </table>");
 		
 		var thead = $("<thead> </thead>");
-		thead.append("<tr><th>ID</th><th>Slika</th><th>Mesto</th><th>Ocena</th><th>Kilometraža</th><th>Marka</th><th>Model</th><th>Menjac</th><th>Gorivo</th><th>Klasa</th><th>Dečijih sedišta</th><th>Planirani Km</th><th>Osiguranje</th><th>Dodaj</th></tr>")
+		thead.append("<tr><th>ID</th><th>Slika</th><th>Cena</th><th>Mesto</th><th>Ocena</th><th>Kilometraža</th><th>Marka</th><th>Model</th><th>Menjac</th><th>Gorivo</th><th>Klasa</th><th>Dečijih sedišta</th><th>Planirani Km</th><th>Osiguranje</th><th>Dodaj</th></tr>")
 		
 		var tbody = $("<tbody id='teloTabele'> </tbody>");
 		
@@ -128,6 +131,8 @@ function izlistajOglase(oglasi){
 			tdGorivo.append(o.gorivo);
 			var tdKlasa = $("<td> </td>");
 			tdKlasa.append(o.klasa);
+			var tdCena = $("<td> </td>");
+			tdCena.append(o.cena)
 			
 			var tdDecijihSedista = $("<td> </td>");
 			tdDecijihSedista.append(o.brSedZaDecuInt);
@@ -141,7 +146,7 @@ function izlistajOglase(oglasi){
 			btn.click(dodajUKorpu(o.id, Od, Do));
 			tdDodaj.append(btn);
 			
-			tr.append(tdId).append(tdSlika).append(tdMesto).append(tdOcena).append(tdKilometraza).append(tdMarka).append(tdModel).append(tdMenjac).append(tdGorivo).append(tdKlasa)
+			tr.append(tdId).append(tdSlika).append(tdCena).append(tdMesto).append(tdOcena).append(tdKilometraza).append(tdMarka).append(tdModel).append(tdMenjac).append(tdGorivo).append(tdKlasa)
 			tr.append(tdDecijihSedista).append(tdPlaniraniKm).append(tdOsiguranje).append(tdDodaj);
 			tbody.append(tr);
 		}

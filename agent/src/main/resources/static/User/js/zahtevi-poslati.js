@@ -74,7 +74,10 @@ function popuniTabelu(zahtevi) {
 //		doradi...
 		var tdOtkazivanje = $("<td> </td>");
 		var btnOtkazi = $('<button>Otkaži</button>');
-		
+		if(zahtev.status != 'CANCELED'){
+		btnOtkazi.click(cancelZahtev(zahtev.id));
+		tdOtkazivanje.append(btnOtkazi);
+		}
 		tr.append(tdId).append(tdStatus).append(tdOglasi).append(tdOd).append(tdDo).append(tdOceni).append(tdOtkazivanje);
 		tbody.append(tr);
 	}
@@ -94,6 +97,25 @@ function oceniOglaseUZahtevu(zahtevId) {
 	return function() {		
 		window.location = "./ocenjivanje.html?zahtevId=" + zahtevId;
 	}	
+}
+
+function cancelZahtev(zahtevId){
+	return function(){
+	$.ajax({
+		url: '/zahtev/'+zahtevId+'/cancel',
+		type: 'PUT',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(){
+			alert("Uspeh");
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", textStatus);
+        }
+	});
+	window.location = "./zahtevi-poslati.html";
+	}
 }
 
 function whoami() {

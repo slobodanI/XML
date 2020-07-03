@@ -290,7 +290,7 @@ public class AuthenticationController {
     	User user = userService.blockUser(uid);
     	
     	return new ResponseEntity<User>(user, HttpStatus.OK);
-    }
+    }  
     
     @PutMapping("/user/{uid}/unblock")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
@@ -301,11 +301,59 @@ public class AuthenticationController {
     	return new ResponseEntity<User>(user, HttpStatus.OK);
     }
     
+    @PutMapping("/user/{uid}/blockOglase")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public ResponseEntity<?> blockOglaseUser(@PathVariable(name = "uid") Long uid) {
+    	
+    	User user = userService.blockOglaseUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
+    @PutMapping("/user/{uid}/unblockOglase")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public ResponseEntity<?> unblockOglaseUser(@PathVariable(name = "uid") Long uid) {
+    	
+    	User user = userService.unblockOglaseUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
+    @PutMapping("/user/{uid}/blockZahteve")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public ResponseEntity<?> blockZahteveUser(@PathVariable(name = "uid") Long uid) {
+    	
+    	User user = userService.blockZahteveUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
+    @PutMapping("/user/{uid}/unblockZahteve")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    public ResponseEntity<?> unblockZahteveUser(@PathVariable(name = "uid") Long uid) {
+    	
+    	User user = userService.unblockZahteveUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
+    
+    
     @PutMapping("/user/{uid}/delete")
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     public ResponseEntity<?> deleteUser(@PathVariable(name = "uid") Long uid) {
     	
     	User user = userService.deleteUser(uid);
+    	
+    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    
+    @PutMapping("/user/payDebt")
+    public ResponseEntity<?> payDebt() {
+		String token = request.getHeader("Auth").substring(7);
+		String username = tokenUtils.getUsernameFromToken(token);
+		User user = userService.findByUsername(username);
+		user = userService.payDebt(user.getId());
     	
     	return new ResponseEntity<User>(user, HttpStatus.OK);
     }

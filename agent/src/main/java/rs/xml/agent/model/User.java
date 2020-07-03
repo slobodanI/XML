@@ -64,6 +64,12 @@ public class User implements UserDetails {
     @Column(name = "blocked")
     private boolean blocked; // od strane admina
     
+    @Column(name = "blocked_postavljanje_oglasa")
+    private boolean blockedPostavljanjeOglasa;
+
+    @Column(name = "blocked_slanje_zahteva")
+    private boolean blockedSlanjeZahteva;
+    
     @Column(name = "canceled")
     private int canceled; // koliko puta je otkazao zahtev
     
@@ -258,6 +264,22 @@ public class User implements UserDetails {
 
 	public void setActivated(boolean activated) {
 		this.activated = activated;
+	}
+
+	public boolean isBlockedPostavljanjeOglasa() {
+		return blockedPostavljanjeOglasa;
+	}
+
+	public void setBlockedPostavljanjeOglasa(boolean blockedPostavljanjeOglasa) {
+		this.blockedPostavljanjeOglasa = blockedPostavljanjeOglasa;
+	}
+
+	public boolean isBlockedSlanjeZahteva() {
+		return blockedSlanjeZahteva;
+	}
+
+	public void setBlockedSlanjeZahteva(boolean blockedSlanjeZahteva) {
+		this.blockedSlanjeZahteva = blockedSlanjeZahteva;
 	}
 	
 }

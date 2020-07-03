@@ -292,6 +292,14 @@ public class ZahtevService {
 		return z;
 	}
 	
+	public Zahtev cancelZahtev(Long id) {
+		Zahtev z = this.findOne(id);
+		
+		z.setStatus(ZahtevStatus.CANCELED);
+		zahtevRepository.save(z);
+		return z;
+	}
+	
 	@Scheduled(cron = "0 0 * ? * *")
 	public void cancelAfter24h() {
 		List<Zahtev> listZ = zahtevRepository.findPending();
