@@ -120,6 +120,7 @@ function posaljiZahtev() {
 			window.location = "./korpa.html";
 		},
 		error: function(jqXhr, textStatus, errorMessage) {
+			alert("Greska pri slanju zahteva!");
             console.log("Error jqXhr: " +jqXhr);
             console.log("Error textStatus: " +textStatus);
             console.log("Error errorMessage: " +errorMessage);

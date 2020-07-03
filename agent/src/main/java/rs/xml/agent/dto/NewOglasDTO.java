@@ -26,7 +26,7 @@ public class NewOglasDTO {
 	//@NotNull // cena ce se kasnije izracunavati
 	private int cena; // cena za dan + cena za osiguranje ako postoji
 	@NotNull
-	private String cenovnik; // ovo treba vremenom promeniti
+	private Long cenovnik; // ovo treba vremenom promeniti
 	@NotNull
 	@Min(value = 0)
 	private int kilometraza;
@@ -107,13 +107,17 @@ public class NewOglasDTO {
 		this.cena = cena;
 	}
 
-	public String getCenovnik() {
+	
+
+	public Long getCenovnik() {
 		return cenovnik;
 	}
 
-	public void setCenovnik(String cenovnik) {
+
+	public void setCenovnik(Long cenovnik) {
 		this.cenovnik = cenovnik;
 	}
+
 
 	public int getKilometraza() {
 		return kilometraza;

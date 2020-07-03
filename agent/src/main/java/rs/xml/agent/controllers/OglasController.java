@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,11 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 import rs.xml.agent.dto.NewOglasDTO;
 import rs.xml.agent.dto.OglasDTO;
 import rs.xml.agent.dto.OglasDTOsearch;
+import rs.xml.agent.model.Cenovnik;
 import rs.xml.agent.model.Oglas;
+import rs.xml.agent.model.User;
 import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.CenovnikService;
+import rs.xml.agent.service.OcenaService;
 import rs.xml.agent.service.OglasService;
 import rs.xml.agent.service.SlikaService;
+import rs.xml.agent.service.UserService;
 import rs.xml.agent.soap.EverythingClient;
 import rs.xml.agent.xsd.GetEverythingResponse;
 
@@ -52,12 +54,18 @@ public class OglasController {
 
 	@Autowired
 	OglasService oglasService;
+	
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	CenovnikService cenovnikService;
 
 	@Autowired
 	SlikaService slikaService;
+	
+	@Autowired	
+	OcenaService ocenaService;
 
 	@Autowired
 	UserDetailsService userDetailsService;
@@ -148,6 +156,11 @@ public class OglasController {
 		String permisijeMoje = tokenUtils.getPermissionFromToken(token);
 		String username = tokenUtils.getUsernameFromToken(token);
 
+		User user = userService.findByUsername(username);
+		if(user.isBlockedPostavljanjeOglasa()) {
+			return new ResponseEntity<String>("Korisniku je zabranjeno postavljanje oglasa!", HttpStatus.FORBIDDEN);
+		}
+		
 		if (oglasDTO.getOD().after(oglasDTO.getDO())) {
 			logger.warn("BAD_REQUEST POST Oglas, Oglas payload is bad, By username:" + username + ", IP:"
 					+ request.getRemoteAddr());
@@ -157,7 +170,14 @@ public class OglasController {
 		Oglas oglas = new Oglas(oglasDTO);
 		oglasService.createOglasWithFeignClient(oglas, oglasDTO);
 
+		Cenovnik cen = cenovnikService.findOne(oglasDTO.getCenovnik());
+		//dodati ogranicenje da nije null
+		oglas.setCenovnik(cen);
+		oglas.setCena(cen.getCenaZaDan());
 		oglas.setUsername(username);
+		if(cen.getCenaOsiguranja()>0) {
+			oglas.setOsiguranje(true);
+		}
 		// ako je obican user poslao zahtev
 		if (permisijeMoje.contains("ROLE_USER") && !permisijeMoje.contains("ROLE_AGENT")
 				&& !permisijeMoje.contains("ROLE_ADMIN")) {
@@ -233,7 +253,9 @@ public class OglasController {
 			@RequestParam(required = false, defaultValue = "0") String predjena, // kilometraza
 			@RequestParam(required = false, defaultValue = "0") String planirana, // kilometraza
 			@RequestParam(required = false, defaultValue = "nema") String osiguranje,
-			@RequestParam(required = false, defaultValue = "0") String brSedZaDecu) {
+			@RequestParam(required = false, defaultValue = "0") String brSedZaDecu,
+			@RequestParam(required = false, defaultValue = "0") String cenaOd,
+			@RequestParam(required = false, defaultValue = "0") String cenaDo) {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -243,6 +265,8 @@ public class OglasController {
 		int planiranaInt;
 //        boolean osiguranjeBool;
 		int brSedZaDecuInt;
+		int cenaOdInt;
+		int cenaDoInt;
 
 		try {
 			odDate = (Date) formatter.parse(Od);
@@ -251,6 +275,8 @@ public class OglasController {
 			planiranaInt = Integer.parseInt(planirana);
 //            osiguranjeBool = Boolean.parseBoolean(osiguranje);
 			brSedZaDecuInt = Integer.parseInt(brSedZaDecu);
+			cenaOdInt = Integer.parseInt(cenaDo);
+			cenaDoInt = Integer.parseInt(cenaDo);
 		} catch (ParseException | NumberFormatException e) {
 			System.out.println("***Parametri za pretragu nisu dobro formirani!");
 			return new ResponseEntity<String>("Parametri_za_pretragu_nisu_dobro_formirani!", HttpStatus.BAD_REQUEST);
@@ -262,7 +288,7 @@ public class OglasController {
 //		"\npredjena:"+predjenaInt + "\nplanirana:"+planiranaInt + "\nosiguranje:"+osiguranje + "\nbrSedZaDecu:"+brSedZaDecuInt);
 
 		Collection<OglasDTOsearch> oglasi = oglasService.search(mesto, odDate, doDate, marka, model, menjac, gorivo,
-				klasa, predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt);
+				klasa, predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt,cenaOdInt,cenaDoInt);
 		return new ResponseEntity<Collection<OglasDTOsearch>>(oglasi, HttpStatus.OK);
 //        RAD SA VREMENOM
 //      java.sql.Date proba = new java.sql.Date(odDate.getTime());        

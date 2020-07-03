@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -60,7 +61,8 @@ public class Oglas {
 	@Column(name="cena")
 	private int cena;
 	
-	@OneToOne
+	@OneToOne()
+	@JoinColumn(name = "cenovnik_id",referencedColumnName = "id")
 	private Cenovnik cenovnik;
 	
 	@Column(name="kilometraza")
@@ -111,8 +113,8 @@ public class Oglas {
 		this.gorivo = gorivo;
 		this.menjac = menjac;
 		this.klasa = klasa;
-		this.cena = cena;
 		this.cenovnik = cenovnik;
+		this.cena=cenovnik.getCenaZaDan();
 		this.kilometraza = kilometraza;
 		this.planiranaKilometraza = planiranaKilometraza;
 		this.sedistaZaDecu = sedistaZaDecu;
@@ -138,7 +140,6 @@ public class Oglas {
 		this.kilometraza = oglasDTO.getKilometraza();
 		this.planiranaKilometraza = oglasDTO.getPlaniranaKilometraza();
 		this.sedistaZaDecu = oglasDTO.getBrSedistaZaDecu();
-		
 		for(SlikaDTO slikaDTO: oglasDTO.getSlike()) {
 			//KADA UPISUJES U BAZU SKLONI 'data:image/jpeg;base64,' a kad vracas sliku dodaj 'data:image/jpeg;base64,'			
 			//System.out.println("SRC SLIKE :"+slikaDTO.slika()); // data:image/jpeg;base64,/9j/..... split na ,

@@ -123,3 +123,18 @@ function whoami() {
 		}
 	});
 }
+function myFunction() {
+	$.ajax({
+		url: '/user/payDebt',
+		type: 'PUT',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(){
+			alert("Uspeh");
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", textStatus);
+        }
+	});
+}

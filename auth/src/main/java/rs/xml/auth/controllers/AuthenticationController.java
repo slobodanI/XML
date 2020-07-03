@@ -149,7 +149,7 @@ public class AuthenticationController {
 
 	@RequestMapping(value = "/change-password", method = RequestMethod.POST)
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
+	public ResponseEntity<?> changePassword(@RequestBody @Valid PasswordChanger passwordChanger) {
 		String ret = userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
 		
 		if(ret == "unsuccessful") {

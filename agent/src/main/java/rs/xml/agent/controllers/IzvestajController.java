@@ -22,13 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rs.xml.agent.dto.IzvestajDTO;
 import rs.xml.agent.dto.NewIzvestajDTO;
+import rs.xml.agent.model.Cenovnik;
 import rs.xml.agent.model.Izvestaj;
 import rs.xml.agent.model.Oglas;
+import rs.xml.agent.model.User;
 import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.repository.ZahtevRepository;
 import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.IzvestajService;
 import rs.xml.agent.service.OglasService;
+import rs.xml.agent.service.UserService;
 import rs.xml.agent.service.ZahtevService;
 import rs.xml.agent.util.UtilClass;
 
@@ -54,6 +57,9 @@ public class IzvestajController {
 	
 	@Autowired 
 	UtilClass utilClass;
+	
+	@Autowired
+	UserService userService;
 		
 	@GetMapping("/izvestaj")
 	@PreAuthorize("hasAuthority('MANAGE_IZVESTAJ')")
@@ -137,6 +143,16 @@ public class IzvestajController {
 		}
 		
 		Izvestaj izvestaj = izvestajService.save(izvestajDTO, username);
+		
+		//ako je presao vise od dozvoljene naplati mu
+		Oglas oglas = oglasService.findOne(izvestajDTO.getOglasId());
+		Cenovnik cen = oglas.getCenovnik();
+		if(oglas.getPlaniranaKilometraza()< izvestajDTO.getPredjeniKilometri()) {
+			User user = userService.findByUsername(zahtev.getPodnosilacUsername());
+			user.setOwes((izvestajDTO.getPredjeniKilometri()-oglas.getPlaniranaKilometraza())*cen.getCenaPoKilometru());
+		}
+		
+		
 		logger.info("Created izvestaj with id:" +izvestaj.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		if(izvestaj != null) {
 			izvestajService.postIzvestajUMikroservice(izvestaj);
