@@ -38,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import rs.xml.agent.dto.EmailDTO;
+import rs.xml.agent.dto.UserDTO;
+import rs.xml.agent.dto.UserUpdateDTO;
 import rs.xml.agent.model.User;
 import rs.xml.agent.model.UserRegisterRequestDTO;
 import rs.xml.agent.model.UserTokenState;
@@ -138,6 +140,17 @@ public class AuthenticationController {
 //		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
 		return new ResponseEntity<User>(user, HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT,value = "/user")
+	public ResponseEntity<?> updateUser(@RequestBody UserUpdateDTO userDTO, HttpServletRequest request){
+		String token = request.getHeader("Auth").substring(7);
+		String username = tokenUtils.getUsernameFromToken(token);
+		
+		User u = userService.update(userDTO, username);
+		
+		return new ResponseEntity<User>(u, HttpStatus.OK);
+	}	
+	
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.POST)
 	public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request) {
@@ -197,6 +210,18 @@ public class AuthenticationController {
 	@PreAuthorize("hasAuthority('MANAGE_USERS')")
 	public List<User> loadAll() {
 		return this.userService.findAll();
+	}
+	
+	@RequestMapping(method = GET, value = "/user/me")
+	public ResponseEntity<?> loadMyProfile() {
+		String token = request.getHeader("Auth").substring(7);
+		String username = tokenUtils.getUsernameFromToken(token);
+		
+		User user = userService.findByUsername(username);
+		if(user == null) return new ResponseEntity<User>(HttpStatus.NOT_FOUND); 
+		UserDTO uDTO = new UserDTO(user);
+		
+		return new ResponseEntity<>(uDTO,HttpStatus.OK);
 	}
 
 	@RequestMapping("/whoami")

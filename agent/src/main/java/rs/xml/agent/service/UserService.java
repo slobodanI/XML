@@ -2,13 +2,12 @@ package rs.xml.agent.service;
 
 import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
@@ -16,8 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-
+import rs.xml.agent.dto.UserUpdateDTO;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Role;
 import rs.xml.agent.model.User;
@@ -83,6 +81,26 @@ public class UserService {
 		
 		u = this.userRepository.save(u);
 		return u;
+	}
+	
+	public User update(UserUpdateDTO userDTO,String username) {
+		
+		User u = this.findByUsername(username);
+		
+		if(userDTO.getEmail() != null && userDTO.getEmail() != "") {
+			u.setEmail(userDTO.getEmail());
+		}
+		
+		if(userDTO.getFirstname() != null && userDTO.getFirstname() != "") {
+			u.setFirstName(userDTO.getFirstname());
+		}
+		
+		if(userDTO.getLastname() != null && userDTO.getLastname() != "") {
+			u.setLastName(userDTO.getLastname());
+		}
+		u = userRepository.save(u);
+		return u;
+		
 	}
 	
 	public String getNextSalt() {
