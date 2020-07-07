@@ -54,7 +54,7 @@ public class OglasController {
 
 	@Autowired
 	OglasService oglasService;
-	
+
 	@Autowired
 	UserService userService;
 
@@ -63,8 +63,8 @@ public class OglasController {
 
 	@Autowired
 	SlikaService slikaService;
-	
-	@Autowired	
+
+	@Autowired
 	OcenaService ocenaService;
 
 	@Autowired
@@ -157,10 +157,10 @@ public class OglasController {
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		User user = userService.findByUsername(username);
-		if(user.isBlockedPostavljanjeOglasa()) {
+		if (user.isBlockedPostavljanjeOglasa()) {
 			return new ResponseEntity<String>("Korisniku je zabranjeno postavljanje oglasa!", HttpStatus.FORBIDDEN);
 		}
-		
+
 		if (oglasDTO.getOD().after(oglasDTO.getDO())) {
 			logger.warn("BAD_REQUEST POST Oglas, Oglas payload is bad, By username:" + username + ", IP:"
 					+ request.getRemoteAddr());
@@ -171,11 +171,11 @@ public class OglasController {
 		oglasService.createOglasWithFeignClient(oglas, oglasDTO);
 
 		Cenovnik cen = cenovnikService.findOne(oglasDTO.getCenovnik());
-		//dodati ogranicenje da nije null
+		// dodati ogranicenje da nije null
 		oglas.setCenovnik(cen);
 		oglas.setCena(cen.getCenaZaDan());
 		oglas.setUsername(username);
-		if(cen.getCenaOsiguranja()>0) {
+		if (cen.getCenaOsiguranja() > 0) {
 			oglas.setOsiguranje(true);
 		}
 		// ako je obican user poslao zahtev
@@ -288,7 +288,7 @@ public class OglasController {
 //		"\npredjena:"+predjenaInt + "\nplanirana:"+planiranaInt + "\nosiguranje:"+osiguranje + "\nbrSedZaDecu:"+brSedZaDecuInt);
 
 		Collection<OglasDTOsearch> oglasi = oglasService.search(mesto, odDate, doDate, marka, model, menjac, gorivo,
-				klasa, predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt,cenaOdInt,cenaDoInt);
+				klasa, predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt, cenaOdInt, cenaDoInt);
 		return new ResponseEntity<Collection<OglasDTOsearch>>(oglasi, HttpStatus.OK);
 //        RAD SA VREMENOM
 //      java.sql.Date proba = new java.sql.Date(odDate.getTime());        

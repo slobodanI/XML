@@ -2,6 +2,7 @@ package rs.xml.oglas.service;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Base64.Decoder;
 import java.util.Base64.Encoder;
 import java.util.Collection;
 import java.util.Date;
@@ -22,6 +23,7 @@ import rs.xml.oglas.client.ModelDTO;
 import rs.xml.oglas.client.SifrarnikClient;
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
+import rs.xml.oglas.dto.SlikaDTO;
 import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Slika;
@@ -30,6 +32,7 @@ import rs.xml.oglas.model.ZahtevStatus;
 import rs.xml.oglas.repository.IzvestajRepository;
 import rs.xml.oglas.repository.OcenaRepository;
 import rs.xml.oglas.repository.OglasRepository;
+import rs.xml.oglas.repository.SlikaRepository;
 import rs.xml.oglas.repository.ZahtevRepository;
 import rs.xml.oglas.util.UtilClass;
 
@@ -49,6 +52,9 @@ public class OglasService {
 	OcenaRepository ocenaRepository;
 	
 	@Autowired
+	SlikaRepository slikaRepository;
+	
+	@Autowired
 	UtilClass util;
 	
 	@Autowired
@@ -59,6 +65,8 @@ public class OglasService {
 		return oglas;
 	}
 
+	
+	
 	public List<Oglas> findAll() {
 		return oglasRepository.findAll();
 	}
@@ -76,6 +84,10 @@ public class OglasService {
 		oglas.setOid(oglas.getUsername() + "-" + util.randomString());
 		return oglasRepository.save(oglas);
 	}
+	
+	public Oglas saveUpdated(Oglas oglas) {
+		return oglasRepository.save(oglas);
+	}
 
 	public void remove(Long id) {
 		oglasRepository.deleteById(id);
@@ -85,9 +97,6 @@ public class OglasService {
 		Oglas oglas = oglasRepository.findOglasByOid(oid);
 		return oglas;
 	}
-	
-	
-	
 	
 	//vraca prednje kilometre datog oglasa
 		public int getKilometri(Long id) {
@@ -106,7 +115,7 @@ public class OglasService {
 
 	public Collection<OglasDTOsearch> search(String mesto, Date odDate, Date doDate, String marka, String model,
 											 String menjac, String gorivo, String klasa, int predjenaInt, int planiranaInt,
-											 String osiguranje, int brSedZaDecuInt) {
+											 String osiguranje, int brSedZaDecuInt, int cenaOd, int cenaDo) {
 		
 		Collection<OglasDTOsearch> ret = new ArrayList<OglasDTOsearch>();
 		Encoder encoder = Base64.getEncoder();
@@ -204,6 +213,51 @@ public class OglasService {
 					continue;
 				}
 			}
+			
+			float popust = 1 - (float) oglas.getCenovnik().getPopust() / (float) 100;
+			if (cenaOd != 0) {
+
+				if (doDateOVAJ.after(new Date(odDateOVAJ.getTime() + (1000 * 60 * 60 * 24 * 20)))) {
+
+					if (oglas.getCenovnik() != null) {
+						if (oglas.getCenovnik().getCenaZaDan() * popust < cenaOd) {
+							flag = false;
+							continue;
+						}
+					}
+
+				} else {
+
+					if (oglas.getCenovnik() != null) {
+						if (oglas.getCenovnik().getCenaZaDan() < cenaOd) {
+							flag = false;
+							continue;
+						}
+					}
+				}
+			}
+
+			if (cenaDo != 0) {
+
+				if (doDateOVAJ.after(new Date(odDateOVAJ.getTime() + (1000 * 60 * 60 * 24 * 20)))) {
+					if (oglas.getCenovnik() != null) {
+						if ((float) oglas.getCenovnik().getCenaZaDan() * popust > cenaDo) {
+							flag = false;
+							continue;
+						}
+					}
+
+				} else {
+
+					if (oglas.getCenovnik() != null) {
+						if (oglas.getCenovnik().getCenaZaDan() > cenaDo) {
+							flag = false;
+							continue;
+						}
+					}
+				}
+			}
+
 			// ovako ili mozda inner join zahteva i oglas_zahtev tabela ?
 			// da li je zauzet auto u zadatom vremenu
 			int count = 0;
@@ -258,6 +312,13 @@ public class OglasService {
 				oglasDTO.setBrSedZaDecuInt(oglas.getSedistaZaDecu());
 				oglasDTO.setOdDate(oglas.getOd());
 				oglasDTO.setDoDate(oglas.getDo());
+				if (!doDateOVAJ.after(new Date(odDateOVAJ.getTime() + (1000 * 60 * 60 * 24 * 20)))) {
+					oglasDTO.setCena(oglas.getCenovnik().getCenaZaDan());
+				} else {
+					float cena = oglas.getCenovnik().getCenaZaDan() * popust;
+					int cen = (int) cena;
+					oglasDTO.setCena(cen);
+				}
 				
 				if(oglas.getSlike().isEmpty()) {
 					oglasDTO.setSlika(null);
@@ -327,7 +388,11 @@ public class OglasService {
 
 	public Oglas updateOglas(Long oid, NewOglasDTO oglasDTO, String username) {
 		
-		Oglas ogl = findOne(oid);		
+		Oglas ogl = findOne(oid);
+		List<Long> pom =new ArrayList<Long>();
+		for(Slika slika : ogl.getSlike()) {
+			pom.add(slika.getId());
+		}
 		
 		if(!ogl.getUsername().equals(username)) {
 			return null;
@@ -343,9 +408,28 @@ public class OglasService {
 		ogl.setOd(oglasDTO.getOD());
 		ogl.setDo(oglasDTO.getDO());
 				
-		// prvo obrisati stare slike iz baze, ili...
-//		ogl.setSlike(new ArrayList<Slika>());
-//		for(SlikaDTO slikaDTO: )
+		ogl.getSlike().clear();
+		for(SlikaDTO slikaDTO: oglasDTO.getSlike()) {
+			//KADA UPISUJES U BAZU SKLONI 'data:image/jpeg;base64,' a kad vracas sliku dodaj 'data:image/jpeg;base64,'			
+			//System.out.println("SRC SLIKE :"+slikaDTO.slika()); // data:image/jpeg;base64,/9j/..... split na ,
+			String split[] = slikaDTO.getSlika().split(",");
+			//slikaDTO.setSlika(split[1]);
+			
+			byte[] imageByte;
+			Decoder decoder = Base64.getDecoder();
+	        imageByte = decoder.decode(split[1]);
+			
+			Slika slika = new Slika();
+			slika.setOglas(ogl);
+			slika.setSlika(imageByte);
+			ogl.getSlike().add(slika);
+		}
+		
+		for(Long id : pom) {
+			System.out.println("ID SLIKE-----"+id);
+			slikaRepository.deleteById(id);
+			//slikaRepository.deleteById();
+		}
 		
 		ogl = this.save(ogl);
 		return ogl;

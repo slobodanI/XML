@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.oglas.dto.CenovnikDTO;
 import rs.xml.oglas.dto.NewCenovnikDTO;
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTO;
@@ -44,13 +45,10 @@ public class CenovnikController {
 	public ResponseEntity<?> getAllCenovnik(HttpServletRequest request) {
 
 		String username = request.getHeader("username");
-		String permisije = request.getHeader("permissions");
 
-		List<Cenovnik> cenovnikList = new ArrayList<Cenovnik>();
-		if (permisije.contains("ROLE_ADMIN")) {
-			cenovnikList = cenovnikService.findAll();
-		} else {
-			cenovnikList = cenovnikService.findAllFromUser(username);
+		List<CenovnikDTO> cenovnikList = new ArrayList<CenovnikDTO>();
+		for (Cenovnik c : cenovnikService.findAllFromUser(username)) {
+			cenovnikList.add(new CenovnikDTO(c));
 		}
 
 		return new ResponseEntity<>(cenovnikList, HttpStatus.OK);
@@ -64,7 +62,6 @@ public class CenovnikController {
 		String permisije = request.getHeader("permissions");
 
 		Cenovnik cenovnik = cenovnikService.findOne(cid);
-		;
 
 		// ako nije admin...
 		if (!permisije.contains("ROLE_ADMIN")) {
@@ -77,8 +74,8 @@ public class CenovnikController {
 				return new ResponseEntity<String>("Nije_tvoj_cenovnik!", HttpStatus.FORBIDDEN);
 			}
 		}
-
-		return new ResponseEntity<>(cenovnik, HttpStatus.OK);
+		CenovnikDTO cen = new CenovnikDTO(cenovnik);
+		return new ResponseEntity<>(cen, HttpStatus.OK);
 	}
 
 	@PostMapping("/cenovnik")
@@ -93,7 +90,8 @@ public class CenovnikController {
 
 		logger.info("Created cenovnik with id:" + cen.getId() + " by username: " + username + ", IP:"
 				+ request.getRemoteAddr());
-		return new ResponseEntity<>(cen, HttpStatus.OK);
+		CenovnikDTO cenovnik = new CenovnikDTO(cen);
+		return new ResponseEntity<>(cenovnik, HttpStatus.OK);
 	}
 
 	@PutMapping("/cenovnik/{cid}")
@@ -102,6 +100,14 @@ public class CenovnikController {
 			HttpServletRequest request) {
 
 		String username = request.getHeader("username");
+
+		List<Cenovnik> cenovnici = cenovnikService.findAll();
+		for (Cenovnik cen : cenovnici) {
+			if (cen.getName().equals((username + "-" + cenovnikDTO.getName()))) {
+				return new ResponseEntity<String>("Vec postoji cenovnik sa tim nazivom!", HttpStatus.BAD_REQUEST);
+			}
+		}
+
 		Cenovnik cenovnik = cenovnikService.updateMyCenovnik(cid, cenovnikDTO, username);
 		if (cenovnik == null) {
 			logger.warn("SR, Unauthorized cenovnik access attempt, Cenovnik id:" + cid + ", By username:" + username
@@ -110,7 +116,8 @@ public class CenovnikController {
 		}
 		logger.info("Updated cenovnik with id:" + cenovnik.getId() + " by username: " + username + ", IP:"
 				+ request.getRemoteAddr());
-		return new ResponseEntity<>(cenovnik, HttpStatus.OK);
+		CenovnikDTO cen = new CenovnikDTO(cenovnik);
+		return new ResponseEntity<>(cen, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/cenovnik/{cid}")

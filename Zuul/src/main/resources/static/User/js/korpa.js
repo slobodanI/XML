@@ -70,7 +70,7 @@ function ukloniIzKorpe(oglasId) {
 		var korpa = JSON.parse(sessionStorage.korpa);
 		var count = 0;
 		for(o of korpa.oglasi){	
-			//console.log(o);
+			// console.log(o);
 			if(o.oglasId == oglasId){
 				korpa.oglasi.splice(count, count + 1);
 				break;
@@ -99,7 +99,7 @@ function posaljiZahtev() {
 	}
 	
 	korpa.bundle = bundle;
-	//console.log(korpa);
+	// console.log(korpa);
 	$.post({
 		url: '/oglasi/zahtev',
 		data: JSON.stringify(korpa),
@@ -108,13 +108,14 @@ function posaljiZahtev() {
 	    },
 		contentType: 'application/json',
 		success: function(){
-			//isprazni korpu
+			// isprazni korpu
 			korpa.oglasi = [];
 			sessionStorage.setItem('korpa', JSON.stringify(korpa));
 			alert("Uspešno ste poslali zahtev");
 			window.location = "./korpa.html";
 		},
 		error: function(jqXhr, textStatus, errorMessage) {
+			alert("Greska pri slanju zahteva!");
             console.log("Error jqXhr: " +jqXhr);
             console.log("Error textStatus: " +textStatus);
             console.log("Error errorMessage: " +errorMessage);

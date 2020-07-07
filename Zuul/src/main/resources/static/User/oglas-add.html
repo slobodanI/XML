@@ -11,7 +11,7 @@
 <body>
 	
 	<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-    	<h5 class="my-0 mr-md-auto font-weight-normal">Dodavanje oglasa</h5>
+    	<h5 class="my-0 mr-md-auto font-weight-normal">Pretraga oglasa</h5>
         <nav class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="oglas-search.html">| Pretraga oglasa |</a>
         <a class="p-2 text-dark" href="oglas-add.html">| Dodavanje oglasa |</a>
@@ -23,7 +23,8 @@
         <a class="p-2 text-dark" href="oglasi-moji.html">| Moji Oglasi |</a>
         <a class="p-2 text-dark" href="statistika.html">| Statistika |</a>
         <a class="p-2 text-dark" href="korpa.html">| Korpa |</a>
-        
+        <a class="p-2 text-dark" href="UserProfil.html">| Moj profil |</a>
+        <a class="p-2 text-dark" href="cenovnici.html">| Moji cenovnici |</a>
         
         </nav>
        <a class="btn btn-outline-primary" href="../login.html">Izloguj se</a>
@@ -80,14 +81,24 @@
 <!--       <option value=4>4</option> -->
 <!--       <option value=5>5</option> -->
     </select>
+
+  
+  <label for="select-klasa">Cenovnik</label>
+    <select class="form-control col-sm-6" id="select-cenovnik" required>
+<!--       <option selected value=1>1</option> -->
+<!--       <option value=2>2</option> -->
+<!--       <option value=3>3</option> -->
+<!--       <option value=4>4</option> -->
+<!--       <option value=5>5</option> -->
+    </select>
   </div>
   
-  <div class="form-group row">
-    <label for="input-cena" class="col-sm-12 col-form-label">Cena</label>
-    <div class="col-sm-6">
-      <input type="number" class="form-control" id="input-cena" placeholder="Cena">
-    </div>
-  </div>
+<!--   <div class="form-group row"> -->
+<!--     <label for="input-cena" class="col-sm-12 col-form-label">Cena</label> -->
+<!--     <div class="col-sm-6"> -->
+<!--       <input type="number" class="form-control" id="input-cena" placeholder="Cena"> -->
+<!--     </div> -->
+<!--   </div> -->
 	
 	<div class="form-group row">
 		<label for="input-kilometraza" class="col-sm-12 col-form-label">Predjena Kilometraza</label>
@@ -101,13 +112,13 @@
 	      <input type="number" class="form-control" id="input-planirana-kilometraza" placeholder="Planirana Kilometraza">
 	    </div>
 	</div>
-	<div class="form-group">
-		<label for="select-osiguranje">Osiguranje</label>
-		<select class="form-control col-sm-6" id="select-osiguranje" required>
-			<option selected value="1">DA</option>
-			<option value="2">NE</option>
-		</select>
-	</div>
+<!-- 	<div class="form-group"> -->
+<!-- 		<label for="select-osiguranje">Osiguranje</label> -->
+<!-- 		<select class="form-control col-sm-6" id="select-osiguranje" required> -->
+<!-- 			<option selected value="1">DA</option> -->
+<!-- 			<option value="2">NE</option> -->
+<!-- 		</select> -->
+<!-- 	</div> -->
 	<div class="form-group">
 	<label for="select-brSedistaZaDecu">Broj sedišta za decu</label>
 		<select class="form-control col-sm-6" id="select-brSedistaZaDecu" required>

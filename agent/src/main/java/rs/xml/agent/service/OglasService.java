@@ -2,6 +2,7 @@ package rs.xml.agent.service;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Base64.Decoder;
 import java.util.Base64.Encoder;
 import java.util.Collection;
 import java.util.Date;
@@ -20,6 +21,7 @@ import rs.xml.agent.dto.MestoDTO;
 import rs.xml.agent.dto.ModelDTO;
 import rs.xml.agent.dto.NewOglasDTO;
 import rs.xml.agent.dto.OglasDTOsearch;
+import rs.xml.agent.dto.SlikaDTO;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Oglas;
 import rs.xml.agent.model.Slika;
@@ -28,6 +30,7 @@ import rs.xml.agent.model.ZahtevStatus;
 import rs.xml.agent.repository.IzvestajRepository;
 import rs.xml.agent.repository.OcenaRepository;
 import rs.xml.agent.repository.OglasRepository;
+import rs.xml.agent.repository.SlikaRepository;
 import rs.xml.agent.repository.ZahtevRepository;
 import rs.xml.agent.repository.gorivoRepository;
 import rs.xml.agent.repository.klasaRepository;
@@ -67,6 +70,9 @@ public class OglasService {
 
 	@Autowired
 	OcenaRepository ocenaRepository;
+	
+	@Autowired
+	SlikaRepository slikaRepository;
 
 	@Autowired
 	IzvestajRepository izvestajRepository;
@@ -118,6 +124,10 @@ public class OglasService {
 	public Oglas save(Oglas oglas) {
 		oglas.setOid(oglas.getUsername() + "-" + util.randomString());
 		sendToMicroServices(oglas);
+		return oglasRepository.save(oglas);
+	}
+	
+	public Oglas saveUpdated(Oglas oglas) {
 		return oglasRepository.save(oglas);
 	}
 
@@ -401,6 +411,10 @@ public class OglasService {
 	public Oglas updateOglas(Long oid, NewOglasDTO oglasDTO, String username) {
 
 		Oglas ogl = findOne(oid);
+		List<Long> pom =new ArrayList<Long>();
+		for(Slika slika : ogl.getSlike()) {
+			pom.add(slika.getId());
+		}
 
 		if (!ogl.getUsername().equals(username)) {
 			return null;
@@ -416,9 +430,30 @@ public class OglasService {
 		ogl.setOd(oglasDTO.getOD());
 		ogl.setDo(oglasDTO.getDO());
 
+		ogl.getSlike().clear();
+		for(SlikaDTO slikaDTO: oglasDTO.getSlike()) {
+			//KADA UPISUJES U BAZU SKLONI 'data:image/jpeg;base64,' a kad vracas sliku dodaj 'data:image/jpeg;base64,'			
+			//System.out.println("SRC SLIKE :"+slikaDTO.slika()); // data:image/jpeg;base64,/9j/..... split na ,
+			String split[] = slikaDTO.getSlika().split(",");
+			//slikaDTO.setSlika(split[1]);
+			
+			byte[] imageByte;
+			Decoder decoder = Base64.getDecoder();
+	        imageByte = decoder.decode(split[1]);
+			
+			Slika slika = new Slika();
+			slika.setOglas(ogl);
+			slika.setSlika(imageByte);
+			ogl.getSlike().add(slika);
+		}
 		// prvo obrisati stare slike iz baze, ili...
 //		ogl.setSlike(new ArrayList<Slika>());
 //		for(SlikaDTO slikaDTO: )
+		for(Long id : pom) {
+			System.out.println("ID SLIKE-----"+id);
+			slikaRepository.deleteById(id);
+			//slikaRepository.deleteById();
+		}
 
 		ogl = this.save(ogl);
 		return ogl;

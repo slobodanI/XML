@@ -36,7 +36,7 @@ public class Cenovnik {
 	@Column(name="za_vise_d")
 	private int zaViseOd; // za vise od koliko dana vazi popust
 	
-	@Column(name="userId")
+	@Column(name="user_id")
 	private String username;
 	
 	public Cenovnik() {

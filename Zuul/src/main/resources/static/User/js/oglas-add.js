@@ -34,6 +34,7 @@ $(document).ready(function() {
 	popuniKLase();
 	popuniGoriva();
 	popuniMenjac();
+	popuniCenovnik();
 });
 
 function addOglas() {
@@ -43,18 +44,20 @@ function addOglas() {
 	var menjac =  $('#select-menjac :selected').val();
 	var gorivo = $('#select-gorivo :selected').val();
 	var klasa = $('#select-klasa :selected').val();
+	var cenovnik = $('#select-cenovnik :selected').val();
 	
 	var cena = $('#input-cena').val();
 	var kilometraza = $('#input-kilometraza').val();
 	var planiranaKilometraza = $('#input-planirana-kilometraza').val();
 	var osiguranje = $('#select-osiguranje :selected').val();
 	var brSedistaZaDecu = $('#select-brSedistaZaDecu').val();
+	var osiguranje = false;
 	
-	if(osiguranje === "1") {
-		osiguranje = true;
-	} else {
-		osifuranje = false;
-	}
+//	if(osiguranje === "1") {
+//		osiguranje = true;
+//	} else {
+//		osifuranje = false;
+//	}
 	
 	var image1 = image1global;
 	var image2 = image2global;
@@ -95,7 +98,6 @@ function addOglas() {
 	slike.push(slika);
 	slika = { slika: image3};
 	slike.push(slika);
-	var cenovnik = "neki cenovnik";
 	var obj = JSON.stringify(
 			{mesto, marka, model, menjac, gorivo, klasa, cena, kilometraza, planiranaKilometraza, osiguranje, brSedistaZaDecu, Od, Do, slike}
 	);
@@ -300,6 +302,31 @@ function popuniMenjac() {
 		
 			for(var menjac of menjaci){
 				selectMenjac.append('<option value="'+menjac.id+'">'+menjac.name+'</option>');
+			}
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", errorMessage);
+        }
+	});
+}
+
+function popuniCenovnik() {
+	$.get({
+		url: '/cenovnik',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		contentType: 'application/json',
+		success: function(cenovnici){
+			if(cenovnici.length == 0){
+				alert("Nemate unetih cenovnik!Molimo vas da prvo unesete cenovnik");
+				window.location = "./cenovnik-add.html";
+			}
+			var selectCenovnik = $("#select-cenovnik");
+		
+			for(var cen of cenovnici){
+				selectCenovnik.append('<option value="'+cen.id+'">'+cen.name+'</option>');
 			}
 			
 		},

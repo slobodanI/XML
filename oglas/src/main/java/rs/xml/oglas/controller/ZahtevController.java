@@ -20,9 +20,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.oglas.client.AuthClient;
+import rs.xml.oglas.client.ChatDTO;
+import rs.xml.oglas.client.UpdateUserDebtDTO;
+import rs.xml.oglas.client.UserDTO;
 import rs.xml.oglas.dto.KorpaDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
 import rs.xml.oglas.dto.ZahtevDTO;
+import rs.xml.oglas.exception.ServiceNotAvailable;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
 import rs.xml.oglas.service.ZahtevService;
@@ -41,6 +46,9 @@ public class ZahtevController {
 
 	@Autowired
 	HttpServletRequest request;
+
+	@Autowired
+	AuthClient authClient;
 
 	/**
 	 * @param filter
@@ -138,7 +146,15 @@ public class ZahtevController {
 	public ResponseEntity<?> postZahtev(@RequestBody KorpaDTO korpa, HttpServletRequest request) {
 
 		String username = request.getHeader("username");
-
+		String token = request.getHeader("Auth");
+		UserDTO userdto =authClient.getUser(token);
+		if(userdto.isBlockedSlanjeZahteva()) {
+			return new ResponseEntity<>("Korisniku je zabranjeno slanje zahteva!", HttpStatus.FORBIDDEN);
+		}
+		if(userdto.getOwes()>0 ) {
+			return new ResponseEntity<>("Ne mozete podneti zahtev dok ne isplatite prethodna zaduzenja!", HttpStatus.BAD_REQUEST);
+		}
+		
 		String odgovor = zahtevService.save(korpa, username);
 		if (odgovor.equals("Kreirani zahtevi sa vise oglasa")) {
 			logger.info("Created Zahtev by username: " + username + ", IP:" + request.getRemoteAddr());
@@ -190,6 +206,34 @@ public class ZahtevController {
 		}
 
 		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.declineZahtev(zId));
+		logger.info("Updated Zahtev with id: " + zId + " by username: " + username + ", IP:" + request.getRemoteAddr());
+		return new ResponseEntity<>(zDTO, HttpStatus.OK);
+
+	}
+
+	@PutMapping("/zahtev/{zId}/cancel")
+	public ResponseEntity<?> cancelZahtev(@PathVariable(name = "zId") Long zId) {
+		String token = request.getHeader("Auth");
+		String username = request.getHeader("username");
+		Zahtev zah = zahtevService.findOne(zId);
+
+		if (!zah.getPodnosilacUsername().equals(username)) {
+			logger.warn("FORBIDDEN PUT Zahtev, Zahtev with id: " + zId + " is not yours, By username:" + username
+					+ ", IP:" + request.getRemoteAddr());
+			return new ResponseEntity<String>("Nije_tvoj_zahtev!", HttpStatus.FORBIDDEN);
+		}
+
+		ZahtevDTO zDTO = new ZahtevDTO(zahtevService.cancelZahtev(zId));
+
+		UpdateUserDebtDTO updDTO = new UpdateUserDebtDTO();
+		updDTO.setUsername(username);
+		try {
+			authClient.putUserCanceledNumber(updDTO, token);
+		} catch (Exception e) {
+			System.out.println("***ERROR: zahtevService > cancelZahtev > authClient ");
+			throw new ServiceNotAvailable("Auth service is not available");
+		}
+
 		logger.info("Updated Zahtev with id: " + zId + " by username: " + username + ", IP:" + request.getRemoteAddr());
 		return new ResponseEntity<>(zDTO, HttpStatus.OK);
 
