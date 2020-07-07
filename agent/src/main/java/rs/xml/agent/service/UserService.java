@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import rs.xml.agent.dto.AgentRegisterDTO;
+import rs.xml.agent.dto.AgentUpdateDTO;
 import rs.xml.agent.dto.UserUpdateDTO;
 import rs.xml.agent.exceptions.NotFoundException;
 import rs.xml.agent.model.Role;
@@ -24,10 +26,10 @@ import rs.xml.agent.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	// password mora imati minimalno 10 karaktera
 	private List<String> badPasswords = Arrays.asList("passwordpassword", "1234567890");
-		
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -36,7 +38,7 @@ public class UserService {
 
 	@Autowired
 	private RoleService roleService;
-	
+
 	public User findByUsername(String username) throws UsernameNotFoundException {
 		User u = userRepository.findByUsername(username);
 		return u;
@@ -52,11 +54,10 @@ public class UserService {
 		return result;
 	}
 
-	
 	public User save(UserRegisterRequestDTO userRequest) {
 		User u = new User();
-		for(String pas: badPasswords) {
-			if(userRequest.getPassword().equals(pas)) {
+		for (String pas : badPasswords) {
+			if (userRequest.getPassword().equals(pas)) {
 				return null;
 			}
 		}
@@ -73,16 +74,50 @@ public class UserService {
 //		u.setAds(0);
 		u.setOwes(0);
 		u.setActivated(false);
-		
+		u.setAdress("");
+		u.setCompanyName("");
+		u.setPib(0);
 		List<Role> roles = roleService.findByname("ROLE_USER");
 		u.setRoles(roles);
-		
+
 		u.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
-		
+
 		u = this.userRepository.save(u);
 		return u;
 	}
-	
+
+	public User saveAgent(AgentRegisterDTO userRequest) {
+		User u = new User();
+		for (String pas : badPasswords) {
+			if (userRequest.getPassword().equals(pas)) {
+				return null;
+			}
+		}
+		u.setUsername(userRequest.getUsername());
+		u.setSalt(getNextSalt());
+		u.setPassword(passwordEncoder.encode(userRequest.getPassword() + u.getSalt()));
+		u.setFirstName(userRequest.getFirstname());
+		u.setLastName(userRequest.getLastname());
+		u.setEmail("");
+		u.setAccepted(true);
+		u.setBlocked(false);
+		u.setDeleted(false);
+		u.setCanceled(0);
+//		u.setAds(0);
+		u.setOwes(0);
+		u.setActivated(true);
+		u.setAdress(userRequest.getAdress());
+		u.setCompanyName(userRequest.getCompanyName());
+		u.setPib(userRequest.getPib());
+		List<Role> roles = roleService.findByname("ROLE_AGENT");
+		u.setRoles(roles);
+
+		u.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
+
+		u = this.userRepository.save(u);
+		return u;
+	}
+
 	public User update(UserUpdateDTO userDTO, String username) {
 
 		User u = this.findByUsername(username);
@@ -102,135 +137,163 @@ public class UserService {
 		return u;
 
 	}
-	
+
+	public User updateAgent(AgentUpdateDTO userDTO, String username) {
+
+		User u = this.findByUsername(username);
+
+		if (userDTO.getCompanyName() != null && userDTO.getCompanyName() != "") {
+			u.setEmail(userDTO.getCompanyName());
+		}
+
+		if (userDTO.getFirstname() != null && userDTO.getFirstname() != "") {
+			u.setFirstName(userDTO.getFirstname());
+		}
+
+		if (userDTO.getLastname() != null && userDTO.getLastname() != "") {
+			u.setLastName(userDTO.getLastname());
+		}
+		if (userDTO.getAdress() != null && userDTO.getAdress() != "") {
+			u.setAdress(userDTO.getAdress());
+		}
+		if (userDTO.getPib() != 0) {
+			u.setPib(userDTO.getPib());
+		}
+		u = userRepository.save(u);
+		return u;
+
+	}
+
 	public String getNextSalt() {
 		Random RANDOM = new SecureRandom();
-	    byte[] salt = new byte[16];
-	    RANDOM.nextBytes(salt);
-	    return salt.toString();
+		byte[] salt = new byte[16];
+		RANDOM.nextBytes(salt);
+		return salt.toString();
 	}
-	
+
 	public User activateUser(Long uid) {
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
-		u.setAccepted(true);		
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
+		u.setAccepted(true);
 		userRepository.save(u);
-		
+
 		return u;
 	}
+
 	public User activateUserMail(Long uid) {
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
-		long millis=System.currentTimeMillis();
-		Timestamp now=new Timestamp(millis);
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
+		long millis = System.currentTimeMillis();
+		Timestamp now = new Timestamp(millis);
 		u.setLastPasswordResetDate(now);
-		u.setActivated(true);		
+		u.setActivated(true);
 		userRepository.save(u);
-		
+
 		return u;
 	}
-	
-	public User blockUser(Long uid) {		
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
-		u.setBlocked(true);	
+
+	public User blockUser(Long uid) {
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
+		u.setBlocked(true);
 		userRepository.save(u);
-		
+
 		return u;
 	}
-	
+
 	public User unblockUser(Long uid) {
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
-		u.setBlocked(false);	
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
+		u.setBlocked(false);
 		userRepository.save(u);
-		
+
 		return u;
 	}
-	
-	public User blockOglaseUser(Long uid) {		
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
-		u.setBlockedPostavljanjeOglasa(true);	
+
+	public User blockOglaseUser(Long uid) {
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
+		u.setBlockedPostavljanjeOglasa(true);
 		userRepository.save(u);
-		
+
 		return u;
 	}
-	public User unblockOglaseUser(Long uid) {		
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
-		u.setBlockedPostavljanjeOglasa(false);	
+
+	public User unblockOglaseUser(Long uid) {
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
+		u.setBlockedPostavljanjeOglasa(false);
 		userRepository.save(u);
-		
+
 		return u;
 	}
-	
-	public User blockZahteveUser(Long uid) {		
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
-		u.setBlockedSlanjeZahteva(true);	
+
+	public User blockZahteveUser(Long uid) {
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
+		u.setBlockedSlanjeZahteva(true);
 		userRepository.save(u);
-		
+
 		return u;
 	}
-	public User unblockZahteveUser(Long uid) {		
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
-		u.setBlockedSlanjeZahteva(false);	
+
+	public User unblockZahteveUser(Long uid) {
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
+		u.setBlockedSlanjeZahteva(false);
 		userRepository.save(u);
-		
+
 		return u;
 	}
-	
-	
+
 	public User deleteUser(Long uid) {
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
-		
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
+
 		u.setDeleted(true);
 		userRepository.save(u);
-		
+
 		return u;
 	}
-	
+
 	public User payDebt(Long uid) {
-		User u = userRepository.findById(uid).orElseThrow(
-				() -> new NotFoundException("User with id " + uid + " does not exist"));
+		User u = userRepository.findById(uid)
+				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
 		u.setOwes(0);
 		userRepository.save(u);
 		return u;
-		
+
 	}
-	
+
 	@Scheduled(cron = "0 0 * ? * *")
 	public void cancelAfter24h() {
 		System.out.println("CRON radi");
 		List<User> users = userRepository.findPendingMailUsers();
-		if(users.isEmpty()) return;
-		
-		
-		long millis=System.currentTimeMillis()-(24 * 60 * 60 * 1000);
-		Timestamp oneDayAgo=new Timestamp(millis);
+		if (users.isEmpty())
+			return;
+
+		long millis = System.currentTimeMillis() - (24 * 60 * 60 * 1000);
+		Timestamp oneDayAgo = new Timestamp(millis);
 		List<Long> pomocna = new ArrayList<Long>();
-		for(User u : users) {
-			if(u.getLastPasswordResetDate().before(oneDayAgo)) {
+		for (User u : users) {
+			if (u.getLastPasswordResetDate().before(oneDayAgo)) {
 				pomocna.add(u.getId());
 			}
 		}
-		for(Long uid : pomocna) {
+		for (Long uid : pomocna) {
 			userRepository.deleteById(uid);
 		}
-		
+
 		System.out.println(oneDayAgo);
-		
+
 	}
-	
+
 }

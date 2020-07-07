@@ -52,8 +52,14 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
     
-//    @Column(name = "company_name")
-//    private String companyName;
+    @Column(name = "company_name")
+    private String companyName;
+    
+    @Column(name = "adress")
+    private String adress;
+    
+    @Column(name = "pib")
+    private int pib;
     
     @Column(name = "email")
     private String email;
@@ -283,6 +289,30 @@ public class User implements UserDetails {
 
 	public void setBlockedSlanjeZahteva(boolean blockedSlanjeZahteva) {
 		this.blockedSlanjeZahteva = blockedSlanjeZahteva;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getAdress() {
+		return adress;
+	}
+
+	public void setAdress(String adress) {
+		this.adress = adress;
+	}
+
+	public int getPib() {
+		return pib;
+	}
+
+	public void setPib(int pib) {
+		this.pib = pib;
 	}
 	
 }

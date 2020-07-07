@@ -37,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import rs.xml.agent.dto.AgentRegisterDTO;
+import rs.xml.agent.dto.AgentUpdateDTO;
 import rs.xml.agent.dto.EmailDTO;
 import rs.xml.agent.dto.UserDTO;
 import rs.xml.agent.dto.UserUpdateDTO;
@@ -123,8 +125,9 @@ public class AuthenticationController {
 		if (existUser != null) {
 			return new ResponseEntity<String>("User_with_that_name_already_exists", HttpStatus.BAD_REQUEST);
 		}
-
+		
 		User user = this.userService.save(userRequest);
+		
 		if (user == null) {
 			return new ResponseEntity<String>(
 					"This_password_is_on_the_common_password_list,_please_chose_another_password.",
@@ -139,6 +142,40 @@ public class AuthenticationController {
 		String username = tokenUtils.getUsernameFromToken(token);
 
 		User u = userService.update(userDTO, username);
+
+		return new ResponseEntity<User>(u, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(method = POST, value = "/agent")
+	public ResponseEntity<?> addAgent(@RequestBody @Valid AgentRegisterDTO userRequest,
+			UriComponentsBuilder ucBuilder) {
+
+		User existUser = this.userService.findByUsername(userRequest.getUsername());
+		if (existUser != null) {
+			return new ResponseEntity<String>("User_with_that_name_already_exists", HttpStatus.BAD_REQUEST);
+		}
+		if(userRequest.getCompanyName() == null || userRequest.getCompanyName()=="") {
+			if( userRequest.getFirstname() == null || userRequest.getLastname()==null || userRequest.getFirstname() == "" || userRequest.getLastname() == "") {
+				return new ResponseEntity<String>("Morate uneti ili ime kompanije ili ime i prezime!", HttpStatus.BAD_REQUEST);
+			}
+		}
+		User user = this.userService.saveAgent(userRequest);
+		
+		if (user == null) {
+			return new ResponseEntity<String>(
+					"This_password_is_on_the_common_password_list,_please_chose_another_password.",
+					HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<User>(user, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/agent")
+	public ResponseEntity<?> updateAgent(@RequestBody AgentUpdateDTO userDTO, HttpServletRequest request) {
+		String token = request.getHeader("Auth").substring(7);
+		String username = tokenUtils.getUsernameFromToken(token);
+
+		User u = userService.updateAgent(userDTO, username);
 
 		return new ResponseEntity<User>(u, HttpStatus.OK);
 	}

@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import rs.xml.auth.dto.AgentRegisterDTO;
+import rs.xml.auth.dto.AgentUpdateDTO;
 import rs.xml.auth.dto.UserUpdateDTO;
 import rs.xml.auth.exceptions.NotFoundException;
 import rs.xml.auth.model.Role;
@@ -73,7 +75,10 @@ public class UserService {
 		u.setActivated(false);
 //		u.setAds(0);
 		u.setOwes(0);
-
+		u.setActivated(false);
+		u.setAdress("");
+		u.setCompanyName("");
+		u.setPib(0);
 		List<Role> roles = roleService.findByname("ROLE_USER");
 		u.setRoles(roles);
 
@@ -82,7 +87,39 @@ public class UserService {
 		u = this.userRepository.save(u);
 		return u;
 	}
-	
+
+	public User saveAgent(AgentRegisterDTO userRequest) {
+		User u = new User();
+		for (String pas : badPasswords) {
+			if (userRequest.getPassword().equals(pas)) {
+				return null;
+			}
+		}
+		u.setUsername(userRequest.getUsername());
+		u.setSalt(getNextSalt());
+		u.setPassword(passwordEncoder.encode(userRequest.getPassword() + u.getSalt()));
+		u.setFirstName(userRequest.getFirstname());
+		u.setLastName(userRequest.getLastname());
+		u.setEmail("");
+		u.setAccepted(true);
+		u.setBlocked(false);
+		u.setDeleted(false);
+		u.setCanceled(0);
+//		u.setAds(0);
+		u.setOwes(0);
+		u.setActivated(true);
+		u.setAdress(userRequest.getAdress());
+		u.setCompanyName(userRequest.getCompanyName());
+		u.setPib(userRequest.getPib());
+		List<Role> roles = roleService.findByname("ROLE_AGENT");
+		u.setRoles(roles);
+
+		u.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
+
+		u = this.userRepository.save(u);
+		return u;
+	}
+
 	public User save(User user) {
 		return userRepository.save(user);
 	}
@@ -101,6 +138,32 @@ public class UserService {
 
 		if (userDTO.getLastname() != null && userDTO.getLastname() != "") {
 			u.setLastName(userDTO.getLastname());
+		}
+		u = userRepository.save(u);
+		return u;
+
+	}
+
+	public User updateAgent(AgentUpdateDTO userDTO, String username) {
+
+		User u = this.findByUsername(username);
+
+		if (userDTO.getCompanyName() != null && userDTO.getCompanyName() != "") {
+			u.setEmail(userDTO.getCompanyName());
+		}
+
+		if (userDTO.getFirstname() != null && userDTO.getFirstname() != "") {
+			u.setFirstName(userDTO.getFirstname());
+		}
+
+		if (userDTO.getLastname() != null && userDTO.getLastname() != "") {
+			u.setLastName(userDTO.getLastname());
+		}
+		if (userDTO.getAdress() != null && userDTO.getAdress() != "") {
+			u.setAdress(userDTO.getAdress());
+		}
+		if (userDTO.getPib() != 0) {
+			u.setPib(userDTO.getPib());
 		}
 		u = userRepository.save(u);
 		return u;
@@ -215,11 +278,11 @@ public class UserService {
 		return u;
 
 	}
-	
-	public User addDebt(Long uid,int bill) {
+
+	public User addDebt(Long uid, int bill) {
 		User u = userRepository.findById(uid)
 				.orElseThrow(() -> new NotFoundException("User with id " + uid + " does not exist"));
-		u.setOwes(u.getOwes()+bill);
+		u.setOwes(u.getOwes() + bill);
 		userRepository.save(u);
 		return u;
 	}

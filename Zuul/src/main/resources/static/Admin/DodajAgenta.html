@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User registration</title>
+<script src="js/jquery-3.5.1.min.js"></script>
+<script  src="js/bootstrap.min.js"></script>
+<script src="js/DodajAgenta.js"></script>
+<link rel="stylesheet" href="bootstrap.min.css">
+<link rel="stylesheet" href="../styles.css">
+<link rel="shortcut icon" href="#" />
+
+
+</head>
+<body>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    	<h5 class="my-0 mr-md-auto font-weight-normal">User registration</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="Index.html">Back</a>
+        </nav>
+	</div>
+<form id="form-add-user" class="col-sm-12">
+
+  <div class="form-group row">
+    	<label for="input-username" class="col-sm-12 col-form-label">Username</label>
+    <div class="col-sm-6">
+      <input type="text"  class="form-control" id="input-username" placeholder="Username" required>
+    </div>
+  </div>
+	
+	<div class="form-group row">
+		<label for="input-firstname" class="col-sm-12 col-form-label">First name</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="input-firstname" placeholder="First name">
+	    </div>
+	</div>
+	<div class="form-group row">
+		<label for="input-lastname" class="col-sm-12 col-form-label">Last name</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="input-lastname" placeholder="Last name">
+	    </div>
+	</div>
+	<div class="form-group row">
+		<label for="input-companyName" class="col-sm-12 col-form-label">Company name</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" id="input-companyName" placeholder="Company name">
+	    </div>
+	</div>
+	<div class="form-group row">
+		<label for="input-password" class="col-sm-12 col-form-label">Password</label>
+	    <div class="col-sm-6">
+	      <input type="password" min="8" class="form-control" id="input-password" placeholder="Password" required>
+	    </div>
+	</div>
+	  <div class="form-group row">
+    	<label for="input-adress" class="col-sm-12 col-form-label">Adress</label>
+    <div class="col-sm-6">
+      <input type="text"  class="form-control" id="input-adress" placeholder="Adress" required>
+    </div>
+  </div>
+    <div class="form-group row">
+    	<label for="input-pib" class="col-sm-12 col-form-label">PIB</label>
+    <div class="col-sm-6">
+      <input type="number"  class="form-control" id="input-pib" placeholder="PIB" required>
+    </div>
+  </div>
+	
+	<input type="submit" value="Dodaj">
+</form>
+	
+</body>
+</html>
