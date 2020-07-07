@@ -67,6 +67,13 @@ public class User implements UserDetails {
     @Column(name = "canceled")
     private int canceled; // koliko puta je otkazao zahtev
     
+    @Column(name = "blocked_postavljanje_oglasa")
+    private boolean blockedPostavljanjeOglasa;
+
+    @Column(name = "blocked_slanje_zahteva")
+    private boolean blockedSlanjeZahteva;
+    
+    
 //    @Column(name = "ads")
 //    private int ads; // broj postavljenih oglasa
     
@@ -261,4 +268,21 @@ public class User implements UserDetails {
         return grantedAuthorities;
         
     }
+
+	public boolean isBlockedPostavljanjeOglasa() {
+		return blockedPostavljanjeOglasa;
+	}
+
+	public void setBlockedPostavljanjeOglasa(boolean blockedPostavljanjeOglasa) {
+		this.blockedPostavljanjeOglasa = blockedPostavljanjeOglasa;
+	}
+
+	public boolean isBlockedSlanjeZahteva() {
+		return blockedSlanjeZahteva;
+	}
+
+	public void setBlockedSlanjeZahteva(boolean blockedSlanjeZahteva) {
+		this.blockedSlanjeZahteva = blockedSlanjeZahteva;
+	}
+	
 }

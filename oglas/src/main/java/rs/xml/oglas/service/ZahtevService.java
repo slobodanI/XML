@@ -38,38 +38,38 @@ public class ZahtevService {
 	ChatClient chatClient;
 	@Autowired
 	UtilClass utilClass;
-	
+
 	public Zahtev findOne(Long id) {
-		Zahtev zahtev = zahtevRepository.findById(id).orElseThrow(() -> new NotFoundException("Zahtev with id:" +id+ " does not exist!"));
-		return zahtev;//.orElseGet(null);
+		Zahtev zahtev = zahtevRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Zahtev with id:" + id + " does not exist!"));
+		return zahtev;// .orElseGet(null);
 	}
 
 	public List<Zahtev> findAll() {
 		return zahtevRepository.findAll();
 	}
+
 	public Collection<Zahtev> findPending() {
 		return zahtevRepository.findPending();
 	}
-	
 
 	public Page<Zahtev> findAll(Pageable page) {
 		return zahtevRepository.findAll(page);
 	}
-	
+
 	public Zahtev save(Zahtev zahtev) {
 		return zahtevRepository.save(zahtev);
 	}
-	
+
 	// paziti i na reserved,kad rucno unese upozoriti ga ako vec ima reserved
 	public String save(KorpaDTO korpaDTO, String username) {
-		
-		long millis=System.currentTimeMillis();  
-	    Date dateNow=new Date(millis);
-	    
+
+		long millis = System.currentTimeMillis();
+		Date dateNow = new Date(millis);
+
 		if (korpaDTO.getOglasi() == null) {
 			return "Nema oglasa u korpi!";
 		}
-		
 
 		// da li korisnik zeli oglase u bundle
 		if (korpaDTO.isBundle()) {
@@ -90,7 +90,7 @@ public class ZahtevService {
 					pomLista.add(oglas.getUsername());
 				}
 			}
-			if(datumOd.after(datumDo)) {
+			if (datumOd.after(datumDo)) {
 				return "Niste dobro uneli datum!";
 			}
 
@@ -110,7 +110,6 @@ public class ZahtevService {
 						zahtev.setIzvestaj(false);
 						zahtev.setChatId(null);
 						zahtev.setVremePodnosenja(dateNow);
-						
 
 						zahtev.setStatus(ZahtevStatus.PENDING);
 						zahtev.setPodnosilacUsername(username);
@@ -123,7 +122,6 @@ public class ZahtevService {
 			}
 			return "Kreirani zahtevi sa vise oglasa";
 
-
 		} else {
 			List<Oglas> listaOglasa = new ArrayList<Oglas>();
 			Date datumOd = new Date(millis);
@@ -131,10 +129,10 @@ public class ZahtevService {
 			for (OglasUKorpiDTO og1 : korpaDTO.getOglasi()) {
 				Oglas oglas = oglasRepository.getOne(og1.getOglasId());
 				datumOd = new Date(og1.getOd().getTime());
-				datumDo = new Date(og1.getDo().getTime()); 
+				datumDo = new Date(og1.getDo().getTime());
 				listaOglasa.add(oglas);
 			}
-			if(datumOd.after(datumDo)) {
+			if (datumOd.after(datumDo)) {
 				return "Niste dobro uneli datum!";
 			}
 
@@ -227,7 +225,6 @@ public class ZahtevService {
 	public Zahtev acceptZahtev(Long id, String username, String permisije) {
 		Zahtev zahtev = this.findOne(id);
 
-
 		List<Zahtev> zahtevi = zahtevRepository.findPending();
 		// provera svih postojecih PENDING zahteva,
 		// da li postoji zahtev u odabranom vremenskom period
@@ -246,53 +243,62 @@ public class ZahtevService {
 				}
 
 				if (flag == false) {
-					
-						z.setStatus(ZahtevStatus.CANCELED);
-						zahtevRepository.save(z);
-					
+
+					z.setStatus(ZahtevStatus.CANCELED);
+					zahtevRepository.save(z);
+
 				}
 			}
 		}
 		zahtev.setStatus(ZahtevStatus.PAID);
 		zahtevRepository.save(zahtev);
-		
+
 		// kreiranje chat-a
 		ChatNewDTO chatNewDTO = new ChatNewDTO();
 		chatNewDTO.setReceiverUsername(username);
 		chatNewDTO.setSendereUsername(zahtev.getPodnosilacUsername());
-		
+
 		try {
 			ChatDTO chatDTO = chatClient.postChat(chatNewDTO, username, permisije);
 		} catch (Exception e) {
 			System.out.println("***ERROR: zahtevService > acceptZahtev > chatClient ");
 			throw new ServiceNotAvailable("Chat service is not available");
 		}
-		
+
 		return zahtev;
 	}
 
 	public Zahtev declineZahtev(Long id) {
 		Zahtev z = this.findOne(id);
-		
+
 		z.setStatus(ZahtevStatus.CANCELED);
 		zahtevRepository.save(z);
 		return z;
 	}
+
+	public Zahtev cancelZahtev(Long id) {
+		Zahtev z = this.findOne(id);
+
+		z.setStatus(ZahtevStatus.CANCELED);
+		zahtevRepository.save(z);
 	
+		return z;
+	}
+
 	@Scheduled(cron = "0 0 * ? * *")
 	public void cancelAfter24h() {
 		List<Zahtev> listZ = zahtevRepository.findPending();
-		
-		if(listZ.isEmpty()) {
+
+		if (listZ.isEmpty()) {
 			return;
 		}
-		long millis=System.currentTimeMillis()-(24 * 60 * 60 * 1000);
-		Date oneHourAgo=new Date(millis);
-		
+		long millis = System.currentTimeMillis() - (24 * 60 * 60 * 1000);
+		Date oneHourAgo = new Date(millis);
+
 		System.out.println(oneHourAgo);
-		for(Zahtev z : listZ) {
+		for (Zahtev z : listZ) {
 			System.out.println(z.getVremePodnosenja());
-			if(z.getVremePodnosenja().before(oneHourAgo)) {
+			if (z.getVremePodnosenja().before(oneHourAgo)) {
 				z.setStatus(ZahtevStatus.CANCELED);
 				zahtevRepository.save(z);
 			}
@@ -311,9 +317,5 @@ public class ZahtevService {
 		Zahtev zahtev = zahtevRepository.findOglasByZid(zahtevId);
 		return zahtev;
 	}
-	
-	
-	
-	
 
 }

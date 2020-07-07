@@ -31,90 +31,88 @@ import rs.xml.agent.dto.SlikaDTO;
 @Entity
 @Table(name = "OGLAS")
 public class Oglas {
-	
+
 	@Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-	
-	@Column(name="oid")
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name = "oid")
 	private String oid;
-	
-	@Column(name="mesto")
+
+	@Column(name = "mesto")
 	private String mesto;
-	
-	@Column(name="marka")
+
+	@Column(name = "marka")
 	private String marka;
-	
-	@Column(name="model")
+
+	@Column(name = "model")
 	private String model;
-	
-	@Column(name="gorivo")
+
+	@Column(name = "gorivo")
 	private String gorivo;
-	
-	@Column(name="menjac")
+
+	@Column(name = "menjac")
 	private String menjac;
-	
-	@Column(name="klasa")
+
+	@Column(name = "klasa")
 	private String klasa;
-	
-	@Column(name="cena")
+
+	@Column(name = "cena")
 	private int cena;
-	
+
 	@OneToOne()
-	@JoinColumn(name = "cenovnik_id",referencedColumnName = "id")
+	@JoinColumn(name = "cenovnik_id", referencedColumnName = "id")
 	private Cenovnik cenovnik;
-	
-	@Column(name="kilometraza")
+
+	@Column(name = "kilometraza")
 	private int kilometraza;
-	
-	@Column(name="planirana_kilometraza")
+
+	@Column(name = "planirana_kilometraza")
 	private int planiranaKilometraza;
-	
-	@Column(name="sedista_za_decu")
+
+	@Column(name = "sedista_za_decu")
 	private int sedistaZaDecu;
-	
+
 	@OneToMany(mappedBy = "oglas", cascade = CascadeType.ALL)
-    private Set<Slika> slike = new HashSet<Slika>();
-	
-	@Column(name="osiguranje")
+	private Set<Slika> slike = new HashSet<Slika>();
+
+	@Column(name = "osiguranje")
 	private boolean osiguranje;
-	
-	@Column(name="username")
+
+	@Column(name = "username")
 	private String username;
-	
-	@Column(name="Od")
+
+	@Column(name = "Od")
 	private Date Od;
-	
-	@Column(name="Do")
+
+	@Column(name = "Do")
 	private Date Do;
-	
-	@Column(name="deleted")
+
+	@Column(name = "deleted")
 	private boolean deleted;
-	
+
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "OGLAS_ZAHTEV",
-            joinColumns = @JoinColumn(name = "oglas_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "zahtev_id", referencedColumnName = "id"))
+	@JoinTable(name = "OGLAS_ZAHTEV", joinColumns = @JoinColumn(name = "oglas_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "zahtev_id", referencedColumnName = "id"))
 	private List<Zahtev> zahtevi = new ArrayList<Zahtev>();
-	
+
 	public Oglas() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Oglas(String mesto, String marka, String model, String gorivo, String menjac, String klasa, int cena, Cenovnik cenovnik,
-			int kilometraza, int planiranaKilometraza, int sedistaZaDecu, Set<Slika> slike, boolean osiguranje,
-			String username, Date od, Date do1, List<Zahtev> zahtevi) {
+	public Oglas(String mesto, String marka, String model, String gorivo, String menjac, String klasa, int cena,
+			Cenovnik cenovnik, int kilometraza, int planiranaKilometraza, int sedistaZaDecu, Set<Slika> slike,
+			boolean osiguranje, String username, Date od, Date do1, List<Zahtev> zahtevi) {
 		super();
-		this.mesto = mesto; 
+		this.mesto = mesto;
 		this.marka = marka;
 		this.model = model;
 		this.gorivo = gorivo;
 		this.menjac = menjac;
 		this.klasa = klasa;
 		this.cenovnik = cenovnik;
-		this.cena=cenovnik.getCenaZaDan();
+		this.cena = cenovnik.getCenaZaDan();
 		this.kilometraza = kilometraza;
 		this.planiranaKilometraza = planiranaKilometraza;
 		this.sedistaZaDecu = sedistaZaDecu;
@@ -126,7 +124,7 @@ public class Oglas {
 		this.deleted = false; // novi oglas nije obrisan
 		this.zahtevi = zahtevi;
 	}
-	
+
 	public Oglas(NewOglasDTO oglasDTO) {
 		super();
 //		this.mesto = oglasDTO.getMesto();
@@ -136,36 +134,36 @@ public class Oglas {
 //		this.menjac = oglasDTO.getMenjac();
 //		this.klasa = oglasDTO.getKlasa();
 		this.cena = oglasDTO.getCena();
-		this.cenovnik = null;//oglasDTO.getCenovnik();
+		this.cenovnik = null;// oglasDTO.getCenovnik();
 		this.kilometraza = oglasDTO.getKilometraza();
 		this.planiranaKilometraza = oglasDTO.getPlaniranaKilometraza();
 		this.sedistaZaDecu = oglasDTO.getBrSedistaZaDecu();
-		for(SlikaDTO slikaDTO: oglasDTO.getSlike()) {
-			//KADA UPISUJES U BAZU SKLONI 'data:image/jpeg;base64,' a kad vracas sliku dodaj 'data:image/jpeg;base64,'			
-			//System.out.println("SRC SLIKE :"+slikaDTO.slika()); // data:image/jpeg;base64,/9j/..... split na ,
+		for (SlikaDTO slikaDTO : oglasDTO.getSlike()) {
+			// KADA UPISUJES U BAZU SKLONI 'data:image/jpeg;base64,' a kad vracas sliku
+			// dodaj 'data:image/jpeg;base64,'
+			// System.out.println("SRC SLIKE :"+slikaDTO.slika()); //
+			// data:image/jpeg;base64,/9j/..... split na ,
 			String split[] = slikaDTO.getSlika().split(",");
-			//slikaDTO.setSlika(split[1]);
-			
+			// slikaDTO.setSlika(split[1]);
+
 			byte[] imageByte;
 			Decoder decoder = Base64.getDecoder();
-	        imageByte = decoder.decode(split[1]);
-			
+			imageByte = decoder.decode(split[1]);
+
 			Slika slika = new Slika();
 			slika.setOglas(this);
 			slika.setSlika(imageByte);
 			this.slike.add(slika);
 		}
-		
-		
-		
+
 		this.osiguranje = oglasDTO.isOsiguranje();
 		this.username = null;
 		this.Od = oglasDTO.getOD();
 		this.Do = oglasDTO.getDO();
 		this.deleted = false; // novi oglas nije obrisan
-		
+
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -261,7 +259,7 @@ public class Oglas {
 	public void setSedistaZaDecu(int sedistaZaDecu) {
 		this.sedistaZaDecu = sedistaZaDecu;
 	}
-	
+
 	public Set<Slika> getSlike() {
 		return slike;
 	}
@@ -326,6 +324,4 @@ public class Oglas {
 		this.oid = oid;
 	}
 
-	
-	
 }

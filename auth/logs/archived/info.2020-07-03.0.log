@@ -1,0 +1,2 @@
+2020-06-27 11:20:15 [main] INFO  rs.xml.auth.AuthApplication - No active profile set, falling back to default profiles: default
+2020-06-27 11:20:50 [main] INFO  rs.xml.auth.AuthApplication - Started AuthApplication in 43.02 seconds (JVM running for 45.096)

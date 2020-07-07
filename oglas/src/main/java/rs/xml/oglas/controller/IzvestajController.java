@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.oglas.client.AuthClient;
+import rs.xml.oglas.client.UpdateUserDebtDTO;
 import rs.xml.oglas.dto.IzvestajDTO;
 import rs.xml.oglas.dto.NewIzvestajDTO;
+import rs.xml.oglas.model.Cenovnik;
 import rs.xml.oglas.model.Izvestaj;
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.Zahtev;
@@ -47,6 +50,9 @@ public class IzvestajController {
 	
 	@Autowired
 	ZahtevRepository zahtevRepository;
+	
+	@Autowired
+	AuthClient authClient;
 	
 	@Autowired 
 	UtilClass utilClass;
@@ -84,7 +90,7 @@ public class IzvestajController {
 	@PostMapping("/izvestaj")
 	@PreAuthorize("hasAuthority('MANAGE_IZVESTAJ')")
 	public ResponseEntity<?> postIzvestaj(@RequestBody @Valid NewIzvestajDTO izvestajDTO, HttpServletRequest request){
-		
+		String token = request.getHeader("Auth");
 		String username = request.getHeader("username");
 		Zahtev zahtev = zahtevService.findOne(izvestajDTO.getZahtevId());
 		
@@ -122,6 +128,18 @@ public class IzvestajController {
 		}
 		
 		Izvestaj izvestaj1 = izvestajService.save(izvestajDTO, username);
+		
+		Oglas oglas = oglasService.findOne(izvestajDTO.getOglasId());
+		Cenovnik cen = oglas.getCenovnik();
+		if(oglas.getPlaniranaKilometraza()< izvestajDTO.getPredjeniKilometri()) {
+			UpdateUserDebtDTO updDTO = new UpdateUserDebtDTO();
+			updDTO.setUsername(zahtev.getPodnosilacUsername());
+			updDTO.setDebt((izvestajDTO.getPredjeniKilometri()-oglas.getPlaniranaKilometraza())*cen.getCenaPoKilometru());
+			
+			authClient.putUserDebt(updDTO, token);
+			
+		}
+		
 		logger.info("Created izvestaj with id:" +izvestaj1.getId()+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
 		if(izvestaji.size()+1  == zahtev.getOglasi().size()) {
 			
@@ -134,6 +152,4 @@ public class IzvestajController {
 		
 	}
 	
-	
-
 }

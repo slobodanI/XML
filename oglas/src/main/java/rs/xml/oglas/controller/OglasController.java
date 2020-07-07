@@ -1,12 +1,8 @@
 package rs.xml.oglas.controller;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Base64.Encoder;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +10,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +25,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.xml.oglas.client.AuthClient;
+import rs.xml.oglas.client.UserDTO;
 import rs.xml.oglas.dto.NewOglasDTO;
 import rs.xml.oglas.dto.OglasDTO;
 import rs.xml.oglas.dto.OglasDTOsearch;
-import rs.xml.oglas.dto.SlikaDTO;
+import rs.xml.oglas.model.Cenovnik;
 import rs.xml.oglas.model.Oglas;
-import rs.xml.oglas.model.Slika;
 import rs.xml.oglas.service.CenovnikService;
 import rs.xml.oglas.service.OglasService;
 import rs.xml.oglas.service.SlikaService;
@@ -45,11 +41,9 @@ import rs.xml.oglas.util.UtilClass;
 public class OglasController {
 
 	final static Logger logger = LoggerFactory.getLogger(OglasController.class);
-	
+
 	/*
-	 * TODO: 
-	 * -dodaj cenovnik
-	 * -da li da vracam brisane oglase metodom findAll ???
+	 * TODO: -dodaj cenovnik -da li da vracam brisane oglase metodom findAll ???
 	 */
 
 	@Autowired
@@ -61,27 +55,29 @@ public class OglasController {
 	@Autowired
 	SlikaService slikaService;
 	
+	@Autowired 
+	AuthClient authClient;
+
 	@Autowired
 	UtilClass utilClass;
 
 	@Autowired
 	HttpServletRequest request;
-	
-	
+
 	@GetMapping("/oglas")
 	public ResponseEntity<?> getOglasi(@RequestParam(required = false, defaultValue = "nema") String filter) {
 		// String ip = InetAddress.getLocalHost().getHostAddress();
-		
+
 		String username = request.getHeader("username");
 		List<Oglas> oglasList = new ArrayList<Oglas>();
-		
-		if(filter.equals("moje")) {
+
+		if (filter.equals("moje")) {
 			oglasList = oglasService.findMyOglasi(username);
 			List<OglasDTOsearch> oglasListDTO = new ArrayList<OglasDTOsearch>();
-			for(Oglas og: oglasList) {
+			for (Oglas og : oglasList) {
 				OglasDTOsearch oDTO = new OglasDTOsearch(og);
 				int suma = 0;
-				int broj  = 0;
+				int broj = 0;
 				float d = 0;
 				int km = 0;
 				try {
@@ -94,15 +90,15 @@ public class OglasController {
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
-				if(broj != 0) {
-				 d = (float) suma/broj;
+				if (broj != 0) {
+					d = (float) suma / broj;
 				}
-				
+
 				try {
 					km = oglasService.getKilometri(og.getId());
 				} catch (Exception e) {
 					// TODO: handle exception
-				}			
+				}
 				oDTO.setOcena2(d);
 				oDTO.setPredjenaInt(km);
 				oDTO.setBrojOcena(broj);
@@ -111,32 +107,32 @@ public class OglasController {
 			}
 
 			return new ResponseEntity<>(oglasListDTO, HttpStatus.OK);
-			
-		}else {
+
+		} else {
 			oglasList = oglasService.findAll();
 			List<OglasDTO> oglasListDTO = new ArrayList<OglasDTO>();
-			for(Oglas og: oglasList) {
+			for (Oglas og : oglasList) {
 				OglasDTO oDTO = new OglasDTO(og);
 //				oDTO = utilClass.escapeOglasDTO(oDTO);
 				oglasListDTO.add(oDTO);
 			}
 			return new ResponseEntity<>(oglasListDTO, HttpStatus.OK);
 		}
-		
 
 	}
 
 	@GetMapping("/oglas/{oid}")
 	public ResponseEntity<?> getOglas(@PathVariable Long oid) {
 		String username = request.getHeader("username");
-		
+
 		Oglas oglas = oglasService.findOne(oid);
 
 		if (oglas == null || oglas.isDeleted()) {
-			logger.warn("NOT_FOUND GET Oglas, Oglas with id:" +oid+ " is deleted, By username:" + username + ", IP:" + request.getRemoteAddr());
-			return new ResponseEntity<String>("Oglas with id:" +oid+ " does not exist!", HttpStatus.NOT_FOUND);
+			logger.warn("NOT_FOUND GET Oglas, Oglas with id:" + oid + " is deleted, By username:" + username + ", IP:"
+					+ request.getRemoteAddr());
+			return new ResponseEntity<String>("Oglas with id:" + oid + " does not exist!", HttpStatus.NOT_FOUND);
 		}
-				
+
 		OglasDTO oglasDTO = new OglasDTO(oglas);
 //		oglasDTO = utilClass.escapeOglasDTO(oglasDTO);
 		return new ResponseEntity<>(oglasDTO, HttpStatus.OK);
@@ -144,124 +140,144 @@ public class OglasController {
 
 	@PostMapping("/oglas")
 	@PreAuthorize("hasAuthority('CREATE_OGLAS')")
-    public ResponseEntity<?> postOglas(@RequestBody @Valid NewOglasDTO oglasDTO) {
+	public ResponseEntity<?> postOglas(@RequestBody @Valid NewOglasDTO oglasDTO) {
 		String username = request.getHeader("username");
 		String permisije = request.getHeader("permissions");
-		
-		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
-			logger.warn("BAD_REQUEST POST Oglas, Oglas payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
-			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
+		String token = request.getHeader("Auth");
+		UserDTO userdto =authClient.getUser(token);
+		if (userdto.isBlockedPostavljanjeOglasa()) {
+			return new ResponseEntity<String>("Korisniku je zabranjeno postavljanje oglasa!", HttpStatus.FORBIDDEN);
 		}
-			
+		
+		if (oglasDTO.getOD().after(oglasDTO.getDO())) {
+			logger.warn("BAD_REQUEST POST Oglas, Oglas payload is bad, By username:" + username + ", IP:"
+					+ request.getRemoteAddr());
+			return new ResponseEntity<String>("OD mora biti pre DO datuma!", HttpStatus.BAD_REQUEST);
+		}
+
 		Oglas oglas = new Oglas(oglasDTO);
 		oglasService.createOglasWithFeignClient(oglas, oglasDTO);
+		Cenovnik cen = cenovnikService.findOne(oglasDTO.getCenovnik());
+		oglas.setCenovnik(cen);
+		oglas.setCena(cen.getCenaZaDan());
+		if (cen.getCenaOsiguranja() > 0) {
+			oglas.setOsiguranje(true);
+		}
+
 //		if(!oglasService.createOglasWithFeignClient(oglas, oglasDTO)) {
 //			return new ResponseEntity<String>("Ne_postoje_proslenjeni_model/marka/klasa/mesto/gorivo/menjac", HttpStatus.BAD_REQUEST);
 //		}
 		oglas.setUsername(username);
-		//ako je obican user poslao zahtev
-		if(permisije.contains("ROLE_USER") && !permisije.contains("ROLE_AGENT") && !permisije.contains("ROLE_ADMIN")) {			
+		// ako je obican user poslao zahtev
+		if (permisije.contains("ROLE_USER") && !permisije.contains("ROLE_AGENT") && !permisije.contains("ROLE_ADMIN")) {
 			// da li ima 3 aktivna oglasa?
-			oglas = oglasService.saveAsBasicUser(oglas, username);			
-			if(oglas == null) {
-				logger.warn("FORBIDDEN POST Oglas, User has 3 active oglas, By username:" + username + ", IP:" + request.getRemoteAddr());
+			oglas = oglasService.saveAsBasicUser(oglas, username);
+			if (oglas == null) {
+				logger.warn("FORBIDDEN POST Oglas, User has 3 active oglas, By username:" + username + ", IP:"
+						+ request.getRemoteAddr());
 				return new ResponseEntity<String>("Korisnik_ima_3_aktivna_oglasa", HttpStatus.FORBIDDEN);
 			}
-			logger.info("Created Oglas by username: " +username+ ", IP:" + request.getRemoteAddr());
-		} 
-		//ako je agent ili admin
+			logger.info("Created Oglas by username: " + username + ", IP:" + request.getRemoteAddr());
+		}
+		// ako je agent ili admin
 		else {
 			oglas = oglasService.save(oglas);
-			logger.info("Created Oglas by username: " +username+ ", IP:" + request.getRemoteAddr());
+			logger.info("Created Oglas by username: " + username + ", IP:" + request.getRemoteAddr());
 		}
-		
+
 		oglas.setUsername(username);
 		oglas.setSlike(null);
 		return new ResponseEntity<>(oglas, HttpStatus.OK);
-    }
-	
+	}
+
 	@PutMapping("/oglas/{oid}")
 	@PreAuthorize("hasAuthority('MANAGE_OGLAS')")
 	public ResponseEntity<?> updateOglas(@PathVariable Long oid, @RequestBody @Valid NewOglasDTO oglasDTO) {
 		String username = request.getHeader("username");
 		String permisije = request.getHeader("permissions");
-		
-		if(oglasDTO.getOD().after(oglasDTO.getDO())) {
-			logger.warn("BAD_REQUEST PUT Oglas, Oglas payload is bad, By username:" + username + ", IP:" + request.getRemoteAddr());
-			return new ResponseEntity<String>("OD mora biti pre DO datuma!",HttpStatus.BAD_REQUEST);
+
+		if (oglasDTO.getOD().after(oglasDTO.getDO())) {
+			logger.warn("BAD_REQUEST PUT Oglas, Oglas payload is bad, By username:" + username + ", IP:"
+					+ request.getRemoteAddr());
+			return new ResponseEntity<String>("OD mora biti pre DO datuma!", HttpStatus.BAD_REQUEST);
 		}
 
 		Oglas oglas = oglasService.updateOglas(oid, oglasDTO, username);
-		if(oglas == null) {
-			logger.warn("FORBIDDEN PUT Oglas, Oglas with id:" +oid +" is not yours, By username:" + username + ", IP:" + request.getRemoteAddr());
+		if (oglas == null) {
+			logger.warn("FORBIDDEN PUT Oglas, Oglas with id:" + oid + " is not yours, By username:" + username + ", IP:"
+					+ request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_oglas!", HttpStatus.FORBIDDEN);
 		}
-		logger.info("Updated Oglas with id:" +oid+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
-		
+		logger.info("Updated Oglas with id:" + oid + " by username: " + username + ", IP:" + request.getRemoteAddr());
+
 		OglasDTO oglasDTOret = new OglasDTO(oglas);
 		return new ResponseEntity<>(oglasDTOret, HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("oglas/{oid}")
 	@PreAuthorize("hasAuthority('MANAGE_OGLAS')")
 	public ResponseEntity<?> deleteOglas(@PathVariable Long oid) {
 		String username = request.getHeader("username");
-			
-		if(oglasService.deleteOglas(oid, username) == null) {
-			logger.warn("FORBIDDEN DELETE Oglas, Oglas with id:" +oid+ " is not yours, By username:" + username + ", IP:" + request.getRemoteAddr());
+
+		if (oglasService.deleteOglas(oid, username) == null) {
+			logger.warn("FORBIDDEN DELETE Oglas, Oglas with id:" + oid + " is not yours, By username:" + username
+					+ ", IP:" + request.getRemoteAddr());
 			return new ResponseEntity<String>("Nije_tvoj_oglas!", HttpStatus.FORBIDDEN);
 		}
-		logger.info("DELETED Oglas with id:" +oid+ " by username: " +username+ ", IP:" + request.getRemoteAddr());
-		
+		logger.info("DELETED Oglas with id:" + oid + " by username: " + username + ", IP:" + request.getRemoteAddr());
+
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	// sto se tice datuma, vraticu oglas samo ako oglas OD-DO sadrzi trazeni OD-DO 
+
+	// sto se tice datuma, vraticu oglas samo ako oglas OD-DO sadrzi trazeni OD-DO
 	@GetMapping("/search")
-	public ResponseEntity<?> search(
-			@RequestParam(required = true) String mesto,
-			@RequestParam(required = true) String Od,
-			@RequestParam(required = true) String Do,
+	public ResponseEntity<?> search(@RequestParam(required = true) String mesto,
+			@RequestParam(required = true) String Od, @RequestParam(required = true) String Do,
 			@RequestParam(required = false, defaultValue = "nema") String marka, // ako nema default value, bude null
 			@RequestParam(required = false, defaultValue = "nema") String model,
 			@RequestParam(required = false, defaultValue = "nema") String menjac,
 			@RequestParam(required = false, defaultValue = "nema") String gorivo,
 			@RequestParam(required = false, defaultValue = "nema") String klasa,
-			@RequestParam(required = false, defaultValue = "0") String predjena, //kilometraza
-			@RequestParam(required = false, defaultValue = "0") String planirana, //kilometraza
+			@RequestParam(required = false, defaultValue = "0") String predjena, // kilometraza
+			@RequestParam(required = false, defaultValue = "0") String planirana, // kilometraza
 			@RequestParam(required = false, defaultValue = "nema") String osiguranje,
-			@RequestParam(required = false, defaultValue = "0") String brSedZaDecu 
-			) {
-		
+			@RequestParam(required = false, defaultValue = "0") String brSedZaDecu,
+			@RequestParam(required = false, defaultValue = "0") String cenaOd,
+			@RequestParam(required = false, defaultValue = "0") String cenaDo) {
+
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		Date odDate;
 		Date doDate;
 		int predjenaInt;
-        int planiranaInt;
+		int planiranaInt;
 //        boolean osiguranjeBool;
-        int brSedZaDecuInt;
-        
-        try {
-            odDate = (Date) formatter.parse(Od);
-            doDate = (Date) formatter.parse(Do);
-            predjenaInt = Integer.parseInt(predjena);
-            planiranaInt = Integer.parseInt(planirana);
+		int brSedZaDecuInt;
+		int cenaOdInt;
+		int cenaDoInt;
+
+		try {
+			odDate = (Date) formatter.parse(Od);
+			doDate = (Date) formatter.parse(Do);
+			predjenaInt = Integer.parseInt(predjena);
+			planiranaInt = Integer.parseInt(planirana);
 //            osiguranjeBool = Boolean.parseBoolean(osiguranje);
-            brSedZaDecuInt = Integer.parseInt(brSedZaDecu);
-        } catch (ParseException | NumberFormatException e) {
-        	System.out.println("***Parametri za pretragu nisu dobro formirani!");
-            return new ResponseEntity<String>("Parametri_za_pretragu_nisu_dobro_formirani!",HttpStatus.BAD_REQUEST);
-        }
-        
+			brSedZaDecuInt = Integer.parseInt(brSedZaDecu);
+			cenaOdInt = Integer.parseInt(cenaDo);
+			cenaDoInt = Integer.parseInt(cenaDo);
+		} catch (ParseException | NumberFormatException e) {
+			System.out.println("***Parametri za pretragu nisu dobro formirani!");
+			return new ResponseEntity<String>("Parametri_za_pretragu_nisu_dobro_formirani!", HttpStatus.BAD_REQUEST);
+		}
+
 //        System.out.println(
 //        "mesto:"+mesto + "\nOd:"+odDate.toString() + "\nDo:"+doDate.toString() +
 //		"\nmarka:"+marka + "\nmodel:"+model + "\nmenjac:"+menjac + "\ngorivo:"+gorivo +"\nklasa:"+klasa +
 //		"\npredjena:"+predjenaInt + "\nplanirana:"+planiranaInt + "\nosiguranje:"+osiguranje + "\nbrSedZaDecu:"+brSedZaDecuInt);
-        
-        Collection<OglasDTOsearch> oglasi = oglasService.search(mesto, odDate, doDate, marka, model, menjac, gorivo, klasa,
-        														predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt);
-        return new ResponseEntity<Collection<OglasDTOsearch>>(oglasi, HttpStatus.OK);
+
+		Collection<OglasDTOsearch> oglasi = oglasService.search(mesto, odDate, doDate, marka, model, menjac, gorivo,
+				klasa, predjenaInt, planiranaInt, osiguranje, brSedZaDecuInt, cenaOdInt, cenaDoInt);
+		return new ResponseEntity<Collection<OglasDTOsearch>>(oglasi, HttpStatus.OK);
 //        RAD SA VREMENOM
 //      java.sql.Date proba = new java.sql.Date(odDate.getTime());        
 //      LocalDateTime asd = new LocalDateTime(odDate.getTime());
@@ -270,5 +286,5 @@ public class OglasController {
 //		System.out.println("***sql Date:" + proba); // ***sql Date:2020-06-01
 //		System.out.println("***LocalDate joda:" + ld); // ***LocalDate joda:2020-06-01
 	}
-	
+
 }

@@ -51,11 +51,10 @@ public class CenovnikController {
 
 		List<CenovnikDTO> cenovnikList = new ArrayList<CenovnikDTO>();
 
-			for(Cenovnik c : cenovnikService.findAllFromUser(username)) {
-				cenovnikList.add(new CenovnikDTO(c));
-			}
-		
-		
+		for (Cenovnik c : cenovnikService.findAllFromUser(username)) {
+			cenovnikList.add(new CenovnikDTO(c));
+		}
+
 		return new ResponseEntity<>(cenovnikList, HttpStatus.OK);
 	}
 
@@ -114,11 +113,10 @@ public class CenovnikController {
 		String token = request.getHeader("Auth").substring(7);
 //		String permisije = tokenUtils.getPermissionFromToken(token);
 		String username = tokenUtils.getUsernameFromToken(token);
-		
-		
+
 		List<Cenovnik> cenovnici = cenovnikService.findAll();
-		for(Cenovnik cen : cenovnici) {
-			if(cen.getName().equals((username + "-" +cenovnikDTO.getName()))) {
+		for (Cenovnik cen : cenovnici) {
+			if (cen.getName().equals((username + "-" + cenovnikDTO.getName()))) {
 				return new ResponseEntity<String>("Vec postoji cenovnik sa tim nazivom!", HttpStatus.BAD_REQUEST);
 			}
 		}

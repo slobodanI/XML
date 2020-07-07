@@ -26,6 +26,7 @@ public class OglasDTOsearch {
     double ocena;
     float ocena2;
     int brojOcena;
+    int cena;
     
     public OglasDTOsearch() {
 		// TODO Auto-generated constructor stub
@@ -194,6 +195,14 @@ public class OglasDTOsearch {
 
 	public void setBrojOcena(int brojOcena) {
 		this.brojOcena = brojOcena;
+	}
+
+	public int getCena() {
+		return cena;
+	}
+
+	public void setCena(int cena) {
+		this.cena = cena;
 	}
     
     

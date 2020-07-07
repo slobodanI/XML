@@ -83,24 +83,24 @@ public class UserService {
 		return u;
 	}
 	
-	public User update(UserUpdateDTO userDTO,String username) {
-		
+	public User update(UserUpdateDTO userDTO, String username) {
+
 		User u = this.findByUsername(username);
-		
-		if(userDTO.getEmail() != null && userDTO.getEmail() != "") {
+
+		if (userDTO.getEmail() != null && userDTO.getEmail() != "") {
 			u.setEmail(userDTO.getEmail());
 		}
-		
-		if(userDTO.getFirstname() != null && userDTO.getFirstname() != "") {
+
+		if (userDTO.getFirstname() != null && userDTO.getFirstname() != "") {
 			u.setFirstName(userDTO.getFirstname());
 		}
-		
-		if(userDTO.getLastname() != null && userDTO.getLastname() != "") {
+
+		if (userDTO.getLastname() != null && userDTO.getLastname() != "") {
 			u.setLastName(userDTO.getLastname());
 		}
 		u = userRepository.save(u);
 		return u;
-		
+
 	}
 	
 	public String getNextSalt() {

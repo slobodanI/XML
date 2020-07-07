@@ -52,6 +52,9 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
     
+//    @Column(name = "company_name")
+//    private String companyName;
+    
     @Column(name = "email")
     private String email;
 

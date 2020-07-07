@@ -12,52 +12,52 @@ import rs.xml.agent.model.Oglas;
 import rs.xml.agent.model.Slika;
 
 public class OglasDTO {
-	
+
 	private Long id;
-	
+
 	private String username;
-	
+
 	private String marka;
-	
+
 	private String model;
-	
+
 	private String gorivo;
-	
+
 	private String menjac;
-	
+
 	private String klasa;
-	
+
 	private String mesto;
-	
+
 	private int cena; // cena za dan + cena za osiguranje ako postoji
-	
+
 	private Long cenovnik; // ovo treba vremenom promeniti
-	
+
 	private int kilometraza;
-	
+
 	private int planiranaKilometraza;
-	
+
 	private boolean osiguranje;
-	
+
 	private int brSedistaZaDecu;
-	
+
 	private Date Od;
-	
+
 	private Date Do;
-	
+
 	private List<SlikaDTO> slike = new ArrayList<SlikaDTO>();
-	
+
 	private List<String> slikeString = new ArrayList<String>();
-	
+
 	private boolean deleted;
-	
+
 	public OglasDTO() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public OglasDTO(Oglas o) {
 		this.id = o.getId();
-		this.username=o.getUsername();
+		this.username = o.getUsername();
 		this.marka = o.getMarka();
 		this.model = o.getModel();
 		this.menjac = o.getMenjac();
@@ -66,14 +66,14 @@ public class OglasDTO {
 		this.gorivo = o.getGorivo();
 		this.cena = o.getCena();
 		this.kilometraza = o.getKilometraza();
-		this.planiranaKilometraza= o.getPlaniranaKilometraza();
+		this.planiranaKilometraza = o.getPlaniranaKilometraza();
 		this.osiguranje = o.isOsiguranje();
 		this.brSedistaZaDecu = o.getSedistaZaDecu();
 		this.Od = o.getOd();
 		this.Do = o.getDo();
-		this.cenovnik=o.getCenovnik().getId();
+		this.cenovnik = o.getCenovnik().getId();
 		this.deleted = o.isDeleted();
-		for(Slika s: o.getSlike()) {		
+		for (Slika s : o.getSlike()) {
 			String imageString;
 			Encoder encoder = Base64.getEncoder();
 			// radi i ako se kaze data:image/png
@@ -82,20 +82,20 @@ public class OglasDTO {
 			slikaDTO.setSlika("data:image/jpeg;base64," + imageString);
 			this.getSlike().add(slikaDTO);
 		}
-		if(o.getSlike().isEmpty()) {
-			slikeString=null;
+		if (o.getSlike().isEmpty()) {
+			slikeString = null;
 		} else {
 			Encoder encoder = Base64.getEncoder();
 			String imageString = "";
-			for(Slika slika : o.getSlike()) {
+			for (Slika slika : o.getSlike()) {
 				imageString = encoder.encodeToString(slika.getSlika());
 				this.slikeString.add("data:image/jpeg;base64," + imageString);
 			}
 //			imageString = encoder.encodeToString(oglas.getSlike().get(0).getSlika());
-		
+
 		}
 	}
-	
+
 	public String getMarka() {
 		return marka;
 	}
@@ -247,7 +247,5 @@ public class OglasDTO {
 	public void setSlikeString(List<String> slikeString) {
 		this.slikeString = slikeString;
 	}
-	
-	
-	
+
 }

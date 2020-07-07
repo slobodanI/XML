@@ -13,7 +13,7 @@ function RenderHtmlOnSuccess() {
 			var data = result;
 
 		
-			var html = '<table id="tabelaUsers" class="display" ><thead><tr><th>Korisnik ID</th><th>Korisničko ime</th><th>E-mail</th><th>Prihvaceni</th><th>Blokirani</th><th>Obrisani</th><th>Prihvati</th><th>Blokiraj</th><th>Obriši</th><tbody>';
+			var html = '<table id="tabelaUsers" class="display" ><thead><tr><th>Korisnik ID</th><th>Korisničko ime</th><th>E-mail</th><th>Prihvaceni</th><th>Blokirani</th><th>Obrisani</th><th>Prihvati</th><th>Blokiraj</th><th>Dodavanje oglasa</th><th>Slanje zahteva</th><th>Obriši</th><tbody>';
 			data.forEach((item)=>{
 				
 				
@@ -80,6 +80,27 @@ function RenderHtmlOnSuccess() {
 				  html+='<td>';
 				  html+='<input type="button" class="blokirajButton" value="Blokiraj/Odblokiraj">';
 				  html+='</td>';
+				  
+				  if(item.blockedPostavljanjeOglasa == false){
+					  html+='<td>';
+					  html+='<input type="button" class="blokirajOglaseButton" value="Blokiraj">';
+					  html+='</td>';
+				  }else{
+					  html+='<td>';
+					  html+='<input type="button" class="odblokirajOglaseButton" value="Odblokiraj">';
+					  html+='</td>';
+				  }
+				  
+				  if(item.blockedSlanjeZahteva == false){
+					  html+='<td>';
+					  html+='<input type="button" class="blokirajZahteveButton" value="Blokiraj">';
+					  html+='</td>';
+				 }else{
+					  html+='<td>';
+					  html+='<input type="button" class="odblokirajZahteveButton" value="Odblokiraj">';
+					  html+='</td>';
+					  }
+				  
 				  
 				  html+='<td>';
 				  html+='<input type="button" class="obrisiButton" value="Obriši">';
@@ -217,6 +238,105 @@ function RenderHtmlOnSuccess() {
 		    	 });	
 		    	 
 			});
+		    
+		    $('.blokirajOglaseButton').on("click", function () {
+		    	 var data = table.api().row( $(this).parents('tr') ).data();
+		    	 var uid = data[0];
+		    	 
+		    	 $.ajax({
+		    			
+		    			url:'/auth/user/' + uid + '/blockOglase',
+		    			type:"PUT",
+		    			headers: {
+		    		        'Auth': 'Bearer ' + token
+		    		    },
+		    			contentType: 'application/json',
+		    			success: function(result)
+		    			{	
+		    				location.reload(); 
+		    			},
+		    			error: function(result)
+		    			{
+		    				alert('Greska pri blokiranju korisnika.');
+		    			}
+		    	 });	
+		    	 
+			});
+		    
+		    $('.odblokirajOglaseButton').on("click", function () {
+		    	 var data = table.api().row( $(this).parents('tr') ).data();
+		    	 var uid = data[0];
+		    	 
+		    	 $.ajax({
+		    			
+		    			url:'/auth/user/' + uid + '/unblockOglase',
+		    			type:"PUT",
+		    			headers: {
+		    		        'Auth': 'Bearer ' + token
+		    		    },
+		    			contentType: 'application/json',
+		    			success: function(result)
+		    			{	
+		    				location.reload(); 
+		    			},
+		    			error: function(result)
+		    			{
+		    				alert('Greska pri blokiranju korisnika.');
+		    			}
+		    	 });	
+		    	 
+			});
+		    
+		    $('.blokirajZahteveButton').on("click", function () {
+		    	 var data = table.api().row( $(this).parents('tr') ).data();
+		    	 var uid = data[0];
+		    	 
+		    	 $.ajax({
+		    			
+		    			url:'/auth/user/' + uid + '/blockZahteve',
+		    			type:"PUT",
+		    			headers: {
+		    		        'Auth': 'Bearer ' + token
+		    		    },
+		    			contentType: 'application/json',
+		    			success: function(result)
+		    			{	
+		    				location.reload(); 
+		    			},
+		    			error: function(result)
+		    			{
+		    				alert('Greska pri blokiranju korisnika.');
+		    			}
+		    	 });	
+		    	 
+			});
+		    
+		    $('.odblokirajZahteveButton').on("click", function () {
+		    	 var data = table.api().row( $(this).parents('tr') ).data();
+		    	 var uid = data[0];
+		    	 
+		    	 $.ajax({
+		    			
+		    			url:'/auth/user/' + uid + '/unblockZahteve',
+		    			type:"PUT",
+		    			headers: {
+		    		        'Auth': 'Bearer ' + token
+		    		    },
+		    			contentType: 'application/json',
+		    			success: function(result)
+		    			{	
+		    				location.reload(); 
+		    			},
+		    			error: function(result)
+		    			{
+		    				alert('Greska pri blokiranju korisnika.');
+		    			}
+		    	 });	
+		    	 
+			});
+		    
+		    
+		    
 		    
 		    $('.dataTables_length').addClass('bs-select');
 		    
