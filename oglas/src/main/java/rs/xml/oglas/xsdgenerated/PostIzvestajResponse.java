@@ -6,11 +6,10 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="oglas" type="{http://xml.rs/oglas/xsd}Oglas"/&gt;
+ *         &lt;element name="success" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +35,27 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "oglas"
+    "success"
 })
-@XmlRootElement(name = "postOglasRequest")
-public class PostOglasRequest {
+@XmlRootElement(name = "postIzvestajResponse")
+public class PostIzvestajResponse {
 
-    @XmlElement(required = true)
-    protected Oglas oglas;
+    protected boolean success;
 
     /**
-     * Gets the value of the oglas property.
+     * Gets the value of the success property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Oglas }
-     *     
      */
-    public Oglas getOglas() {
-        return oglas;
+    public boolean isSuccess() {
+        return success;
     }
 
     /**
-     * Sets the value of the oglas property.
+     * Sets the value of the success property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Oglas }
-     *     
      */
-    public void setOglas(Oglas value) {
-        this.oglas = value;
+    public void setSuccess(boolean value) {
+        this.success = value;
     }
 
 }

@@ -6,7 +6,7 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -37,8 +37,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "success"
 })
-@XmlRootElement(name = "postIzvestajResponse")
-public class PostIzvestajResponse {
+@XmlRootElement(name = "postZahtevResponse")
+public class PostZahtevResponse {
 
     protected boolean success;
 

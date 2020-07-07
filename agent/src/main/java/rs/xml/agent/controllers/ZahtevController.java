@@ -27,6 +27,7 @@ import rs.xml.agent.model.Oglas;
 import rs.xml.agent.model.User;
 import rs.xml.agent.model.Zahtev;
 import rs.xml.agent.security.TokenUtils;
+import rs.xml.agent.service.User2Service;
 import rs.xml.agent.service.UserService;
 import rs.xml.agent.service.ZahtevService;
 import rs.xml.agent.util.UtilClass;
@@ -40,7 +41,7 @@ public class ZahtevController {
 	ZahtevService zahtevService;
 	
 	@Autowired
-	UserService userService;
+	User2Service userService;
 
 	@Autowired
 	TokenUtils tokenUtils;

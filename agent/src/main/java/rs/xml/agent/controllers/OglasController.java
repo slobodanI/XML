@@ -37,6 +37,7 @@ import rs.xml.agent.service.CenovnikService;
 import rs.xml.agent.service.OcenaService;
 import rs.xml.agent.service.OglasService;
 import rs.xml.agent.service.SlikaService;
+import rs.xml.agent.service.User2Service;
 import rs.xml.agent.service.UserService;
 import rs.xml.agent.soap.EverythingClient;
 import rs.xml.agent.xsd.GetEverythingResponse;
@@ -56,7 +57,7 @@ public class OglasController {
 	OglasService oglasService;
 
 	@Autowired
-	UserService userService;
+	User2Service userService;
 
 	@Autowired
 	CenovnikService cenovnikService;

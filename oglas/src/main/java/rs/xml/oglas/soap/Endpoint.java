@@ -17,17 +17,17 @@ import rs.xml.oglas.service.IzvestajService;
 import rs.xml.oglas.service.OcenaService;
 import rs.xml.oglas.service.OglasService;
 import rs.xml.oglas.service.ZahtevService;
-import rs.xml.oglas.xsd.OglasUZahtevu;
-import rs.xml.oglas.xsd.PostIzvestajRequest;
-import rs.xml.oglas.xsd.PostIzvestajResponse;
-import rs.xml.oglas.xsd.PostOcenaRequest;
-import rs.xml.oglas.xsd.PostOcenaResponse;
-import rs.xml.oglas.xsd.PostOglasRequest;
-import rs.xml.oglas.xsd.PostOglasResponse;
-import rs.xml.oglas.xsd.PostZahtevRequest;
-import rs.xml.oglas.xsd.PostZahtevResponse;
-import rs.xml.oglas.xsd.PutOcenaRequest;
-import rs.xml.oglas.xsd.PutOcenaResponse;
+import rs.xml.oglas.xsdgenerated.OglasUZahtevu;
+import rs.xml.oglas.xsdgenerated.PostIzvestajRequest;
+import rs.xml.oglas.xsdgenerated.PostIzvestajResponse;
+import rs.xml.oglas.xsdgenerated.PostOcenaRequest;
+import rs.xml.oglas.xsdgenerated.PostOcenaResponse;
+import rs.xml.oglas.xsdgenerated.PostOglasRequest;
+import rs.xml.oglas.xsdgenerated.PostOglasResponse;
+import rs.xml.oglas.xsdgenerated.PostZahtevRequest;
+import rs.xml.oglas.xsdgenerated.PostZahtevResponse;
+import rs.xml.oglas.xsdgenerated.PutOcenaRequest;
+import rs.xml.oglas.xsdgenerated.PutOcenaResponse;
 
 @org.springframework.ws.server.endpoint.annotation.Endpoint
 public class Endpoint {
@@ -60,7 +60,7 @@ public class Endpoint {
 		PostOglasResponse response = new PostOglasResponse();
 
 		rs.xml.oglas.model.Oglas oglas = new Oglas();
-		rs.xml.oglas.xsd.Oglas oglasXSD = request.getOglas();
+		rs.xml.oglas.xsdgenerated.Oglas oglasXSD = request.getOglas();
 		oglas.setOid(oglasXSD.getOid());
 		oglas.setMesto(oglasXSD.getMesto());
 		oglas.setMarka(oglasXSD.getMarka());
@@ -74,7 +74,7 @@ public class Endpoint {
 		oglas.setPlaniranaKilometraza(oglasXSD.getPlaniranaKilometraza());
 		oglas.setSedistaZaDecu(oglasXSD.getSedistaZaDecu());
 
-		for (rs.xml.oglas.xsd.Slika slikaXSD : oglasXSD.getSlike()) {
+		for (rs.xml.oglas.xsdgenerated.Slika slikaXSD : oglasXSD.getSlike()) {
 			Slika slika = new Slika();
 			slika.setOglas(oglas);
 			slika.setSlika(slikaXSD.getSlika());
@@ -110,7 +110,7 @@ public class Endpoint {
 		PostZahtevResponse response = new PostZahtevResponse();
 
 		rs.xml.oglas.model.Zahtev zahtev = new rs.xml.oglas.model.Zahtev();
-		rs.xml.oglas.xsd.Zahtev zahtevXSD = request.getZahtev();
+		rs.xml.oglas.xsdgenerated.Zahtev zahtevXSD = request.getZahtev();
 
 		zahtev.setZid(zahtevXSD.getZid());
 		zahtev.setChatId(null);
@@ -133,11 +133,11 @@ public class Endpoint {
 		zahtev.setPodnosilacUsername(zahtevXSD.getPodnosilacUsername());
 		zahtev.setUsername(zahtevXSD.getUsername());
 
-		if (zahtevXSD.getStatus().equals(rs.xml.oglas.xsd.ZahtevStatus.CANCELED)) {
+		if (zahtevXSD.getStatus().equals(rs.xml.oglas.xsdgenerated.ZahtevStatus.CANCELED)) {
 			zahtev.setStatus(rs.xml.oglas.model.ZahtevStatus.CANCELED);
-		} else if (zahtevXSD.getStatus().equals(rs.xml.oglas.xsd.ZahtevStatus.PENDING)) {
+		} else if (zahtevXSD.getStatus().equals(rs.xml.oglas.xsdgenerated.ZahtevStatus.PENDING)) {
 			zahtev.setStatus(rs.xml.oglas.model.ZahtevStatus.PENDING);
-		} else if (zahtevXSD.getStatus().equals(rs.xml.oglas.xsd.ZahtevStatus.PAID)) {
+		} else if (zahtevXSD.getStatus().equals(rs.xml.oglas.xsdgenerated.ZahtevStatus.PAID)) {
 			zahtev.setStatus(rs.xml.oglas.model.ZahtevStatus.PAID);
 		}
 
@@ -182,13 +182,13 @@ public class Endpoint {
 		PostOcenaResponse response = new PostOcenaResponse();
 
 		rs.xml.oglas.model.Ocena ocena = new rs.xml.oglas.model.Ocena();
-		rs.xml.oglas.xsd.Ocena ocenaXSD = request.getOcena();
+		rs.xml.oglas.xsdgenerated.Ocena ocenaXSD = request.getOcena();
 
-		if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.APPROVED)) {
+		if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.APPROVED)) {
 			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.APPROVED);
-		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.DENIED)) {
+		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.DENIED)) {
 			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.DENIED);
-		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.UNKNOWN)) {
+		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.UNKNOWN)) {
 			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.UNKNOWN);
 		}
 
@@ -222,14 +222,14 @@ public class Endpoint {
 		PutOcenaResponse response = new PutOcenaResponse();
 
 		
-		rs.xml.oglas.xsd.Ocena ocenaXSD = request.getOcena();
+		rs.xml.oglas.xsdgenerated.Ocena ocenaXSD = request.getOcena();
 		rs.xml.oglas.model.Ocena ocena = ocenaService.findOcenaByOID(ocenaXSD.getOid());
 
-		if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.APPROVED)) {
+		if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.APPROVED)) {
 			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.APPROVED);
-		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.DENIED)) {
+		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.DENIED)) {
 			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.DENIED);
-		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsd.OcenaApprovedStatus.UNKNOWN)) {
+		} else if (ocenaXSD.getApproved().equals(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.UNKNOWN)) {
 			ocena.setApproved(rs.xml.oglas.model.OcenaApprovedStatus.UNKNOWN);
 		}
 
@@ -265,7 +265,7 @@ public class Endpoint {
 		PostIzvestajResponse response = new PostIzvestajResponse();
 
 		rs.xml.oglas.model.Izvestaj izvestaj = new rs.xml.oglas.model.Izvestaj();
-		rs.xml.oglas.xsd.Izvestaj izvestajXSD = request.getIzvestaj();
+		rs.xml.oglas.xsdgenerated.Izvestaj izvestajXSD = request.getIzvestaj();
 		
 		rs.xml.oglas.model.Oglas oglas = oglasService.findOneByOid(izvestajXSD.getOglasId());
 //		if(oglas == null) {

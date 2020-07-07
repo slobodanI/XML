@@ -6,25 +6,25 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for OglasUZahtevu complex type.
+ * <p>Java class for anonymous complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="OglasUZahtevu"&gt;
+ * &lt;complexType&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="oid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="success" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -34,36 +34,28 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OglasUZahtevu", propOrder = {
-    "oid"
+@XmlType(name = "", propOrder = {
+    "success"
 })
-public class OglasUZahtevu {
+@XmlRootElement(name = "postPorukaResponse")
+public class PostPorukaResponse {
 
-    @XmlElement(required = true)
-    protected String oid;
+    protected boolean success;
 
     /**
-     * Gets the value of the oid property.
+     * Gets the value of the success property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getOid() {
-        return oid;
+    public boolean isSuccess() {
+        return success;
     }
 
     /**
-     * Sets the value of the oid property.
+     * Sets the value of the success property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setOid(String value) {
-        this.oid = value;
+    public void setSuccess(boolean value) {
+        this.success = value;
     }
 
 }

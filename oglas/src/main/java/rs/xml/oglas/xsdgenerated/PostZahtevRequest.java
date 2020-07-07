@@ -6,7 +6,7 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="ocena" type="{http://xml.rs/oglas/xsd}Ocena"/&gt;
+ *         &lt;element name="zahtev" type="{http://xml.rs/oglas/xsd}Zahtev"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "ocena"
+    "zahtev"
 })
-@XmlRootElement(name = "postOcenaRequest")
-public class PostOcenaRequest {
+@XmlRootElement(name = "postZahtevRequest")
+public class PostZahtevRequest {
 
     @XmlElement(required = true)
-    protected Ocena ocena;
+    protected Zahtev zahtev;
 
     /**
-     * Gets the value of the ocena property.
+     * Gets the value of the zahtev property.
      * 
      * @return
      *     possible object is
-     *     {@link Ocena }
+     *     {@link Zahtev }
      *     
      */
-    public Ocena getOcena() {
-        return ocena;
+    public Zahtev getZahtev() {
+        return zahtev;
     }
 
     /**
-     * Sets the value of the ocena property.
+     * Sets the value of the zahtev property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Ocena }
+     *     {@link Zahtev }
      *     
      */
-    public void setOcena(Ocena value) {
-        this.ocena = value;
+    public void setZahtev(Zahtev value) {
+        this.zahtev = value;
     }
 
 }

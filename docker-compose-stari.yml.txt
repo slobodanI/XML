@@ -60,6 +60,12 @@ services:
       - chat
       - oglas
       - sifrarnik
+
+  agent:
+    build: ./agent
+    ports: 
+    - "8081:8081"
+    tty: true
   
 
   

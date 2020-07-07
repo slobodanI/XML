@@ -6,10 +6,8 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -17,19 +15,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for Chat complex type.
+ * <p>Java class for Poruka complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Chat"&gt;
+ * &lt;complexType name="Poruka"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="cid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="pid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="body" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="timestamp" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="senderUsername" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="receiverUsername" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="poruke" type="{http://xml.rs/oglas/xsd}Poruka" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -39,22 +38,24 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Chat", propOrder = {
+@XmlType(name = "Poruka", propOrder = {
     "cid",
-    "senderUsername",
-    "receiverUsername",
-    "poruke"
+    "pid",
+    "body",
+    "timestamp",
+    "senderUsername"
 })
-public class Chat {
+public class Poruka {
 
     @XmlElement(required = true)
     protected String cid;
     @XmlElement(required = true)
+    protected String pid;
+    @XmlElement(required = true)
+    protected String body;
+    protected long timestamp;
+    @XmlElement(required = true)
     protected String senderUsername;
-    @XmlElement(required = true)
-    protected String receiverUsername;
-    @XmlElement(required = true)
-    protected List<Poruka> poruke;
 
     /**
      * Gets the value of the cid property.
@@ -81,6 +82,70 @@ public class Chat {
     }
 
     /**
+     * Gets the value of the pid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPid() {
+        return pid;
+    }
+
+    /**
+     * Sets the value of the pid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPid(String value) {
+        this.pid = value;
+    }
+
+    /**
+     * Gets the value of the body property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBody() {
+        return body;
+    }
+
+    /**
+     * Sets the value of the body property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBody(String value) {
+        this.body = value;
+    }
+
+    /**
+     * Gets the value of the timestamp property.
+     * 
+     */
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * Sets the value of the timestamp property.
+     * 
+     */
+    public void setTimestamp(long value) {
+        this.timestamp = value;
+    }
+
+    /**
      * Gets the value of the senderUsername property.
      * 
      * @return
@@ -102,59 +167,6 @@ public class Chat {
      */
     public void setSenderUsername(String value) {
         this.senderUsername = value;
-    }
-
-    /**
-     * Gets the value of the receiverUsername property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getReceiverUsername() {
-        return receiverUsername;
-    }
-
-    /**
-     * Sets the value of the receiverUsername property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setReceiverUsername(String value) {
-        this.receiverUsername = value;
-    }
-
-    /**
-     * Gets the value of the poruke property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the poruke property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getPoruke().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Poruka }
-     * 
-     * 
-     */
-    public List<Poruka> getPoruke() {
-        if (poruke == null) {
-            poruke = new ArrayList<Poruka>();
-        }
-        return this.poruke;
     }
 
 }

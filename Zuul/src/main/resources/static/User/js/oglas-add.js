@@ -313,7 +313,7 @@ function popuniMenjac() {
 
 function popuniCenovnik() {
 	$.get({
-		url: '/cenovnik',
+		url: '/oglasi/cenovnik',
 		headers: {
 	        'Auth': 'Bearer ' + token
 	    },

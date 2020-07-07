@@ -6,7 +6,7 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="poruka" type="{http://xml.rs/oglas/xsd}Poruka"/&gt;
+ *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "poruka"
+    "username"
 })
-@XmlRootElement(name = "postPorukaRequest")
-public class PostPorukaRequest {
+@XmlRootElement(name = "getEverythingRequest")
+public class GetEverythingRequest {
 
     @XmlElement(required = true)
-    protected Poruka poruka;
+    protected String username;
 
     /**
-     * Gets the value of the poruka property.
+     * Gets the value of the username property.
      * 
      * @return
      *     possible object is
-     *     {@link Poruka }
+     *     {@link String }
      *     
      */
-    public Poruka getPoruka() {
-        return poruka;
+    public String getUsername() {
+        return username;
     }
 
     /**
-     * Sets the value of the poruka property.
+     * Sets the value of the username property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Poruka }
+     *     {@link String }
      *     
      */
-    public void setPoruka(Poruka value) {
-        this.poruka = value;
+    public void setUsername(String value) {
+        this.username = value;
     }
 
 }

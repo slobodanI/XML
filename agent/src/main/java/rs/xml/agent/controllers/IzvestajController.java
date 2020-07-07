@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import rs.xml.agent.dto.IzvestajDTO;
 import rs.xml.agent.dto.NewIzvestajDTO;
 import rs.xml.agent.model.Cenovnik;
@@ -31,7 +32,7 @@ import rs.xml.agent.repository.ZahtevRepository;
 import rs.xml.agent.security.TokenUtils;
 import rs.xml.agent.service.IzvestajService;
 import rs.xml.agent.service.OglasService;
-import rs.xml.agent.service.UserService;
+import rs.xml.agent.service.User2Service;
 import rs.xml.agent.service.ZahtevService;
 import rs.xml.agent.util.UtilClass;
 
@@ -59,7 +60,9 @@ public class IzvestajController {
 	UtilClass utilClass;
 	
 	@Autowired
-	UserService userService;
+	User2Service userService;
+	
+	
 		
 	@GetMapping("/izvestaj")
 	@PreAuthorize("hasAuthority('MANAGE_IZVESTAJ')")

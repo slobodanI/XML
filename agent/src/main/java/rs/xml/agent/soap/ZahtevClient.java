@@ -49,9 +49,11 @@ public class ZahtevClient extends WebServiceGatewaySupport {
 		
 		try {
 			response = (PostZahtevResponse) getWebServiceTemplate().marshalSendAndReceive(
-					"http://localhost:8085/ws/postZahtev", request,
+					"http://localhost:8085/ws/soap", request,
 					new SoapActionCallback("http://xml.rs/oglas/xsd/PostZahtevRequest"));
+			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("***ERROR ZahtevClient > greska prilikom slanja!");
 		}
 		

@@ -6,11 +6,10 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="zahtev" type="{http://xml.rs/oglas/xsd}Zahtev"/&gt;
+ *         &lt;element name="success" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +35,27 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "zahtev"
+    "success"
 })
-@XmlRootElement(name = "postZahtevRequest")
-public class PostZahtevRequest {
+@XmlRootElement(name = "postChatResponse")
+public class PostChatResponse {
 
-    @XmlElement(required = true)
-    protected Zahtev zahtev;
+    protected boolean success;
 
     /**
-     * Gets the value of the zahtev property.
+     * Gets the value of the success property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Zahtev }
-     *     
      */
-    public Zahtev getZahtev() {
-        return zahtev;
+    public boolean isSuccess() {
+        return success;
     }
 
     /**
-     * Sets the value of the zahtev property.
+     * Sets the value of the success property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Zahtev }
-     *     
      */
-    public void setZahtev(Zahtev value) {
-        this.zahtev = value;
+    public void setSuccess(boolean value) {
+        this.success = value;
     }
 
 }

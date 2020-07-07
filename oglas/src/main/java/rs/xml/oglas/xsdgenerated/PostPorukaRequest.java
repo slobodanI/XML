@@ -6,7 +6,7 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="izvestaj" type="{http://xml.rs/oglas/xsd}Izvestaj"/&gt;
+ *         &lt;element name="poruka" type="{http://xml.rs/oglas/xsd}Poruka"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "izvestaj"
+    "poruka"
 })
-@XmlRootElement(name = "postIzvestajRequest")
-public class PostIzvestajRequest {
+@XmlRootElement(name = "postPorukaRequest")
+public class PostPorukaRequest {
 
     @XmlElement(required = true)
-    protected Izvestaj izvestaj;
+    protected Poruka poruka;
 
     /**
-     * Gets the value of the izvestaj property.
+     * Gets the value of the poruka property.
      * 
      * @return
      *     possible object is
-     *     {@link Izvestaj }
+     *     {@link Poruka }
      *     
      */
-    public Izvestaj getIzvestaj() {
-        return izvestaj;
+    public Poruka getPoruka() {
+        return poruka;
     }
 
     /**
-     * Sets the value of the izvestaj property.
+     * Sets the value of the poruka property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Izvestaj }
+     *     {@link Poruka }
      *     
      */
-    public void setIzvestaj(Izvestaj value) {
-        this.izvestaj = value;
+    public void setPoruka(Poruka value) {
+        this.poruka = value;
     }
 
 }

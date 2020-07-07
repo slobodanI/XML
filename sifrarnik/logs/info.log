@@ -1,3 +1,11 @@
 2020-07-06 17:38:36 [main] INFO  r.xml.sifrarnik.SifrarnikApplication - No active profile set, falling back to default profiles: default
 2020-07-06 17:38:38 [main] DEBUG r.x.s.s.AuthenticationTokenFilter - Filter 'authenticationTokenFilterBean' configured for use
 2020-07-06 17:38:43 [main] INFO  r.xml.sifrarnik.SifrarnikApplication - Started SifrarnikApplication in 9.095 seconds (JVM running for 9.642)
+2020-07-07 15:01:34 [main] INFO  r.x.s.SifrarnikApplicationTests - No active profile set, falling back to default profiles: default
+2020-07-07 15:01:39 [main] INFO  r.x.s.SifrarnikApplicationTests - Started SifrarnikApplicationTests in 8.186 seconds (JVM running for 8.893)
+2020-07-07 18:10:54 [main] INFO  r.xml.sifrarnik.SifrarnikApplication - No active profile set, falling back to default profiles: default
+2020-07-07 18:10:55 [main] DEBUG r.x.s.s.AuthenticationTokenFilter - Filter 'authenticationTokenFilterBean' configured for use
+2020-07-07 18:11:00 [main] INFO  r.xml.sifrarnik.SifrarnikApplication - Started SifrarnikApplication in 8.951 seconds (JVM running for 9.439)
+2020-07-07 19:12:29 [main] INFO  r.xml.sifrarnik.SifrarnikApplication - No active profile set, falling back to default profiles: default
+2020-07-07 19:12:31 [main] DEBUG r.x.s.s.AuthenticationTokenFilter - Filter 'authenticationTokenFilterBean' configured for use
+2020-07-07 19:12:35 [main] INFO  r.xml.sifrarnik.SifrarnikApplication - Started SifrarnikApplication in 8.782 seconds (JVM running for 9.252)

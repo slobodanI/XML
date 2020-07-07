@@ -6,25 +6,26 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for Slika complex type.
+ * <p>Java class for anonymous complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Slika"&gt;
+ * &lt;complexType&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="slika" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/&gt;
+ *         &lt;element name="ocena" type="{http://xml.rs/oglas/xsd}Ocena"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -34,34 +35,37 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Slika", propOrder = {
-    "slika"
+@XmlType(name = "", propOrder = {
+    "ocena"
 })
-public class Slika {
+@XmlRootElement(name = "putOcenaRequest")
+public class PutOcenaRequest {
 
     @XmlElement(required = true)
-    protected byte[] slika;
+    protected Ocena ocena;
 
     /**
-     * Gets the value of the slika property.
+     * Gets the value of the ocena property.
      * 
      * @return
      *     possible object is
-     *     byte[]
+     *     {@link Ocena }
+     *     
      */
-    public byte[] getSlika() {
-        return slika;
+    public Ocena getOcena() {
+        return ocena;
     }
 
     /**
-     * Sets the value of the slika property.
+     * Sets the value of the ocena property.
      * 
      * @param value
      *     allowed object is
-     *     byte[]
+     *     {@link Ocena }
+     *     
      */
-    public void setSlika(byte[] value) {
-        this.slika = value;
+    public void setOcena(Ocena value) {
+        this.ocena = value;
     }
 
 }

@@ -15,9 +15,9 @@ import rs.xml.oglas.service.IzvestajService;
 import rs.xml.oglas.service.OcenaService;
 import rs.xml.oglas.service.OglasService;
 import rs.xml.oglas.service.ZahtevService;
-import rs.xml.oglas.xsd.GetEverythingRequest;
-import rs.xml.oglas.xsd.GetEverythingResponse;
-import rs.xml.oglas.xsd.OglasUZahtevu;
+import rs.xml.oglas.xsdgenerated.GetEverythingRequest;
+import rs.xml.oglas.xsdgenerated.GetEverythingResponse;
+import rs.xml.oglas.xsdgenerated.OglasUZahtevu;
 
 @Endpoint
 public class EndpointEverything {
@@ -81,8 +81,8 @@ public class EndpointEverything {
 		return response;
 	}
 	
-	private rs.xml.oglas.xsd.Oglas convertModelOglasToXsdOglas(rs.xml.oglas.model.Oglas oglas) {
-		rs.xml.oglas.xsd.Oglas oglasXSD = new rs.xml.oglas.xsd.Oglas();
+	private rs.xml.oglas.xsdgenerated.Oglas convertModelOglasToXsdOglas(rs.xml.oglas.model.Oglas oglas) {
+		rs.xml.oglas.xsdgenerated.Oglas oglasXSD = new rs.xml.oglas.xsdgenerated.Oglas();
 		oglasXSD.setOid(oglas.getOid());
 		oglasXSD.setMesto(oglas.getMesto());
 		oglasXSD.setMarka(oglas.getMarka());
@@ -102,7 +102,7 @@ public class EndpointEverything {
 //		System.out.println("### CONVERTOVANJE > oglas.getSlike(): " + oglas.getSlike() );
 		for(rs.xml.oglas.model.Slika slika: oglas.getSlike()) {	
 //			System.out.println("### CONVERTOVANJE > FOR(SLIKA) > new slika" );
-			rs.xml.oglas.xsd.Slika slikaXSD = new rs.xml.oglas.xsd.Slika();
+			rs.xml.oglas.xsdgenerated.Slika slikaXSD = new rs.xml.oglas.xsdgenerated.Slika();
 			slikaXSD.setSlika(slika.getSlika());
 //			System.out.println("### CONVERTOVANJE > FOR(SLIKA) > slikaXSD: " + slikaXSD);
 			oglasXSD.getSlike().add(slikaXSD);
@@ -122,8 +122,8 @@ public class EndpointEverything {
 		return oglasXSD;
 	}
 	
-	private rs.xml.oglas.xsd.Zahtev convertModelZahtevToXsdZahtev(rs.xml.oglas.model.Zahtev zahtev) {
-		rs.xml.oglas.xsd.Zahtev zahtevXSD = new rs.xml.oglas.xsd.Zahtev();
+	private rs.xml.oglas.xsdgenerated.Zahtev convertModelZahtevToXsdZahtev(rs.xml.oglas.model.Zahtev zahtev) {
+		rs.xml.oglas.xsdgenerated.Zahtev zahtevXSD = new rs.xml.oglas.xsdgenerated.Zahtev();
 		System.out.println("### CONVERTOVANJE ZAHTEV 1 > zahtevXSD: " + zahtevXSD);
 		zahtevXSD.setZid(zahtev.getZid());
 		zahtevXSD.setIzvestaj(zahtev.isIzvestaj());
@@ -134,11 +134,11 @@ public class EndpointEverything {
 		zahtevXSD.setUsername(zahtev.getUsername());
 		System.out.println("### CONVERTOVANJE ZAHTEV 2 > zahtevXSD: " + zahtevXSD);
 		if(zahtev.getStatus().equals(ZahtevStatus.CANCELED)) {
-			zahtevXSD.setStatus(rs.xml.oglas.xsd.ZahtevStatus.CANCELED);
+			zahtevXSD.setStatus(rs.xml.oglas.xsdgenerated.ZahtevStatus.CANCELED);
 		} else if(zahtev.getStatus().equals(ZahtevStatus.PENDING)) {
-			zahtevXSD.setStatus(rs.xml.oglas.xsd.ZahtevStatus.PENDING);
+			zahtevXSD.setStatus(rs.xml.oglas.xsdgenerated.ZahtevStatus.PENDING);
 		} else if(zahtev.getStatus().equals(ZahtevStatus.PAID)) {
-			zahtevXSD.setStatus(rs.xml.oglas.xsd.ZahtevStatus.PAID);
+			zahtevXSD.setStatus(rs.xml.oglas.xsdgenerated.ZahtevStatus.PAID);
 		}
 		System.out.println("### CONVERTOVANJE ZAHTEV 3 > zahtevXSD: " + zahtevXSD);
 		zahtevXSD.setVremePodnosenja(zahtev.getVremePodnosenja().getTime());
@@ -163,8 +163,8 @@ public class EndpointEverything {
 		return zahtevXSD;
 	}
 	
-	private rs.xml.oglas.xsd.Izvestaj convertModelIzvestajToXsdIzvestaj (rs.xml.oglas.model.Izvestaj izvestaj){
-		rs.xml.oglas.xsd.Izvestaj izvestajXSD =  new rs.xml.oglas.xsd.Izvestaj();
+	private rs.xml.oglas.xsdgenerated.Izvestaj convertModelIzvestajToXsdIzvestaj (rs.xml.oglas.model.Izvestaj izvestaj){
+		rs.xml.oglas.xsdgenerated.Izvestaj izvestajXSD =  new rs.xml.oglas.xsdgenerated.Izvestaj();
 		System.out.println("### CONVERTOVANJE IZVESTAJ 1 > zahtevXSD: " + izvestajXSD);
 		izvestajXSD.setIid(izvestaj.getIid());
 		String oglasId = oglasService.findOne(izvestaj.getOglasId()).getOid();
@@ -180,15 +180,15 @@ public class EndpointEverything {
 		return izvestajXSD;
 	}
 	
-	private rs.xml.oglas.xsd.Ocena convertModelOcenaToXsdOcena(rs.xml.oglas.model.Ocena ocena){
-		rs.xml.oglas.xsd.Ocena ocenaXSD = new rs.xml.oglas.xsd.Ocena();
+	private rs.xml.oglas.xsdgenerated.Ocena convertModelOcenaToXsdOcena(rs.xml.oglas.model.Ocena ocena){
+		rs.xml.oglas.xsdgenerated.Ocena ocenaXSD = new rs.xml.oglas.xsdgenerated.Ocena();
 		System.out.println("### CONVERTOVANJE OCENA 1 > ocenaXSD: " + ocenaXSD);
 		if(ocena.getApproved().equals(rs.xml.oglas.model.OcenaApprovedStatus.APPROVED)) {
-			ocenaXSD.setApproved(rs.xml.oglas.xsd.OcenaApprovedStatus.APPROVED);
+			ocenaXSD.setApproved(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.APPROVED);
 		} else if(ocena.getApproved().equals(rs.xml.oglas.model.OcenaApprovedStatus.DENIED)) {
-			ocenaXSD.setApproved(rs.xml.oglas.xsd.OcenaApprovedStatus.DENIED);
+			ocenaXSD.setApproved(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.DENIED);
 		} else if(ocena.getApproved().equals(rs.xml.oglas.model.OcenaApprovedStatus.UNKNOWN)) {
-			ocenaXSD.setApproved(rs.xml.oglas.xsd.OcenaApprovedStatus.UNKNOWN);
+			ocenaXSD.setApproved(rs.xml.oglas.xsdgenerated.OcenaApprovedStatus.UNKNOWN);
 		}
 		System.out.println("### CONVERTOVANJE OCENA 2 > ocenaXSD: " + ocenaXSD);
 		ocenaXSD.setDeleted(ocena.isDeleted());

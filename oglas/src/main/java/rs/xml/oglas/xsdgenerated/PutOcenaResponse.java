@@ -6,11 +6,10 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="success" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +35,27 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "username"
+    "success"
 })
-@XmlRootElement(name = "getEverythingRequest")
-public class GetEverythingRequest {
+@XmlRootElement(name = "putOcenaResponse")
+public class PutOcenaResponse {
 
-    @XmlElement(required = true)
-    protected String username;
+    protected boolean success;
 
     /**
-     * Gets the value of the username property.
+     * Gets the value of the success property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getUsername() {
-        return username;
+    public boolean isSuccess() {
+        return success;
     }
 
     /**
-     * Sets the value of the username property.
+     * Sets the value of the success property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setUsername(String value) {
-        this.username = value;
+    public void setSuccess(boolean value) {
+        this.success = value;
     }
 
 }

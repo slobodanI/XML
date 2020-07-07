@@ -6,7 +6,7 @@
 //
 
 
-package rs.xml.oglas.xsd;
+package rs.xml.oglas.xsdgenerated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,20 +15,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for Poruka complex type.
+ * <p>Java class for Izvestaj complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Poruka"&gt;
+ * &lt;complexType name="Izvestaj"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="cid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="pid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="body" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
- *         &lt;element name="timestamp" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
- *         &lt;element name="senderUsername" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="iid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="oglasId" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="zahtevId" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="predjeniKilometri" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="tekst" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -38,135 +38,135 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Poruka", propOrder = {
-    "cid",
-    "pid",
-    "body",
-    "timestamp",
-    "senderUsername"
+@XmlType(name = "Izvestaj", propOrder = {
+    "iid",
+    "oglasId",
+    "zahtevId",
+    "predjeniKilometri",
+    "tekst"
 })
-public class Poruka {
+public class Izvestaj {
 
     @XmlElement(required = true)
-    protected String cid;
+    protected String iid;
     @XmlElement(required = true)
-    protected String pid;
+    protected String oglasId;
     @XmlElement(required = true)
-    protected String body;
-    protected long timestamp;
+    protected String zahtevId;
+    protected int predjeniKilometri;
     @XmlElement(required = true)
-    protected String senderUsername;
+    protected String tekst;
 
     /**
-     * Gets the value of the cid property.
+     * Gets the value of the iid property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getCid() {
-        return cid;
+    public String getIid() {
+        return iid;
     }
 
     /**
-     * Sets the value of the cid property.
+     * Sets the value of the iid property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setCid(String value) {
-        this.cid = value;
+    public void setIid(String value) {
+        this.iid = value;
     }
 
     /**
-     * Gets the value of the pid property.
+     * Gets the value of the oglasId property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getPid() {
-        return pid;
+    public String getOglasId() {
+        return oglasId;
     }
 
     /**
-     * Sets the value of the pid property.
+     * Sets the value of the oglasId property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setPid(String value) {
-        this.pid = value;
+    public void setOglasId(String value) {
+        this.oglasId = value;
     }
 
     /**
-     * Gets the value of the body property.
+     * Gets the value of the zahtevId property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getBody() {
-        return body;
+    public String getZahtevId() {
+        return zahtevId;
     }
 
     /**
-     * Sets the value of the body property.
+     * Sets the value of the zahtevId property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setBody(String value) {
-        this.body = value;
+    public void setZahtevId(String value) {
+        this.zahtevId = value;
     }
 
     /**
-     * Gets the value of the timestamp property.
+     * Gets the value of the predjeniKilometri property.
      * 
      */
-    public long getTimestamp() {
-        return timestamp;
+    public int getPredjeniKilometri() {
+        return predjeniKilometri;
     }
 
     /**
-     * Sets the value of the timestamp property.
+     * Sets the value of the predjeniKilometri property.
      * 
      */
-    public void setTimestamp(long value) {
-        this.timestamp = value;
+    public void setPredjeniKilometri(int value) {
+        this.predjeniKilometri = value;
     }
 
     /**
-     * Gets the value of the senderUsername property.
+     * Gets the value of the tekst property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getSenderUsername() {
-        return senderUsername;
+    public String getTekst() {
+        return tekst;
     }
 
     /**
-     * Sets the value of the senderUsername property.
+     * Sets the value of the tekst property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setSenderUsername(String value) {
-        this.senderUsername = value;
+    public void setTekst(String value) {
+        this.tekst = value;
     }
 
 }
