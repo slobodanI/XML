@@ -395,7 +395,7 @@ function popuniMenjac(oglasMenjac) {
 }
 function popuniCenovnik(oglasCenovnik) {
 	$.get({
-		url: '/sifrarnik/cenovnik',
+		url: '/oglasi/cenovnik',
 		headers: {
 	        'Auth': 'Bearer ' + token
 	    },
@@ -408,7 +408,7 @@ function popuniCenovnik(oglasCenovnik) {
 			var selectCenovnik = $("#select-cenovnik");
 		
 			for(var cen of cenovnici){
-				if(cen.name == oglasCenovnik){
+				if(cen.cid == oglasCenovnik){
 				selectCenovnik.append('<option value="'+cen.id+'"selected>'+cen.name+'</option>');
 				}else{
 				selectCenovnik.append('<option value="'+cen.id+'">'+cen.name+'</option>');

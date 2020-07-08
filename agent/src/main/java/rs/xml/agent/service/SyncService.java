@@ -1,6 +1,7 @@
 package rs.xml.agent.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,10 @@ import rs.xml.agent.soap.EverythingClient;
 import rs.xml.agent.xsd.GetEverythingFromChatResponse;
 import rs.xml.agent.xsd.GetEverythingResponse;
 import rs.xml.agent.xsd.OglasUZahtevu;
+import rs.xml.agent.model.Cenovnik;
+import rs.xml.agent.model.Oglas;
 import rs.xml.agent.model.Slika;
+import rs.xml.agent.model.Zahtev;
 
 @Service
 public class SyncService {
@@ -31,7 +35,13 @@ public class SyncService {
 	OcenaService ocenaService;
 
 	@Autowired
+	CenovnikService cenovnikService;
+
+	@Autowired
 	ChatService chatService;
+
+	@Autowired
+	SlikaService slikaService;
 
 	@Autowired
 	PorukaService porukaService;
@@ -44,6 +54,7 @@ public class SyncService {
 			syncOglase(response, username);
 			syncZahteve(response, username);
 			syncIzvestaje(response, username);
+			syncCenovnike(response, username);
 		}
 		if (responseChat != null) {
 			syncOcene(response, username);
@@ -180,17 +191,78 @@ public class SyncService {
 		}
 	}
 
+	public void syncCenovnike(GetEverythingResponse response, String username) {
+		List<rs.xml.agent.xsd.Cenovnik> cenovnici = response.getCenovnici();
+		if(!cenovnici.isEmpty()) {
+			for(rs.xml.agent.xsd.Cenovnik cenovnikXSD : cenovnici) {
+				boolean pom = false;
+				for(rs.xml.agent.model.Cenovnik cenovnik : cenovnikService.findAll()) {
+					
+					if(cenovnikXSD.getCid().equals(cenovnik.getCid())) {
+						pom = true;
+					}
+				}
+				if(pom == true) {
+					Cenovnik cenovnik = cenovnikService.findOneByCid(cenovnikXSD.getCid());
+					cenovnik.setCenaOsiguranja(cenovnikXSD.getCenaOsiguranja());
+					cenovnik.setCenaPoKilometru(cenovnikXSD.getCenaPoKilometru());
+					cenovnik.setCenaZaDan(cenovnikXSD.getCenaZaDan());
+					cenovnik.setName(cenovnikXSD.getName());
+					cenovnik.setPopust(cenovnikXSD.getPopust());
+					cenovnik.setUsername(cenovnikXSD.getUsername());
+					cenovnik.setZaViseOd(cenovnikXSD.getZaViseOd());
+					cenovnik = cenovnikService.saveUpdated(cenovnik);
+					
+					
+				}else {
+					rs.xml.agent.model.Cenovnik cenovnik1 = new rs.xml.agent.model.Cenovnik();
+					cenovnik1.setCenaOsiguranja(cenovnikXSD.getCenaOsiguranja());
+					cenovnik1.setCenaPoKilometru(cenovnikXSD.getCenaPoKilometru());
+					cenovnik1.setCenaZaDan(cenovnikXSD.getCenaZaDan());
+					cenovnik1.setCid(cenovnikXSD.getCid());
+					cenovnik1.setName(cenovnikXSD.getName());
+					cenovnik1.setPopust(cenovnikXSD.getPopust());
+					cenovnik1.setUsername(cenovnikXSD.getUsername());
+					cenovnik1.setZaViseOd(cenovnikXSD.getZaViseOd());
+
+
+					cenovnik1 = cenovnikService.saveUpdated(cenovnik1);
+				}
+			}
+		}
+		
+		
+		
+	}
+
 	public void syncZahteve(GetEverythingResponse response, String username) {
 		List<rs.xml.agent.xsd.Zahtev> zahtevi = response.getZahtevi();
 		if (!zahtevi.isEmpty()) {
 			for (rs.xml.agent.xsd.Zahtev zahtevXSD : zahtevi) {
 				boolean pom = false;
 				for (rs.xml.agent.model.Zahtev z : zahtevService.findAll()) {
-					if (zahtevXSD.getZid().equals(z.getZid())) {
-						pom = true;
+					if(zahtevXSD.getZid().equals(z.getZid())) {
+						pom=true;
 					}
+					
 				}
-				if (pom == false) {
+				
+				if (pom == true) {
+					Zahtev z = zahtevService.findOneByZid(zahtevXSD.getZid());
+					z.setIzvestaj(zahtevXSD.isIzvestaj());
+					z.setOcenjen(zahtevXSD.isOcenjen());
+					z.setChatId(zahtevXSD.getChatId());
+
+					if (zahtevXSD.getStatus().equals(rs.xml.agent.xsd.ZahtevStatus.CANCELED)) {
+						z.setStatus(rs.xml.agent.model.ZahtevStatus.CANCELED);
+					} else if (zahtevXSD.getStatus().equals(rs.xml.agent.xsd.ZahtevStatus.PENDING)) {
+						z.setStatus(rs.xml.agent.model.ZahtevStatus.PENDING);
+					} else if (zahtevXSD.getStatus().equals(rs.xml.agent.xsd.ZahtevStatus.PAID)) {
+						z.setStatus(rs.xml.agent.model.ZahtevStatus.PAID);
+					}
+					z = zahtevService.save(z);
+
+				} else {
 					rs.xml.agent.model.Zahtev zahtev = new rs.xml.agent.model.Zahtev();
 					zahtev.setZid(zahtevXSD.getZid());
 					zahtev.setChatId(zahtev.getChatId());// hmmmmmmmm
@@ -227,7 +299,9 @@ public class SyncService {
 					zahtevService.save(zahtev);
 					// da li treba dodatne provere?
 				}
+				
 			}
+
 		}
 
 	}
@@ -240,11 +314,18 @@ public class SyncService {
 				for (rs.xml.agent.model.Oglas oglas : oglasService.findAll()) {
 					if (og.getOid().equals(oglas.getOid())) {
 						pom = true;
+						
 					}
 				}
-				if (pom == false) {
-					rs.xml.agent.model.Oglas oglas = new rs.xml.agent.model.Oglas();
-					oglas.setOid(og.getOid());
+				
+				if(pom == true) {
+					List<Long> pomList = new ArrayList<Long>();
+					Oglas oglas = oglasService.findOneByOid(og.getOid());
+					for (Slika slika : oglas.getSlike()) {
+						pomList.add(slika.getId());
+						System.out.println("ID SLIKE---> " + slika.getId());
+					}
+
 					oglas.setMesto(og.getMesto());
 					oglas.setMarka(og.getMarka());
 					oglas.setModel(og.getModel());
@@ -252,11 +333,13 @@ public class SyncService {
 					oglas.setMenjac(og.getMenjac());
 					oglas.setKlasa(og.getKlasa());
 					oglas.setCena(og.getCena());
-					oglas.setCenovnik(null);
+					Cenovnik cen = cenovnikService.findOneByCid(og.getCenovnikId());
+					oglas.setCenovnik(cen);
 					oglas.setKilometraza(og.getKilometraza());
 					oglas.setPlaniranaKilometraza(og.getPlaniranaKilometraza());
 					oglas.setSedistaZaDecu(og.getSedistaZaDecu());
-
+					oglas.getSlike().clear();
+					System.out.println(oglas.getSlike().size());
 					for (rs.xml.agent.xsd.Slika slikaXSD : og.getSlike()) {
 						Slika slika = new Slika();
 						slika.setOglas(oglas);
@@ -273,9 +356,49 @@ public class SyncService {
 					java.sql.Date dateDoToSave = new java.sql.Date(og.getDoDate());
 					oglas.setDo(dateDoToSave);
 
-					oglas.setDeleted(og.isDeleted());
-					oglasService.save(oglas);
+					oglas.setDeleted(false);
+
+					oglas = oglasService.saveUpdated(oglas);
+
+					for (Long id : pomList) {
+						slikaService.remove(id);
+					}
+				} else {
+					rs.xml.agent.model.Oglas oglas1 = new rs.xml.agent.model.Oglas();
+					oglas1.setOid(og.getOid());
+					oglas1.setMesto(og.getMesto());
+					oglas1.setMarka(og.getMarka());
+					oglas1.setModel(og.getModel());
+					oglas1.setGorivo(og.getGorivo());
+					oglas1.setMenjac(og.getMenjac());
+					oglas1.setKlasa(og.getKlasa());
+					oglas1.setCena(og.getCena());
+					oglas1.setCenovnik(null);
+					oglas1.setKilometraza(og.getKilometraza());
+					oglas1.setPlaniranaKilometraza(og.getPlaniranaKilometraza());
+					oglas1.setSedistaZaDecu(og.getSedistaZaDecu());
+
+					for (rs.xml.agent.xsd.Slika slikaXSD : og.getSlike()) {
+						Slika slika = new Slika();
+						slika.setOglas(oglas1);
+						slika.setSlika(slikaXSD.getSlika());
+						oglas1.getSlike().add(slika);
+					}
+
+					oglas1.setOsiguranje(og.isOsiguranje());
+					oglas1.setUsername(og.getUsername());
+
+					java.sql.Date dateOdToSave = new java.sql.Date(og.getOdDate());
+					oglas1.setOd(dateOdToSave);
+
+					java.sql.Date dateDoToSave = new java.sql.Date(og.getDoDate());
+					oglas1.setDo(dateDoToSave);
+
+					oglas1.setDeleted(og.isDeleted());
+					oglasService.saveSoap(oglas1);
+				
 				}
+
 			}
 		}
 

@@ -85,6 +85,10 @@ public class OglasService {
 		return oglasRepository.save(oglas);
 	}
 	
+	public Oglas saveSoap(Oglas oglas) {
+		return oglasRepository.save(oglas);
+	}
+	
 	public Oglas saveUpdated(Oglas oglas) {
 		return oglasRepository.save(oglas);
 	}

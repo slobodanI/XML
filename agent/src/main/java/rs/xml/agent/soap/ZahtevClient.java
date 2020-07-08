@@ -7,6 +7,8 @@ import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 import rs.xml.agent.xsd.PostZahtevRequest;
 import rs.xml.agent.xsd.PostZahtevResponse;
+import rs.xml.agent.xsd.PutZahtevRequest;
+import rs.xml.agent.xsd.PutZahtevResponse;
 
 public class ZahtevClient extends WebServiceGatewaySupport {
 
@@ -20,6 +22,7 @@ public class ZahtevClient extends WebServiceGatewaySupport {
 		zahtevXSD.setDoDate(zahtev.getDo().getTime());
 		zahtevXSD.setIzvestaj(zahtev.isIzvestaj());
 		zahtevXSD.setOcenjen(zahtev.isOcenjen());
+		zahtevXSD.setChatId(zahtev.getChatId());
 				
 		for(rs.xml.agent.model.Oglas oglas: zahtev.getOglasi()) {
 			rs.xml.agent.xsd.OglasUZahtevu oglasUZahtevu = new rs.xml.agent.xsd.OglasUZahtevu();
@@ -51,6 +54,57 @@ public class ZahtevClient extends WebServiceGatewaySupport {
 			response = (PostZahtevResponse) getWebServiceTemplate().marshalSendAndReceive(
 					"http://localhost:8085/ws/soap", request,
 					new SoapActionCallback("http://xml.rs/oglas/xsd/PostZahtevRequest"));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("***ERROR ZahtevClient > greska prilikom slanja!");
+		}
+		
+		return response;
+		
+	}
+	
+	
+	public PutZahtevResponse putZahtev(rs.xml.agent.model.Zahtev zahtev) {
+		rs.xml.agent.xsd.Zahtev zahtevXSD = new rs.xml.agent.xsd.Zahtev();
+		
+		zahtevXSD.setZid(zahtev.getZid());
+		zahtevXSD.setOdDate(zahtev.getOd().getTime());	
+		zahtevXSD.setDoDate(zahtev.getDo().getTime());
+		zahtevXSD.setIzvestaj(zahtev.isIzvestaj());
+		zahtevXSD.setOcenjen(zahtev.isOcenjen());
+		zahtevXSD.setChatId(zahtev.getChatId());
+				
+		for(rs.xml.agent.model.Oglas oglas: zahtev.getOglasi()) {
+			rs.xml.agent.xsd.OglasUZahtevu oglasUZahtevu = new rs.xml.agent.xsd.OglasUZahtevu();
+			oglasUZahtevu.setOid(oglas.getOid());
+			zahtevXSD.getOglasi().add(oglasUZahtevu);
+		}
+		
+		zahtevXSD.setPodnosilacUsername(zahtev.getPodnosilacUsername());
+		zahtevXSD.setUsername(zahtev.getUsername());
+		
+		if(zahtev.getStatus().equals(rs.xml.agent.model.ZahtevStatus.CANCELED)) {
+			zahtevXSD.setStatus(rs.xml.agent.xsd.ZahtevStatus.CANCELED);
+		} else if(zahtev.getStatus().equals(rs.xml.agent.model.ZahtevStatus.PENDING)) {
+			zahtevXSD.setStatus(rs.xml.agent.xsd.ZahtevStatus.PENDING);
+		} else if(zahtev.getStatus().equals(rs.xml.agent.model.ZahtevStatus.PAID)) {
+			zahtevXSD.setStatus(rs.xml.agent.xsd.ZahtevStatus.PAID);
+		}
+
+		zahtevXSD.setVremePodnosenja(zahtev.getVremePodnosenja().getTime());
+		
+		PutZahtevRequest request = new PutZahtevRequest();
+		request.setZahtev(zahtevXSD);
+
+		log.info("Post zahteva preko web servisa... ");
+		
+		PutZahtevResponse response = null;
+		
+		try {
+			response = (PutZahtevResponse) getWebServiceTemplate().marshalSendAndReceive(
+					"http://localhost:8085/ws/soap", request,
+					new SoapActionCallback("http://xml.rs/oglas/xsd/PutZahtevRequest"));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

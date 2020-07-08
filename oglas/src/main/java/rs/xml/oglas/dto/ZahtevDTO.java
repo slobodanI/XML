@@ -18,7 +18,7 @@ public class ZahtevDTO {
 	private boolean ocenjen;
 	private boolean izvestaj;
 	private String podnosilacUsername;
-	private Long chatId;
+	private String chatId;
 	private Set<OglasDTOsearch> oglasi =  new HashSet<OglasDTOsearch>();
 	
 	public ZahtevDTO() {
@@ -91,10 +91,11 @@ public class ZahtevDTO {
 		this.izvestaj = izvestaj;
 	}
 
-	public Long getChatId() {
+	public String getChatId() {
 		return chatId;
 	}
-	public void setChatId(Long chatId) {
+
+	public void setChatId(String chatId) {
 		this.chatId = chatId;
 	}
 

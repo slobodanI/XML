@@ -27,6 +27,7 @@ import rs.xml.agent.repository.ZahtevRepository;
 import rs.xml.agent.soap.ZahtevClient;
 import rs.xml.agent.util.UtilClass;
 import rs.xml.agent.xsd.PostZahtevResponse;
+import rs.xml.agent.xsd.PutZahtevResponse;
 
 @Service
 public class ZahtevService {
@@ -270,6 +271,8 @@ public class ZahtevService {
 		try {
 //			ChatDTO chatDTO = new ChatDTO(chatService.save(chatNewDTO));
 			Chat chat = chatService.save(chatNewDTO, username);
+			zahtev.setChatId(chat.getCid());
+			zahtevRepository.save(zahtev);
 			if (chat != null) {
 				chatService.postChatUMikroservise(chat);
 			}
@@ -277,7 +280,7 @@ public class ZahtevService {
 			System.out.println("***ERROR: zahtevService > acceptZahtev > chatClient ");
 			throw new ServiceNotAvailable("Chat service is not available");
 		}
-
+		putZahtevUMikroservise(zahtev);
 		return zahtev;
 	}
 
@@ -286,6 +289,7 @@ public class ZahtevService {
 
 		z.setStatus(ZahtevStatus.CANCELED);
 		zahtevRepository.save(z);
+		putZahtevUMikroservise(z);
 		return z;
 	}
 
@@ -294,6 +298,7 @@ public class ZahtevService {
 
 		z.setStatus(ZahtevStatus.CANCELED);
 		zahtevRepository.save(z);
+		putZahtevUMikroservise(z);
 		return z;
 	}
 
@@ -335,6 +340,20 @@ public class ZahtevService {
 			}
 		} else {
 			System.out.println("*** ZahtevService > saveZahtev > PostZahtev u mirkoservise > NEUSPESNO");
+		}
+
+	}
+	
+	private void putZahtevUMikroservise(Zahtev zahtev) {
+		PutZahtevResponse response = zahtevClient.putZahtev(zahtev);
+		if (response != null) {
+			if (response.isSuccess()) {
+				System.out.println("*** ZahtevService > putZahtev > PutZahtev u mirkoservise > USPESNO");
+			} else {
+				System.out.println("*** ZahtevService > putZahtev > PutZahtev u mirkoservise > NEUSPESNO");
+			}
+		} else {
+			System.out.println("*** ZahtevService > putZahtev > PutZahtev u mirkoservise > NEUSPESNO");
 		}
 
 	}
