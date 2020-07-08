@@ -95,13 +95,20 @@ public class CenovnikController {
 		String username = tokenUtils.getUsernameFromToken(token);
 
 //		String username = request.getHeader("username");
+		List<Cenovnik> cenovnici = cenovnikService.findAll();
+		for (Cenovnik cen : cenovnici) {
+			if (cen.getName().equals((username + "-" + cenovnikDTO.getName()))) {
+				return new ResponseEntity<String>("Vec postoji cenovnik sa tim nazivom!", HttpStatus.BAD_REQUEST);
+			}
+		}
 
 		Cenovnik cen = new Cenovnik(cenovnikDTO, username);
 
-		cen = cenovnikService.save(cen);
+		cen = cenovnikService.save(cen,username);
 		logger.info("Created cenovnik with id:" + cen.getId() + " by username: " + username + ", IP:"
 				+ request.getRemoteAddr());
 		CenovnikDTO cenovnik = new CenovnikDTO(cen);
+		System.out.println("CENOVNIK CID----->"+cen.getCid());
 		return new ResponseEntity<>(cenovnik, HttpStatus.OK);
 	}
 

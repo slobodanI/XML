@@ -86,7 +86,7 @@ public class CenovnikController {
 
 		Cenovnik cen = new Cenovnik(cenovnikDTO, username);
 
-		cen = cenovnikService.save(cen);
+		cen = cenovnikService.save(cen,username);
 
 		logger.info("Created cenovnik with id:" + cen.getId() + " by username: " + username + ", IP:"
 				+ request.getRemoteAddr());

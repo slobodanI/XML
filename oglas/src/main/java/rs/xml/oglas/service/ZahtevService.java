@@ -260,6 +260,8 @@ public class ZahtevService {
 
 		try {
 			ChatDTO chatDTO = chatClient.postChat(chatNewDTO, username, permisije);
+			zahtev.setChatId(chatDTO.getCid());
+			zahtevRepository.save(zahtev);
 		} catch (Exception e) {
 			System.out.println("***ERROR: zahtevService > acceptZahtev > chatClient ");
 			throw new ServiceNotAvailable("Chat service is not available");

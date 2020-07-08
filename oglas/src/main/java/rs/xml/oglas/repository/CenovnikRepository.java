@@ -15,4 +15,7 @@ public interface CenovnikRepository extends JpaRepository<Cenovnik, Long> {
 	@Query("SELECT c FROM Cenovnik c WHERE c.username = :username")
 	List<Cenovnik> findAllFromUser(@Param("username") String username);
 	
+	@Query("SELECT c FROM Cenovnik c WHERE c.cid = :cid")
+	Cenovnik findByCid(@Param("cid") String cid);
+	
 }

@@ -18,6 +18,9 @@ public class Cenovnik {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@Column(name="cid", unique = true)
+	private String cid;
+	
 	@Column(name="name", unique = true)
 	private String name;
 	
@@ -126,6 +129,14 @@ public class Cenovnik {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCid() {
+		return cid;
+	}
+
+	public void setCid(String cid) {
+		this.cid = cid;
 	}
 	
 	

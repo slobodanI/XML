@@ -70,6 +70,15 @@ public class SoapConfiguration {
 	}
 	
 	@Bean
+	public CenovnikClient cenovnikClient(Jaxb2Marshaller marshaller) {
+		CenovnikClient client = new CenovnikClient();
+		client.setDefaultUri("http://localhost:8080/oglasi/ws");
+		client.setMarshaller(marshaller);
+		client.setUnmarshaller(marshaller);
+		return client;
+	}
+	
+	@Bean
 	public ChatClient chatClient(Jaxb2Marshaller marshaller) {
 		ChatClient client = new ChatClient();
 		client.setDefaultUri("http://localhost:8080/chat/ws");

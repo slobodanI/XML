@@ -15,15 +15,23 @@ import rs.xml.oglas.exception.NotFoundException;
 import rs.xml.oglas.exception.UniqueConstrainException;
 import rs.xml.oglas.model.Cenovnik;
 import rs.xml.oglas.repository.CenovnikRepository;
+import rs.xml.oglas.util.UtilClass;
 
 @Service
 public class CenovnikService {
 
 	@Autowired
+	UtilClass utilClass;
+	
+	@Autowired
 	CenovnikRepository cenovnikRepository;
 	
 	public Cenovnik findOne(Long id) {
 		return cenovnikRepository.findById(id).orElseThrow(() -> new NotFoundException("Cenovnik with id:" +id+ " does not exist!") );
+	}
+	
+	public Cenovnik findOneByCid(String cid) {
+		return cenovnikRepository.findByCid(cid);
 	}
 
 	public List<Cenovnik> findAll() {
@@ -34,14 +42,18 @@ public class CenovnikService {
 		return cenovnikRepository.findAll(page);
 	}
 	
-	public Cenovnik save(Cenovnik cenovnik) {
+	public Cenovnik save(Cenovnik cenovnik,String username) {
 //		jdbcSQLIntegrityConstraintViolationException
+		cenovnik.setCid(username + "-" + utilClass.randomString());
 		try {
 			cenovnikRepository.save(cenovnik);
 		} catch (Exception e) {
 			throw new UniqueConstrainException("Cenovnik with name:" +cenovnik.getName()+ " already exist!");
 		}
 		return cenovnik;
+	}
+	public Cenovnik save(Cenovnik cenovnik) {
+		return cenovnikRepository.save(cenovnik);
 	}
 
 	public void remove(Long id) {

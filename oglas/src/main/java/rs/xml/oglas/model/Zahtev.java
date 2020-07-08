@@ -34,7 +34,7 @@ public class Zahtev {
 	@Column(name="zid")
 	private String zid;
 	
-	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "OGLAS_ZAHTEV",
             joinColumns = @JoinColumn(name = "zahtev_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "oglas_id", referencedColumnName = "id"))
@@ -65,14 +65,14 @@ public class Zahtev {
 	private String podnosilacUsername;
 	
 	@Column(name="chatId")
-	private Long chatId;
+	private String chatId;
 	
 	public Zahtev() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public Zahtev(Set<Oglas> oglasi, ZahtevStatus status, String username, Date od, Date do1, boolean ocenjen,
-			boolean izvestaj, String podnosilacUsername, Long chatId) {
+			boolean izvestaj, String podnosilacUsername, String chatId) {
 		super();
 		this.oglasi = oglasi;
 		this.status = status;
@@ -157,12 +157,13 @@ public class Zahtev {
 		this.izvestaj = izvestaj;
 	}
 
+	
 
-	public Long getChatId() {
+	public String getChatId() {
 		return chatId;
 	}
 
-	public void setChatId(Long chatId) {
+	public void setChatId(String chatId) {
 		this.chatId = chatId;
 	}
 
