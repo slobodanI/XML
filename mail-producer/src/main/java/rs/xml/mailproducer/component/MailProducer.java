@@ -35,6 +35,7 @@ public class MailProducer {
         log.info("MailProducer > Sending mail...");
         String message = null;
         try {
+        	mailDTO.setEmail("psa.isa.usr@gmail.com");
             message = objectMapper.writeValueAsString(mailDTO);
             this.rabbitTemplate.convertAndSend(routingkey, message);
         } catch (JsonProcessingException e) {

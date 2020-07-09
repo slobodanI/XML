@@ -326,7 +326,7 @@ public class AuthenticationController {
 		User user = userService.activateUser(uid);
 		EmailDTO emailDTO = new EmailDTO("Accept registration trough email",
 				"Potvrdite registraciju pritiskom na ovaj link: "
-						+ "<br> https://localhost:8080/Admin/PotvrdaRegistracije.html?userID=" + uid + "<br>",
+						+ "<br> http://localhost:8080/Admin/PotvrdaRegistracije.html?userID=" + uid + "<br>",
 				"");
 		try {
 			emailService.sendNotificaitionAsync(emailDTO);
@@ -340,7 +340,7 @@ public class AuthenticationController {
 		//email je zakucan u mail mikroservisu
 		MailDTO mailDTO = new MailDTO("", "DEPLOYED - Accept registration trough email", 
 				"Potvrdite registraciju pritiskom na ovaj link: "
-				+ "<br> https://localhost:8080/Admin/PotvrdaRegistracije.html?userID=" + uid + "<br>");
+				+ "<br> http://localhost:8080/Admin/PotvrdaRegistracije.html?userID=" + uid + "<br>");
 		
 		try {
 			mailClient.sendMail(mailDTO);

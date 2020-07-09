@@ -70,6 +70,7 @@ services:
       - chat
       - oglas
       - sifrarnik
+      - mail-producer
   
 
   
