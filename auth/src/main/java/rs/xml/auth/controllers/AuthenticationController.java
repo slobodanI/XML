@@ -38,9 +38,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import rs.xml.auth.client.MailClient;
 import rs.xml.auth.dto.AgentRegisterDTO;
 import rs.xml.auth.dto.AgentUpdateDTO;
 import rs.xml.auth.dto.EmailDTO;
+import rs.xml.auth.dto.MailDTO;
 import rs.xml.auth.dto.UpdateUserDebtDTO;
 import rs.xml.auth.dto.UserDTO;
 import rs.xml.auth.dto.UserUpdateDTO;
@@ -75,6 +77,9 @@ public class AuthenticationController {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private MailClient mailClient;
+	
 	@Autowired
 	HttpServletRequest request;
 
@@ -321,7 +326,7 @@ public class AuthenticationController {
 		User user = userService.activateUser(uid);
 		EmailDTO emailDTO = new EmailDTO("Accept registration trough email",
 				"Potvrdite registraciju pritiskom na ovaj link: "
-						+ "<br> https://localhost:8080/Admin/PotvrdaRegistracije.html?userID=" + uid + "<br>",
+						+ "<br> http://localhost:8080/Admin/PotvrdaRegistracije.html?userID=" + uid + "<br>",
 				"");
 		try {
 			emailService.sendNotificaitionAsync(emailDTO);
@@ -329,7 +334,21 @@ public class AuthenticationController {
 			// logger.info("Greska prilikom slanja emaila: " + e.getMessage());
 			System.out.println("### Greska prilikom slanja mail-a! ###");
 		}
-
+		
+//		mailDTO - polja su na engleskom, takva polja prihvava mail mikroservis
+		
+		//email je zakucan u mail mikroservisu
+		MailDTO mailDTO = new MailDTO("", "DEPLOYED - Accept registration trough email", 
+				"Potvrdite registraciju pritiskom na ovaj link: "
+				+ "<br> http://localhost:8080/Admin/PotvrdaRegistracije.html?userID=" + uid + "<br>");
+		
+		try {
+			mailClient.sendMail(mailDTO);
+		} catch (Exception e) {
+			System.out.println("### DEPLOY - Greska prilikom slanja mail-a! ###");
+		}
+		
+		
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 
