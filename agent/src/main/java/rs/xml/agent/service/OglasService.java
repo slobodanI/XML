@@ -23,6 +23,7 @@ import rs.xml.agent.dto.NewOglasDTO;
 import rs.xml.agent.dto.OglasDTOsearch;
 import rs.xml.agent.dto.SlikaDTO;
 import rs.xml.agent.exceptions.NotFoundException;
+import rs.xml.agent.model.Cenovnik;
 import rs.xml.agent.model.Oglas;
 import rs.xml.agent.model.Slika;
 import rs.xml.agent.model.Zahtev;
@@ -49,6 +50,9 @@ public class OglasService {
 
 	@Autowired
 	gorivoRepository gorivoRepository;
+	
+	@Autowired
+	CenovnikService cenovnikService;
 
 	@Autowired
 	klasaRepository klasaRepository;
@@ -128,6 +132,10 @@ public class OglasService {
 	}
 	
 	public Oglas saveUpdated(Oglas oglas) {
+		return oglasRepository.save(oglas);
+	}
+	
+	public Oglas saveSoap(Oglas oglas) {
 		return oglasRepository.save(oglas);
 	}
 
@@ -409,7 +417,7 @@ public class OglasService {
 	}
 
 	public Oglas updateOglas(Long oid, NewOglasDTO oglasDTO, String username) {
-
+		Cenovnik cen = cenovnikService.findOne(oglasDTO.getCenovnik());
 		Oglas ogl = findOne(oid);
 		List<Long> pom =new ArrayList<Long>();
 		for(Slika slika : ogl.getSlike()) {
@@ -421,8 +429,8 @@ public class OglasService {
 		}
 
 		createOglasWithFeignClient(ogl, oglasDTO);
-
-		ogl.setCena(oglasDTO.getCena());
+		
+		ogl.setCena(cen.getCenaZaDan());
 		ogl.setKilometraza(oglasDTO.getKilometraza());
 		ogl.setPlaniranaKilometraza(oglasDTO.getPlaniranaKilometraza());
 		ogl.setSedistaZaDecu(oglasDTO.getBrSedistaZaDecu());
@@ -455,7 +463,8 @@ public class OglasService {
 			//slikaRepository.deleteById();
 		}
 
-		ogl = this.save(ogl);
+		ogl = this.saveUpdated(ogl);
+		putOglas(ogl);
 		return ogl;
 	}
 
@@ -467,6 +476,7 @@ public class OglasService {
 		}
 		ogl.setDeleted(true);
 		this.save(ogl);
+		putOglas(ogl);
 
 		return ogl;
 	}
@@ -478,4 +488,12 @@ public class OglasService {
 			System.out.println("***OglasService > sendToMicroServices > oglasClient > uspesno poslat oglaS!");
 		}
 	}
+	private void putOglas(Oglas oglas) {
+		if (oglasClient.putOglas(oglas) == null) {
+			System.out.println("***ERROR OglasService > sendToMicroServices > oglasClient > returned NULL!");
+		} else {
+			System.out.println("***OglasService > sendToMicroServices > oglasClient > uspesno poslat oglaS!");
+		}
+	}
+	
 }

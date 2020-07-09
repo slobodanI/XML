@@ -17,6 +17,22 @@
         </xs:complexType>
     </xs:element>
     
+    <xs:element name="putOglasRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="oglas" type="tns:Oglas"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="putOglasResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
     <xs:element name="postZahtevRequest">
         <xs:complexType>
             <xs:sequence>
@@ -32,6 +48,22 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    
+    <xs:element name="putZahtevRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="zahtev" type="tns:Zahtev"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="putZahtevResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>    
     
     <xs:element name="postOcenaRequest">
         <xs:complexType>
@@ -113,6 +145,39 @@
         </xs:complexType>
     </xs:element>    
     
+    <xs:element name="postCenovnikRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cenovnik" type="tns:Cenovnik"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="postCenovnikResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>     
+    
+    <xs:element name="putCenovnikRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cenovnik" type="tns:Cenovnik"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="putCenovnikResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="success" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    
     <xs:element name="getEverythingRequest">
         <xs:complexType>
             <xs:sequence>
@@ -128,6 +193,7 @@
                 <xs:element name="zahtevi" type="tns:Zahtev" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="izvestaji" type="tns:Izvestaj" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="ocene" type="tns:Ocena" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="cenovnici" type="tns:Cenovnik" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -159,6 +225,7 @@
             <xs:element name="menjac" type="xs:string"/>
             <xs:element name="klasa" type="xs:string"/>
             <xs:element name="cena" type="xs:int"/>
+            <xs:element name="cenovnikId" type="xs:string"/>
             <xs:element name="kilometraza" type="xs:int"/>
             <xs:element name="planiranaKilometraza" type="xs:int"/>
             <xs:element name="sedistaZaDecu" type="xs:int"/>
@@ -187,7 +254,8 @@
             <xs:element name="doDate" type="xs:long"/>
             <xs:element name="vremePodnosenja" type="xs:long"/>
             <xs:element name="ocenjen" type="xs:boolean"/>
-            <xs:element name="izvestaj" type="xs:boolean"/>   
+            <xs:element name="izvestaj" type="xs:boolean"/>
+            <xs:element name="chatId" type="xs:string"/> 
             <xs:element name="oglasi" type="tns:OglasUZahtevu" minOccurs="1" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
@@ -256,6 +324,19 @@
             <xs:element name="zahtevId" type="xs:string"/>
             <xs:element name="predjeniKilometri" type="xs:int"/>
              <xs:element name="tekst" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+   <xs:complexType name="Cenovnik">
+        <xs:sequence>
+            <xs:element name="cid" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="cenaZaDan" type="xs:int"/>
+            <xs:element name="cenaPoKilometru" type="xs:int"/>
+            <xs:element name="cenaOsiguranja" type="xs:int"/>
+            <xs:element name="popust" type="xs:int"/>
+            <xs:element name="zaViseOd" type="xs:int"/>
+             <xs:element name="username" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
     

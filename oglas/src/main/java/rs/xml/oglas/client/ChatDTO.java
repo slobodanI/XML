@@ -8,6 +8,8 @@ public class ChatDTO {
 
 	private String receivereUsername;
 	
+	private String cid;
+	
 	public ChatDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -34,6 +36,14 @@ public class ChatDTO {
 
 	public void setReceivereUsername(String receivereUsername) {
 		this.receivereUsername = receivereUsername;
+	}
+
+	public String getCid() {
+		return cid;
+	}
+
+	public void setCid(String cid) {
+		this.cid = cid;
 	}
 	
 	

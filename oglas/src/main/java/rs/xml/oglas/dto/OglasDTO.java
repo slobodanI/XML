@@ -31,7 +31,7 @@ public class OglasDTO {
 
 	private int cena; // cena za dan + cena za osiguranje ako postoji
 
-	private Long cenovnik; // ovo treba vremenom promeniti
+	private String cenovnik; // ovo treba vremenom promeniti
 
 	private int kilometraza;
 
@@ -71,7 +71,7 @@ public class OglasDTO {
 		this.brSedistaZaDecu = o.getSedistaZaDecu();
 		this.Od = o.getOd();
 		this.Do = o.getDo();
-		this.cenovnik = o.getCenovnik().getId();
+		this.cenovnik = o.getCenovnik().getCid();
 		this.deleted = o.isDeleted();
 		for (Slika s : o.getSlike()) {
 			String imageString;
@@ -246,6 +246,14 @@ public class OglasDTO {
 
 	public void setSlikeString(List<String> slikeString) {
 		this.slikeString = slikeString;
+	}
+
+	public String getCenovnik() {
+		return cenovnik;
+	}
+
+	public void setCenovnik(String cenovnik) {
+		this.cenovnik = cenovnik;
 	}
 	
 }

@@ -11,6 +11,7 @@ public class CenovnikDTO {
 	private int popust;
 	private int zaViseOd; // za vise od koliko dana vazi popust
 	private String name;
+	private String cid;
 
 	public CenovnikDTO(Cenovnik cen) {
 		this.id = cen.getId();
@@ -20,6 +21,7 @@ public class CenovnikDTO {
 		this.popust = cen.getPopust();
 		this.zaViseOd = cen.getZaViseOd();
 		this.name = cen.getName();
+		this.cid = cen.getCid();
 	}
 
 	public Long getId() {
@@ -78,4 +80,13 @@ public class CenovnikDTO {
 		this.name = name;
 	}
 
+	public String getCid() {
+		return cid;
+	}
+
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+
+	
 }

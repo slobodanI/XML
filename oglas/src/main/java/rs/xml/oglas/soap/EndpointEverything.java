@@ -11,6 +11,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import rs.xml.oglas.model.Oglas;
 import rs.xml.oglas.model.ZahtevStatus;
+import rs.xml.oglas.service.CenovnikService;
 import rs.xml.oglas.service.IzvestajService;
 import rs.xml.oglas.service.OcenaService;
 import rs.xml.oglas.service.OglasService;
@@ -32,6 +33,9 @@ public class EndpointEverything {
 	IzvestajService izvestajService;
 	
 	@Autowired
+	CenovnikService cenovnikService;
+	
+	@Autowired
 	OcenaService ocenaService;
 	
 	private static final String NAMESPACE_URI = "http://xml.rs/oglas/xsd";
@@ -49,8 +53,6 @@ public class EndpointEverything {
 		
 		System.out.println("###ENDPOINT > getEverything > FOR(findMyOglasi) > start");
 		for(rs.xml.oglas.model.Oglas oglas: oglasService.findMyOglasi(request.getUsername())) {
-//			System.out.println("###ENDPOINT > getEverything > FOR(findMyOglasi) > oglas: " + oglas.getMarka() + ": " + oglas.getModel());
-//			System.out.println("###ENDPOINT > getEverything > FOR(findMyOglasi) > oglasi response: " + response.getOglasi());
 			response.getOglasi().add(convertModelOglasToXsdOglas(oglas));
 		}
 		System.out.println("###ENDPOINT > getEverything > FOR(findMyOglasi) > finnish");
@@ -69,6 +71,15 @@ public class EndpointEverything {
 		}
 		
 		System.out.println("###ENDPOINT > getEverything > FOR(findMyIzvestaji) > finnish");
+		
+		System.out.println("###ENDPOINT > getEverything > FOR(findMyCenovnici) > start");
+		for(rs.xml.oglas.model.Cenovnik cenovnik : cenovnikService.findAllFromUser(request.getUsername())) {
+			System.out.println("--------------->"+cenovnik.getName());
+			response.getCenovnici().add(convertModelCenovnikToXsdCenovnik(cenovnik));
+		}
+		
+		System.out.println("###ENDPOINT > getEverything > FOR(findMyCenovnici) > finnish");
+		
 
 		System.out.println("###ENDPOINT > getEverything > FOR(findMyOcene) > start");
 		for(rs.xml.oglas.model.Ocena ocena : ocenaService.findOceneForMe(request.getUsername())) {
@@ -76,7 +87,7 @@ public class EndpointEverything {
 		}
 		System.out.println("###ENDPOINT > getEverything > FOR(findMyOcene) > finnish");
 		
-//		
+	
 		System.out.println("###ENDPOINT > getEverything > " + response.toString());
 		return response;
 	}
@@ -205,6 +216,22 @@ public class EndpointEverything {
 		System.out.println("### uspesno konvertovanje ocene!");
 		
 		return ocenaXSD;
+	}
+	
+	private rs.xml.oglas.xsdgenerated.Cenovnik convertModelCenovnikToXsdCenovnik (rs.xml.oglas.model.Cenovnik cenovnik){
+		rs.xml.oglas.xsdgenerated.Cenovnik cenovnikXSD =  new rs.xml.oglas.xsdgenerated.Cenovnik();
+		System.out.println("### CONVERTOVANJE CENOVNIKA 1 > cenovnikXSD: " + cenovnikXSD);
+		cenovnikXSD.setCenaOsiguranja(cenovnik.getCenaOsiguranja());
+		cenovnikXSD.setCenaPoKilometru(cenovnik.getCenaPoKilometru());
+		cenovnikXSD.setCenaZaDan(cenovnik.getCenaZaDan());
+		cenovnikXSD.setCid(cenovnik.getCid());
+		cenovnikXSD.setName(cenovnik.getName());
+		cenovnikXSD.setPopust(cenovnik.getPopust());
+		cenovnikXSD.setUsername(cenovnik.getUsername());
+		cenovnikXSD.setZaViseOd(cenovnik.getZaViseOd());
+		System.out.println("### uspesno konvertovanje cenovnika!");
+		
+		return cenovnikXSD;
 	}
 	
 	
