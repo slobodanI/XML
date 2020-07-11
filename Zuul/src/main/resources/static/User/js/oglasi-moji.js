@@ -33,7 +33,7 @@ function izlistajOglase(oglasi){
 		var tableUDivu = $("<table id='tabelaOglasa' class='display'> </table>");
 		
 		var thead = $("<thead> </thead>");
-		thead.append("<tr><th>ID</th><th>Slika</th><th>Mesto</th><th>Marka</th><th>Model</th><th>Menjac</th><th>Gorivo</th><th>Klasa</th><th>Unesi zauzece</th><th>Izmeni</th></tr>")
+		thead.append("<tr><th>ID</th><th>Slika</th><th>Mesto</th><th>Marka</th><th>Model</th><th>Menjac</th><th>Gorivo</th><th>Klasa</th><th>Unesi zauzece</th><th>Izmeni</th><th>Obrisi</th></tr>")
 		
 		var tbody = $("<tbody id='teloTabele'> </tbody>");
 		
@@ -68,8 +68,13 @@ function izlistajOglase(oglasi){
 			btnIzmeni.click(izmeniOglas(o.id));
 			tdIzmeni.append(btnIzmeni);
 			
+			var tdObrisi = $("<td> </td>");
+			var btnObrisi = $("<button>Obrisi</button>");
+			btnObrisi.click(obrisiOglas(o.id));
+			tdObrisi.append(btnObrisi);
 			
-			tr.append(tdId).append(tdSlika).append(tdMesto).append(tdMarka).append(tdModel).append(tdMenjac).append(tdGorivo).append(tdKlasa).append(tdUnos).append(tdIzmeni);
+			
+			tr.append(tdId).append(tdSlika).append(tdMesto).append(tdMarka).append(tdModel).append(tdMenjac).append(tdGorivo).append(tdKlasa).append(tdUnos).append(tdIzmeni).append(tdObrisi);
 			tbody.append(tr);
 		}
 		
@@ -89,6 +94,24 @@ function izmeniOglas(oglasId) {
 		window.location = "./oglas-update.html?oglasId=" + oglasId;
 	}
 	
+}
+function obrisiOglas(oglasId) {
+	return function(){
+	$.ajax({
+		url: '/oglasi/oglas/'+oglasId,
+		type: 'DELETE',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(oglasi){
+			window.location = "./oglasi-moji.html";
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", textStatus);
+        }
+	});
+	
+	}
 }
 
 function oglasDetalji(oglasId) {
@@ -134,20 +157,5 @@ function whoami() {
 		error: function() {
 			window.location = "../login.html";
 		}
-	});
-}
-function myFunction() {
-	$.ajax({
-		url: '/user/payDebt',
-		type: 'PUT',
-		headers: {
-	        'Auth': 'Bearer ' + token
-	    },
-		success: function(){
-			alert("Uspeh");
-		},
-		error: function(jqXhr, textStatus, errorMessage) {
-            console.log("Error: ", textStatus);
-        }
 	});
 }

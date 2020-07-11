@@ -5,7 +5,7 @@
 -- Lozinka za oba user-a je 1234567899
 
 INSERT INTO USERS (username, password, first_name, last_name, email, company_name, adress, pib, activated, accepted, blocked, blocked_postavljanje_oglasa, blocked_slanje_zahteva, canceled, owes, deleted, last_password_reset_date, salt)
-	VALUES ('userA', '$2a$10$Fbq6q3mR.j4bgoAIKTJbYOr6ccjsMNZdmlKwRikJP8gLkx60jaSmG', 'Marko', 'Markovic', 'user@example.com', '', '', 0, true, true, false, false, false, 0, 0, false, '2017-10-01 21:58:58.508-07', 'a0s8hgy28h1');
+	VALUES ('userA', '$2a$10$Fbq6q3mR.j4bgoAIKTJbYOr6ccjsMNZdmlKwRikJP8gLkx60jaSmG', 'Marko', 'Markovic', 'user@example.com', '', '', 0, true, true, false, false, false, 0, 500, false, '2017-10-01 21:58:58.508-07', 'a0s8hgy28h1');
 INSERT INTO USERS (username, password, first_name, last_name, email, company_name, adress, pib, activated, accepted, blocked, blocked_postavljanje_oglasa, blocked_slanje_zahteva, canceled, owes, deleted, last_password_reset_date, salt)
 	VALUES ('admin', '$2a$10$eH8zX6i0FSIWRj4h9fSMdOJFCrMLuoI8aJIp/YnKap8IxWpV55xPC', 'Nikola', 'Nikolic', 'admin@example.com', '', '', 0, true, true, false, false, false, 0, 0, false, '2017-10-01 18:57:58.508-07', 'blsk56oyh01');
 INSERT INTO USERS (username, password, first_name, last_name, email, company_name, adress, pib, activated, accepted, blocked, blocked_postavljanje_oglasa, blocked_slanje_zahteva, canceled, owes, deleted, last_password_reset_date, salt)
@@ -105,7 +105,7 @@ INSERT INTO CENOVNIK(NAME,CENA_ZA_DAN,CENA_PO_KILOMETRU,CENA_OSIGURANJA,POPUST,Z
   values ('cenovnik1',1000,200,300,20,30,'agent','agent-[B@5afde06a');
 
 INSERT INTO OGLAS(oid, mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted, cenovnik_id)
- VALUES ('agent-12g87shv078hq27rnnsd', 'NS', 'audi', 'A3', 'benzin', 'manuelni', 'limuzina', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false, 1);
+ VALUES ('agent-12g87shv078hq27rnnsd', 'NS', 'audi', 'A3', 'benzin', 'manuelni', 'minivan', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false, 1);
 INSERT INTO OGLAS(oid, mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted, cenovnik_id)
  VALUES ('agent-insdfbh8jn23r9jidv798', 'NS', 'audi', 'A3', 'benzin', 'manuelni', 'sedan', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false, 1);
 --INSERT INTO OGLAS(mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted)

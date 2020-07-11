@@ -49,6 +49,7 @@ function getMyPodaci() {
 			$("#ime").append("Ime: " + user.firstname);
 			$("#prezime").append("Prezime: " + user.lastname);
 			$("#email").append("Email: " + user.email);
+			$("#owes").append("Zaduzenje: "+user.owes);
 			
 			
 			$("#input-firstname").val(user.firstname);
@@ -80,6 +81,7 @@ function getMyPodaciAgent() {
 			$("#companyName").append("Naziv kompanije: " + user.companyName);
 			$("#adress").append("Adresa: " + user.adress);
 			$("#pib").append("Pib: " + user.pib);
+			$("#owes").append("Zaduzenje: "+user.owes);
 			
 			
 			$("#input-firstnameAgent").val(user.firstname);
@@ -189,6 +191,7 @@ function whoami() {
 			}else {
 				getMyPodaci();
 				$("#btn-prikazFormeAgent").hide();
+				$("#div-sinh").hide();
 			}
 			if(ROLES.includes("ROLE_USER") || ROLES.includes("ROLE_USER_LIMITED") || ROLES.includes("ROLE_AGENT") ) {
 				// 
@@ -200,6 +203,38 @@ function whoami() {
 		error: function() {
 			window.location = "../login.html";
 		}
+	});
+}
+
+
+function myFunction() {
+	$.get({
+		url: '/sync',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(){
+			alert("Uspeh");
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", textStatus);
+        }
+	});
+}
+
+function myFunction2() {
+	$.ajax({
+		url: '/user/payDebt',
+		type: 'PUT',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(){
+			window.location = "./UserProfil.html";
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", textStatus);
+        }
 	});
 }
 

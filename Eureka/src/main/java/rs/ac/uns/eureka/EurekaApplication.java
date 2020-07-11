@@ -30,6 +30,7 @@ public class EurekaApplication {
 //		return args;
 //	}
 	
+	
     public static void main(String[] args) {
         SpringApplication.run(EurekaApplication.class, args);
     }

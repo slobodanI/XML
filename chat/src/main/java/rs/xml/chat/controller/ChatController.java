@@ -80,6 +80,7 @@ public class ChatController {
 		// da poruke budu sortirane
 		chat.setPoruke(porukaService.findPorukeFromChat(chat.getId()));
 		ChatPorukeDTO chatPorukeDTO = new ChatPorukeDTO();
+		
 		for(Poruka p : chat.getPoruke()) {
 			PorukaDTO porukaDTO = new PorukaDTO(p);
 			porukaDTO = utilClass.escapePorukaDTO(porukaDTO);

@@ -4,7 +4,7 @@ INSERT INTO CENOVNIK(NAME,CENA_ZA_DAN,CENA_PO_KILOMETRU,CENA_OSIGURANJA,POPUST,Z
 
 -- treba dodati cenovnik posle cene
 INSERT INTO OGLAS(oid, mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted, cenovnik_id)
- VALUES ('agent-12g87shv078hq27rnnsd', 'NS', 'audi', 'A3', 'benzin', 'manuelni', 'limuzina', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false, 1);
+ VALUES ('agent-12g87shv078hq27rnnsd', 'NS', 'audi', 'A3', 'benzin', 'manuelni', 'minivan', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false, 1);
 INSERT INTO OGLAS(oid, mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted, cenovnik_id)
  VALUES ('agent-insdfbh8jn23r9jidv798', 'NS', 'audi', 'A3', 'benzin', 'manuelni', 'sedan', 4000, 10000, 9999, 2, true, 'agent', '2020-05-27', '2020-08-27', false, 1);
 --INSERT INTO OGLAS(mesto, marka, model, gorivo, menjac, klasa, cena, kilometraza, planirana_kilometraza, sedista_za_decu, osiguranje, username, Od, Do, deleted)

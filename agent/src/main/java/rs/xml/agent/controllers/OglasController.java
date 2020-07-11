@@ -276,7 +276,7 @@ public class OglasController {
 			planiranaInt = Integer.parseInt(planirana);
 //            osiguranjeBool = Boolean.parseBoolean(osiguranje);
 			brSedZaDecuInt = Integer.parseInt(brSedZaDecu);
-			cenaOdInt = Integer.parseInt(cenaDo);
+			cenaOdInt = Integer.parseInt(cenaOd);
 			cenaDoInt = Integer.parseInt(cenaDo);
 		} catch (ParseException | NumberFormatException e) {
 			System.out.println("***Parametri za pretragu nisu dobro formirani!");

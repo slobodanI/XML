@@ -144,6 +144,7 @@ public class Endpoint {
 		oglas.setMenjac(oglasXSD.getMenjac());
 		oglas.setKlasa(oglasXSD.getKlasa());
 		oglas.setCena(oglasXSD.getCena());
+		oglas.setDeleted(oglasXSD.isDeleted());
 		Cenovnik cen = cenovnikService.findOneByCid(oglasXSD.getCenovnikId());
 		oglas.setCenovnik(cen);
 		oglas.setKilometraza(oglasXSD.getKilometraza());

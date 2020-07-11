@@ -39,6 +39,7 @@ public class GorivoController
 //GORIVO
 //------------------------------------------------------------------------------------------------------------------------	
 	
+	
 	@GetMapping(value = "/gorivo")
 	public ResponseEntity<List<Gorivo>> getAllGorivo() 
 	{	

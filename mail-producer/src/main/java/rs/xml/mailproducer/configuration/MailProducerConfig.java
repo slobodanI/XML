@@ -18,6 +18,7 @@ public class MailProducerConfig {
         return new Queue(queue, false);
     }
 
+    
     /*
      * Registrujemo bean koji ce sluziti za konekciju na RabbitMQ
      * gde se mi u primeru kacimo u lokalu.

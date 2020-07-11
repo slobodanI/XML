@@ -243,11 +243,10 @@ public class OglasService {
 					continue;
 				}
 			}
-
 			float popust = 1 - (float) oglas.getCenovnik().getPopust() / (float) 100;
 			if (cenaOd != 0) {
 
-				if (doDateOVAJ.after(new Date(odDateOVAJ.getTime() + (1000 * 60 * 60 * 24 * 20)))) {
+				if (doDateOVAJ.after(new Date(odDateOVAJ.getTime() + (1000 * 60 * 60 * 24 * oglas.getCenovnik().getZaViseOd())))) {
 
 					if (oglas.getCenovnik() != null) {
 						if (oglas.getCenovnik().getCenaZaDan() * popust < cenaOd) {
@@ -266,10 +265,11 @@ public class OglasService {
 					}
 				}
 			}
-
+			
+			
 			if (cenaDo != 0) {
 
-				if (doDateOVAJ.after(new Date(odDateOVAJ.getTime() + (1000 * 60 * 60 * 24 * 20)))) {
+				if (doDateOVAJ.after(new Date(odDateOVAJ.getTime() + (1000 * 60 * 60 * 24 * oglas.getCenovnik().getZaViseOd())))) {
 					if (oglas.getCenovnik() != null) {
 						if ((float) oglas.getCenovnik().getCenaZaDan() * popust > cenaDo) {
 							flag = false;
@@ -475,7 +475,7 @@ public class OglasService {
 			return null; // nije tvoj oglas
 		}
 		ogl.setDeleted(true);
-		this.save(ogl);
+		this.saveUpdated(ogl);
 		putOglas(ogl);
 
 		return ogl;

@@ -93,7 +93,7 @@ public class OglasClient extends WebServiceGatewaySupport {
 		oglas.setOdDate(oglasToXSD.getOd().getTime());
 		oglas.setDoDate(oglasToXSD.getDo().getTime());
 		
-		oglas.setDeleted(false);			
+		oglas.setDeleted(oglasToXSD.isDeleted());			
 		
 		PutOglasRequest request = new PutOglasRequest();
 		request.setOglas(oglas);

@@ -8,9 +8,7 @@ public class UserDTO {
 	
 	private String firstname;
 
-
 	private String lastname;
-	
 
 	private String email;
 	
@@ -19,6 +17,8 @@ public class UserDTO {
 	private String adress;
 	
 	private int pib;
+	
+	private int owes;
 	
 	
 	public UserDTO(User user) {
@@ -43,7 +43,7 @@ public class UserDTO {
 		if(user.getPib() != 0) {
 			this.pib=user.getPib();
 		}else this.pib = 0;
-		
+		this.owes=user.getOwes();
 		
 	}
 
@@ -108,6 +108,14 @@ public class UserDTO {
 
 	public void setPib(int pib) {
 		this.pib = pib;
+	}
+
+	public int getOwes() {
+		return owes;
+	}
+
+	public void setOwes(int owes) {
+		this.owes = owes;
 	}
 	
 	

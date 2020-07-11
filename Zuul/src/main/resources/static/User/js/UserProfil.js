@@ -48,6 +48,7 @@ function getMyPodaci() {
 			$("#ime").append("Ime: " + user.firstname);
 			$("#prezime").append("Prezime: " + user.lastname);
 			$("#email").append("Email: " + user.email);
+			$("#owes").append("Zaduzenje: "+user.owes);
 			
 			
 			$("#input-firstname").val(user.firstname);
@@ -81,6 +82,7 @@ function getMyPodaciAgent() {
 			$("#companyName").append("Naziv kompanije: " + user.companyName);
 			$("#adress").append("Adresa: " + user.adress);
 			$("#pib").append("Pib: " + user.pib);
+			$("#owes").append("Zaduzenje: "+user.owes);
 			
 			
 			$("#input-firstnameAgent").val(user.firstname);
@@ -201,6 +203,24 @@ function whoami() {
 		error: function() {
 			window.location = "../login.html";
 		}
+	});
+}
+
+function payDebt() {
+	$.ajax({
+		url: '/auth/user/payDebt',
+		type: 'PUT',
+		headers: {
+	        'Auth': 'Bearer ' + token
+	    },
+		success: function(){
+			alert("Uspeh");
+			window.location = "./UserProfil.html";
+			
+		},
+		error: function(jqXhr, textStatus, errorMessage) {
+            console.log("Error: ", textStatus);
+        }
 	});
 }
 
